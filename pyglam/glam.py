@@ -1,9 +1,14 @@
 import scipy as sc
 import numpy as np
 
-class Glam:
-    def __init__(self) -> None:
-        pass
+class GlamFKML:
+    """Generalized Lambda Distribution (GLD) - Freimer-Kollia-Mudholkar-Lin parameterization."""
+    def __init__(self, lam1: float | None = None, lam2: float | None = None, lam3: float | None = None, lam4: float | None = None) -> None:
+        """Initialize the GLAM-FKML distribution."""
+        self.lam1 = lam1
+        self.lam2 = lam2
+        self.lam3 = lam3
+        self.lam4 = lam4
 
     def moments(self, data: list | np.ndarray):
         """Compute the first four moments of a dataset.
@@ -100,10 +105,8 @@ class Glam:
 
         return mean, var, skew, kurt
 
-    def _fit_lambdas(self, data, x0=None, method="least_squares"):
-        """
-        Ajusta (lambda1..lambda4) via método dos momentos:
-        resolve sistema: theory_moments(lam) - sample_moments = 0
+    def fit_lambdas(self, data, x0=None, method="least_squares"):
+        """Fit the GLAM-FKML distribution parameters to the data using moment matching.
         """
 
         mean_hat, var_hat, skew_hat, kurt_hat = self.moments(data)
@@ -144,3 +147,35 @@ class Glam:
         sol = sc.optimize.least_squares(residuals, x0, method="trf")
 
         return sol
+
+    def _phi(self, u, lam):
+        return np.where(np.isclose(lam, 0.0), np.log(u), (u**lam - 1.0)/lam)
+
+    def _gld_fkml_quantile(self, u, l1, l2, l3, l4):
+        u = np.clip(u, 1e-12, 1-1e-12)
+        return l1 + ( self._phi(u, l3) - self._phi(1-u, l4) ) / l2
+
+    def _gld_fkml_qprime(self, u, l2, l3, l4):
+        u = np.clip(u, 1e-12, 1-1e-12)
+        term1 = np.where(np.isclose(l3, 0.0), 1.0/u, u**(l3 - 1.0))
+        term2 = np.where(np.isclose(l4, 0.0), 1.0/(1.0 - u), (1.0 - u)**(l4 - 1.0))
+        return (term1 + term2) / l2
+    
+    def rvs(self, size: int = 1000, quantile_trim: float = 1e-3, qp_min: float =1e-8, lam1: float = None, lam2: float = None, lam3: float = None, lam4: float = None) -> np.ndarray:
+        """Generate samples from the GLAM-Freimer-Kollia-Mudholkar-Lin distribution.
+        
+        :param size: number of samples to generate
+        :param quantile_trim: trim quantiles to avoid extreme tails
+        :param qp_min: minimum quantile derivative to avoid numerical issues
+        """
+
+        a = float(quantile_trim)
+        u = np.linspace(a, 1.0 - a, int(size))
+        x = self._gld_fkml_quantile(u, self.lam1, self.lam2, self.lam3, self.lam4)
+        qp = self._gld_fkml_qprime(u, self.lam2, self.lam3, self.lam4)
+        mask = np.isfinite(x) & np.isfinite(qp) & (qp > qp_min)
+        x, f = x[mask], (1.0/qp[mask])
+        order = np.argsort(x)
+        x, f = x[order], f[order]
+
+        return x    
