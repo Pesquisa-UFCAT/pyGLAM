@@ -1,6 +1,9 @@
+# Environment and cache files to ignore
 env/
 myenv/
 venv/
-
 __pycache__/
+
+# Cache files to ignore and other files
 *.pyc
+*.png
