@@ -1,21 +1,20 @@
 [project]
 name = "pyglam"
-version = "0.1.0"
+version = "0.1.1"
 description = "Generalized Lambda Distribution models"
 authors = [
-                {name = "Prof. Wanderlei Malaquias Pereira Junior", email = "wanderlei_junior@ufcat.edu.br"},
-                {name = "Prof. Marcos Luiz Henrique", email = "marcos.henrique@ufpe.br"},
-                {name = "Prof. Ketson Roberto Maximiano dos Santos", email = "dossantk@umn.edu"},
-                {name = "Victor Hugo Moreira do Couto Souza", email = "victor.souza@discente.ufcat.edu.br"},
-                {name = "Renata Maria Pensin", email = "renata.pensin@discente.ufcat.edu.br"}
-            ]
-
+    {name = "Prof. Wanderlei Malaquias Pereira Junior", email = "wanderlei_junior@ufcat.edu.br"},
+    {name = "Prof. Marcos Luiz Henrique", email = "marcos.henrique@ufpe.br"},
+    {name = "Prof. Ketson Roberto Maximiano dos Santos", email = "dossantk@umn.edu"},
+    {name = "Victor Hugo Moreira do Couto Souza", email = "victor.souza@discente.ufcat.edu.br"},
+    {name = "Renata Maria Pensin", email = "renata.pensin@discente.ufcat.edu.br"}
+]
 license = {text = "MIT"}
 requires-python = ">=3.10"
 dependencies = [
-                    "scipy==1.17.1",
-                    "pandas==3.0.1"
-                ]
+    "scipy>=1.10.0",  # Flexível! Qualquer SciPy mais novo que 1.10 serve
+    "pandas>=2.0.0"   # Flexível! Qualquer Pandas 2 ou 3 serve
+]
 
 [build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]
