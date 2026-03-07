@@ -147,7 +147,11 @@ class GlamFKML:
         sol = sc.optimize.least_squares(residuals, x0, method="trf")
 
         return sol
-
+        
+     # Função auxiliar φ(u,λ) usada na parametrização FKML da GLD.
+    # Para λ ≠ 0: φ(u,λ) = (u^λ − 1)/λ
+    # Para λ → 0: φ(u,λ) → log(u) (limite analítico).
+    # O uso de np.isclose evita instabilidade numérica quando λ ≈ 0.
     def _phi(self, u, lam):
         return np.where(np.isclose(lam, 0.0), np.log(u), (u**lam - 1.0)/lam)
 
