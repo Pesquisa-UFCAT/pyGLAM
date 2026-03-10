@@ -183,3 +183,69 @@ class GlamFKML:
         x, f = x[order], f[order]
 
         return x    
+    
+    def ppf(self, q: float | np.ndarray, tol: float = 1e-12) -> np.ndarray:
+        """Percent point function (inverse CDF) for the GLAM-FKML distribution.
+        
+        :param q: quantiles to evaluate
+        :param tol: tolerance to avoid extreme tails (values close to 0 or 1)
+        
+        :return: values corresponding to the given quantiles
+        """
+
+        q = np.asarray(q, dtype=float)
+        q_clipped = np.clip(q, tol, 1 - tol)
+        
+        return self._gld_fkml_quantile(q_clipped, self.lam1, self.lam2, self.lam3, self.lam4)
+    
+    def cdf(self, x: float | np.ndarray, tol: float = 1e-12) -> np.ndarray:
+        """Cumulative distribution function for the GLAM-FKML distribution.
+        
+        :param x: values to evaluate
+        :param tol: tolerance to avoid extreme tails (values close to 0 or 1)
+        
+        :return: Cumulative distribution function values corresponding to the given x
+        """
+
+        if np.isscalar(x):
+            x_eval = x
+            def obj_pdf(u):
+                return self._gld_fkml_quantile(u, self.lam1, self.lam2, self.lam3, self.lam4) - x_eval
+            u = sc.optimize.brentq(obj_pdf, tol, 1 - tol)
+        else:
+            x = np.asarray(x, dtype=float)
+            u = np.zeros_like(x)
+            for i, xi in enumerate(x):
+                def obj_pdf(u):
+                    return self._gld_fkml_quantile(u, self.lam1, self.lam2, self.lam3, self.lam4) - xi
+                u[i] = sc.optimize.brentq(obj_pdf, tol, 1 - tol)
+
+        return u
+
+    def pdf(self, x: float | np.ndarray, tol: float = 1e-12, qp_min: float =1e-8) -> np.ndarray:
+        """Probability density function for the GLAM-FKML distribution.
+        
+        :param x: values to evaluate
+        :param tol: tolerance to avoid extreme tails (values close to 0 or 1)
+        :param qp_min: minimum quantile derivative to avoid numerical issues
+        
+        :return: Probability density values corresponding to the given x
+        """
+
+        if np.isscalar(x):
+            x_eval = x
+            def obj_cdf(u):
+                return self._gld_fkml_quantile(u, self.lam1, self.lam2, self.lam3, self.lam4) - x_eval
+            u = sc.optimize.brentq(obj_cdf, tol, 1 - tol)
+        else:
+            x = np.asarray(x, dtype=float)
+            u = np.zeros_like(x)
+            for i, xi in enumerate(x):
+                def obj_cdf(u):
+                    return self._gld_fkml_quantile(u, self.lam1, self.lam2, self.lam3, self.lam4) - xi
+                u[i] = sc.optimize.brentq(obj_cdf, tol, 1 - tol)
+
+        qp = self._gld_fkml_qprime(u, self.lam2, self.lam3, self.lam4)
+        mask = np.isfinite(x) & np.isfinite(qp) & (qp > qp_min)
+        
+        return 1.0/qp[mask]
