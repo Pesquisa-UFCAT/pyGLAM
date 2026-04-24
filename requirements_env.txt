@@ -7,3 +7,4 @@ poetry==2.3.2
 scipy==1.17.1
 seaborn==0.13.2
 zstandard==0.25.0
+sphinx==8.2.3
