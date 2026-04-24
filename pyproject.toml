@@ -1,7 +1,8 @@
 [project]
 name = "pyglam"
-version = "0.2.1"
-description = "Generalized Lambda Distribution models"
+version = "0.2.2"
+description = "Generalized Lambda Distribution models for powerful and fast emulation"
+readme = {file = "README.md", content-type = "text/markdown"}
 authors = [
                 {name = "Prof. Wanderlei Malaquias Pereira Junior", email = "wanderlei_junior@ufcat.edu.br"},
                 {name = "Prof. Marcos Luiz Henrique", email = "marcos.henrique@ufpe.br"},
@@ -18,3 +19,8 @@ dependencies = [
 [build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]
 build-backend = "poetry.core.masonry.api"
+
+[project.urls]
+"Homepage" = "https://github.com/Pesquisa-UFCAT/pyGLAM"
+"Bug Tracker" = "https://github.com/Pesquisa-UFCAT/pyGLAM/issues"
+"Notebook Example" = "https://github.com/Pesquisa-UFCAT/pyGLAM/blob/main/teste.ipynb"
