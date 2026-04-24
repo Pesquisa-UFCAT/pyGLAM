@@ -144,7 +144,7 @@ class GlamFKML:
             return sol
 
         # default: least_squares (mais robusto)
-        sol = sc.optimize.least_squares(residuals, x0, method="trf")
+        sol = sc.optimize.least_squares(residuals, x0, method="trf", max_nfev=5000, ftol=1e-5, xtol=1e-5, gtol=1e-5)
 
         return sol
         

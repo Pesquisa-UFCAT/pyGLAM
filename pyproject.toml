@@ -1,6 +1,6 @@
 [project]
 name = "pyglam"
-version = "0.2.0"
+version = "0.2.1"
 description = "Generalized Lambda Distribution models"
 authors = [
                 {name = "Prof. Wanderlei Malaquias Pereira Junior", email = "wanderlei_junior@ufcat.edu.br"},
