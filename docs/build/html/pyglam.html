@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Documentação do Módulo Glam &mdash; pyglam 0.2.2 documentation</title>
+  <title>Documentação da Classe GlamFKML &mdash; pyglam 0.2.2 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
 
@@ -43,11 +43,9 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Sumário:</span></p>
 <ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Documentação do Módulo Glam</a><ul>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Documentação da Classe GlamFKML</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#pyglam.glam.GlamFKML"><code class="docutils literal notranslate"><span class="pre">GlamFKML</span></code></a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#pyglam.glam.GlamFKML.cdf"><code class="docutils literal notranslate"><span class="pre">GlamFKML.cdf()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#pyglam.glam.GlamFKML.fit_lambdas"><code class="docutils literal notranslate"><span class="pre">GlamFKML.fit_lambdas()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#pyglam.glam.GlamFKML.moments"><code class="docutils literal notranslate"><span class="pre">GlamFKML.moments()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#pyglam.glam.GlamFKML.pdf"><code class="docutils literal notranslate"><span class="pre">GlamFKML.pdf()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#pyglam.glam.GlamFKML.ppf"><code class="docutils literal notranslate"><span class="pre">GlamFKML.ppf()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#pyglam.glam.GlamFKML.rvs"><code class="docutils literal notranslate"><span class="pre">GlamFKML.rvs()</span></code></a></li>
@@ -71,7 +69,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">Documentação do Módulo Glam</li>
+      <li class="breadcrumb-item active">Documentação da Classe GlamFKML</li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/pyglam.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -81,13 +79,12 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="module-pyglam.glam">
-<span id="documentacao-do-modulo-glam"></span><h1>Documentação do Módulo Glam<a class="headerlink" href="#module-pyglam.glam" title="Link to this heading"></a></h1>
+  <section id="documentacao-da-classe-glamfkml">
+<h1>Documentação da Classe GlamFKML<a class="headerlink" href="#documentacao-da-classe-glamfkml" title="Link to this heading"></a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="pyglam.glam.GlamFKML">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyglam.glam.</span></span><span class="sig-name descname"><span class="pre">GlamFKML</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lam1</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lam2</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lam3</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lam4</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyglam.glam.GlamFKML" title="Link to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Generalized Lambda Distribution (GLD) - Freimer-Kollia-Mudholkar-Lin parameterization.</p>
+<dd><p>Generalized Lambda Distribution (GLD) - Freimer-Kollia-Mudholkar-Lin parameterization.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="pyglam.glam.GlamFKML.cdf">
 <span class="sig-name descname"><span class="pre">cdf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-12</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyglam.glam.GlamFKML.cdf" title="Link to this definition"></a></dt>
@@ -104,26 +101,6 @@
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>Cumulative distribution function values corresponding to the given x</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pyglam.glam.GlamFKML.fit_lambdas">
-<span class="sig-name descname"><span class="pre">fit_lambdas</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x0</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'least_squares'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyglam.glam.GlamFKML.fit_lambdas" title="Link to this definition"></a></dt>
-<dd><p>Fit the GLAM-FKML distribution parameters to the data using moment matching.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pyglam.glam.GlamFKML.moments">
-<span class="sig-name descname"><span class="pre">moments</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyglam.glam.GlamFKML.moments" title="Link to this definition"></a></dt>
-<dd><p>Compute the first four moments of a dataset.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>data</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code> | <code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></span>) – dataset</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>[0] = mean, [1] = variance, [2] = skewness, [3] = kurtosis</p>
 </dd>
 </dl>
 </dd></dl>
