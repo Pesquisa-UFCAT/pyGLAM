@@ -1,4 +1,4 @@
-Documentação da Classe GlamFKML
+GlamFKML Class Documentation
 ===============================
 
 .. autoclass:: pyglam.glam.GlamFKML
