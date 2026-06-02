@@ -2,6 +2,7 @@
 env/
 myenv/
 venv/
+.venv/
 __pycache__/
 
 # Cache files to ignore and other files
