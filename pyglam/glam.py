@@ -71,7 +71,7 @@ class GlamFKML:
         Examples:
             >>> import numpy as np
             >>> from pyglam import GlamFKML
-            >>> np.round(GlamFKML().moments([1, 2, 3]), 3).tolist()
+            >>> (np.round(GlamFKML().moments([1, 2, 3]), 3) + 0.0).tolist()
             [2.0, 0.667, 0.0, 1.5]
         """
 
