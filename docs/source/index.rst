@@ -16,5 +16,6 @@ reference observations with samples from a fitted model.
 
    quickstart
    pyglam
+   glam_rs
    performance
 
