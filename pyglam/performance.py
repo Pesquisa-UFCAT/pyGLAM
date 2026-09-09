@@ -39,16 +39,20 @@ class Performance:
     r"""Statistical performance metrics between a reference sample and a predicted sample.
 
     Compares two datasets that are already drawn — typically the raw data on one side and a sample
-    produced by :meth:`GlamFKML.rvs` on the other — and scores how close the predicted distribution
+    produced by :meth:`pyglam.glam.GlamFKML.rvs` on the other — and scores how close the predicted distribution
     is to the reference one. The class never fits anything: it only knows about the two samples it
     is handed, so it works just as well for any pair of samples, whatever produced them.
 
     Both densities are estimated with a Gaussian KDE on a shared grid, then normalised to unit area
     before the density-based metrics are integrated.
 
-    No metric ever raises: a comparison that cannot be carried out (empty sample, constant sample,
-    fewer than two points) is reported as NaN. That way a sweep over a whole dataset always runs to
-    completion and the failures show up as gaps in the resulting maps.
+    Unavailable metrics are reported as NaN. Empty samples prevent sample-based
+    comparisons; constant or single-point samples prevent KDE-based metrics,
+    while some sample-based metrics may still be available. Invalid options
+    such as an unknown ``grid_range`` raise ValueError.
+
+    ``r2_pdf`` compares two estimated density curves. It is not the regression
+    R² of predicted lambda parameters from a neural network.
 
     :param n_grid: number of grid points used to numerically integrate the KL divergence and R²
     :param eps: density floor used to keep the logarithm and the normalisation well defined
@@ -57,10 +61,10 @@ class Performance:
         >>> import numpy as np
         >>> from pyglam import Performance
         >>> rng = np.random.default_rng(42)
-        >>> a = rng.normal(0, 1, 20000)
-        >>> b = rng.normal(0, 1, 20000)
+        >>> a = rng.normal(10, 2, 2000)
+        >>> b = rng.normal(10, 2, 2000)
         >>> report = Performance().performance(a, b)
-        >>> report['kl_divergence'] < 0.01
+        >>> report['wasserstein'] >= 0
         True
     """
 
@@ -77,27 +81,47 @@ class Performance:
     def performance(self, true: list | np.ndarray, pred: list | np.ndarray, grid_range: str = "true", percentile_tol: float = 1e-5) -> dict:
         r"""Score a predicted sample against a reference sample.
 
-        The KL divergence and :math:`R^2` are integrated on a grid that, by default, spans the
-        reference data's own range. If the predicted sample does not cover that range its density is
-        clipped to the ``eps`` floor there, which makes the KL divergence large — that is the
-        intended reading: the prediction puts almost no probability where the real data actually
-        lives. Use ``grid_range="union"`` to also penalise mass that the prediction invents outside
-        the reference range.
+        KL divergence is integrated on a shared grid; :math:`R^2` compares density
+        values on that grid. By default the grid spans the reference sample's
+        range. Use ``grid_range="union"`` to include the ranges of both samples.
+        Densities are floored at ``eps`` and normalized on the selected grid, so
+        the grid and KDE smoothing affect the density-based scores.
 
         .. warning::
             The percentile errors are *relative*, so they blow up when the reference percentile sits
             near zero — two samples from the same ``N(0, 1)`` can report ``rel_err_p50`` above 2.0
             simply because the median is ~0.003 and a tiny absolute difference is divided by it.
             Raise ``percentile_tol`` above the scale of the percentile you care about to switch
-            those to absolute errors, or read the Wasserstein distance instead, which has no such
+            those to signed differences in data units, or read the Wasserstein distance instead, which has no such
             pathology.
 
         :param true: reference dataset (the "real" sample)
-        :param pred: predicted dataset (for example, the output of :meth:`GlamFKML.rvs`)
+        :param pred: predicted dataset (for example, the output of :meth:`pyglam.glam.GlamFKML.rvs`)
         :param grid_range: ``"true"`` to span the reference range, ``"union"`` to span both samples
-        :param percentile_tol: reference percentiles below this magnitude are scored with the absolute error instead of the relative one
+        :param percentile_tol: reference percentiles below this magnitude are scored with the signed difference in data units instead of the relative one
 
         :return: Dictionary with the KL divergence, KS statistic and p-value, Wasserstein distance, R² between the two densities, relative errors at P5/P50/P95, the shared grid, and both normalised densities
+
+        Examples:
+            Compare two independently drawn samples from a known FKML model.
+
+            >>> from pyglam import GlamFKML, Performance
+            >>> model = GlamFKML(10, 2, 0.2, 0.3)
+            >>> reference = model.rvs(2000, quantile_trim=0.0, random_state=7)
+            >>> predicted = model.rvs(2000, quantile_trim=0.0, random_state=42)
+            >>> report = Performance(n_grid=200).performance(
+            ...     reference, predicted, grid_range="union")
+            >>> sorted(report)
+            ['kl_divergence', 'ks_pvalue', 'ks_statistic', 'pdf_pred', 'pdf_true', 'r2_pdf', 'rel_err_p5', 'rel_err_p50', 'rel_err_p95', 'wasserstein', 'x_grid']
+            >>> report['x_grid'].shape
+            (200,)
+
+            Missing data yields unavailable scores without discarding the report.
+
+            >>> import numpy as np
+            >>> missing = Performance().performance([], predicted)
+            >>> bool(np.isnan(missing['wasserstein']))
+            True
         """
 
         if grid_range not in ("true", "union"):

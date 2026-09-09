@@ -23,7 +23,7 @@ Performance(n_grid: int = 400, eps: float = 1e-12)
 
 | Parameter | Meaning |
 |---|---|
-| `n_grid` | Number of grid points used to integrate the KL divergence and R² |
+| `n_grid` | Number of grid points used to integrate KL divergence and compare density curves for R² |
 | `eps` | Density floor that keeps the logarithm and the normalisation well defined |
 
 ```python
@@ -35,7 +35,7 @@ Performance(n_grid: int = 400, eps: float = 1e-12)
 | `true` | Reference dataset (the "real" sample) |
 | `pred` | Predicted dataset (for example, the output of `GlamFKML.rvs()`) |
 | `grid_range` | `"true"` spans the reference range; `"union"` spans both samples |
-| `percentile_tol` | Reference percentiles below this magnitude are scored with the absolute error instead of the relative one |
+| `percentile_tol` | Reference percentiles below this magnitude are scored with the signed difference in data units instead of the relative one |
 
 ### Returned dictionary
 
@@ -50,9 +50,14 @@ Performance(n_grid: int = 400, eps: float = 1e-12)
 | `x_grid` | The shared integration grid | — |
 | `pdf_true` / `pdf_pred` | Both densities on that grid, normalised to unit area | — |
 
-**Nothing ever raises.** A comparison that cannot be carried out — empty sample, constant sample,
-fewer than two points — comes back as `NaN`. That way a sweep over a whole dataset always runs to
-completion and the failures show up as gaps in the resulting maps rather than as a crash.
+**Unavailable metrics return `NaN`.** Empty samples prevent sample-based comparisons;
+constant or single-point samples prevent KDE-based metrics, while some sample-based scores
+can still be computed. Invalid configuration, such as an unknown `grid_range`, raises
+`ValueError`. The `r2_pdf` score compares KDE curves and is currently clipped to [-1, 1];
+it is not the regression R² of lambda predictions from a neural network.
+
+The [Sphinx performance guide](docs/source/performance.rst) contains executable examples
+and the generated class reference. Build and test it using [README-ENV.md](README-ENV.md).
 
 ---
 
@@ -112,11 +117,13 @@ print(sol.success)  # True
 
 # 2. Generate from the fitted model
 emulator = GlamFKML(*sol.x)
-generated = emulator.rvs(size=20000)
+generated = emulator.rvs(size=20000, random_state=42)
 
 # 3. Score the emulation
 report = Performance().performance(data, generated)
 ```
+
+Historical output from the previous deterministic sampler (random sampling will give different scores):
 
 ```
   kl_divergence: 0.005898
@@ -129,9 +136,9 @@ report = Performance().performance(data, generated)
     rel_err_p95: -0.001430
 ```
 
-The GLD reproduces the normal closely: KS does not reject, R² is `0.9996`, and all three percentiles
-are within 0.4%. Here the percentile errors are trustworthy because the data is centred at 10, far
-from zero.
+In that historical run, KS did not reject, R² was `0.9996`, and all three percentile errors
+were within 0.4%. The data is centred at 10, far from zero, so relative percentile errors
+are meaningful. Rerun with random samples to assess the effect of sampling variability.
 
 > `sol.success` only tells you the optimiser converged — it is **not** a measure of fit quality. This
 > report is. Always score the fit rather than trusting `success`.
@@ -256,14 +263,14 @@ instead.
 **Percentile errors near zero.** `rel_err_*` divides by the reference percentile, so it explodes when
 that percentile sits near zero — Example 1 shows `rel_err_p50 = 2.02` for two samples from the *same*
 distribution. Raise `percentile_tol` above the scale of the percentile you care about to switch to
-absolute errors, or use `wasserstein`, which has no such pathology. This behaviour is inherited from
+signed differences in data units, or use `wasserstein`, which has no such pathology. This behaviour is inherited from
 the original benchmark script, where the quantity of interest was far from zero.
 
-**`GlamFKML.rvs()` is currently deterministic.** It builds an evenly spaced quantile grid rather than
-drawing random variates, so two consecutive calls return identical arrays. That makes `ks_statistic`
-in Example 2 a comparison between a random sample and a deterministic lattice, which is optimistic —
-the real sampling noise is missing. Interpret the emulation scores as a best case until `rvs()`
-performs true inverse-transform sampling.
+**Sampling variability.** `GlamFKML.rvs()` now uses random inverse-transform sampling. Pass
+`random_state=42` to reproduce a sample, or reuse a NumPy generator for successive samples.
+The illustrative scores in Example 2 were recorded with the old deterministic quantile grid;
+they are historical and will differ when rerunning the example with random samples. For comparisons,
+repeat across seeds and report the spread of the scores as well as their average.
 
 **KDE smoothing.** Both densities are smoothed with a Gaussian KDE using Scott's rule. Sharp features
 — hard bounds, discontinuities, strongly multimodal data — are blurred, which flatters `kl_divergence`

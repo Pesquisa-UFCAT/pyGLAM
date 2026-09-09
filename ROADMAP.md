@@ -30,13 +30,13 @@ Documento de acompanhamento. Marque os itens (`- [ ]` → `- [x]`) à medida que
 | Fase | Itens | Status |
 |---|---|---|
 | ✅ Base existente | 6/6 | completa |
-| ✅ Fase 3 (parcial) — aderência | 4/9 | **em andamento** |
-| ⬜ Fase 0 — bugs bloqueantes | 0/8 | não iniciada |
-| ⬜ Fase 1 — infraestrutura | 0/11 | não iniciada |
+| ✅ Fase 3 (parcial) — aderência | 4/10 | **em andamento** |
+| 🟨 Fase 0 — bugs bloqueantes | 5/8 | **em andamento** |
+| 🟨 Fase 1 — infraestrutura | 1/12 | **em andamento** |
 | ⬜ Fase 2 — núcleo científico | 0/11 | não iniciada |
 | ⬜ Fase 4 — Monte Carlo | 0/5 | não iniciada |
 | ⬜ Fase 5 — validação cruzada | 0/4 | não iniciada |
-| ⬜ Fase 6 — docs e release | 0/7 | não iniciada |
+| 🟨 Fase 6 — docs e release | 4/9 | **em andamento** |
 | ⬜ Fase 7 — manuscrito | 0/10 | não iniciada |
 
 **Estimativa até a submissão: ~9 meses.** Some 6–12 meses de revisão. Publicação realista: fim de 2027.
@@ -56,8 +56,36 @@ Documento de acompanhamento. Marque os itens (`- [ ]` → `- [x]`) à medida que
 ### Módulo de aderência — parcial
 - [x] Classe `Performance` com o método `performance(true, pred)` — [`pyglam/performance.py`](pyglam/performance.py)
 - [x] Métricas: divergência KL, KS (estatística **e** p-valor), distância de Wasserstein, R² entre densidades, erros relativos em P5/P50/P95
-- [x] Contrato de falha sem exceção (amostra vazia, constante ou com n < 2 → `NaN`, para a varredura terminar e as falhas virarem buracos nos mapas)
+- [x] Métricas indisponíveis retornam `NaN`: amostras vazias impedem comparações amostrais; constantes ou com n < 2 impedem KDE. Métricas amostrais ainda podem existir nesses últimos casos; opções inválidas podem levantar `ValueError`.
 - [x] Documentação com 3 exemplos executáveis e saídas reais — [`docs_performance.md`](docs_performance.md)
+
+### Atualização técnica — 09/09/2026
+
+- `rvs()` passou a gerar amostras aleatórias, com semente ou gerador em `random_state`, mantendo ordem e tamanho solicitado. Os argumentos `lam1..lam4` são respeitados.
+- O padrão final permanece **`quantile_trim=0.001`**, excluindo 0,1% de cada cauda. `0.0` desativa esse corte; `1e-6` pode ser usado explicitamente, mas não foi adotado como padrão. O corte altera a distribuição amostrada e pode afetar os momentos.
+- `qp_min` foi removido de **`rvs()`**, junto com o aviso de depreciação. Ele permanece ativo na **`pdf()`**: derivadas abaixo ou iguais ao limite retornam `NaN` na posição original.
+- A função auxiliar de quantis usa `expm1` perto de zero e o limite logarítmico quando o parâmetro de forma é zero.
+- `cdf()` e `pdf()` tratam os limites analíticos do suporte, entradas escalares, matrizes, vetores vazios, infinitos e `NaN`. A inversão usa a função quantil sem o corte numérico da `ppf`; `tol` controla a precisão absoluta em probabilidade.
+- Ambiente local criado com **uv**, `.venv`, `.python-version` (Python 3.11) e `uv.lock`. NumPy declarado diretamente no `pyproject.toml`; instruções em [`README-ENV.md`](README-ENV.md).
+- **18 testes passando** com `uv run --locked python -W error -m unittest discover -s tests -v`: 10 de amostragem e 8 de CDF/PDF, incluindo casos uniforme e logístico, caudas pesadas, limites do suporte, `cdf(ppf(q))` e integral da densidade.
+- **Sphinx integrado ao checkout:** fontes adaptadas da branch `joao_paulo/documentação`, tema Read the Docs e grupo `docs` no TOML/lock. Introdução à família FKML antes da referência de classe, fórmula quantílica, parâmetros, suporte e corte de caudas.
+- **Exemplos em todos os métodos públicos documentados:** `moments`, `fit_lambdas`, `rvs`, `ppf`, `cdf`, `pdf` e `Performance.performance`, além dos exemplos de criação das classes.
+- **Guia de Performance:** fluxo ajuste → amostragem → avaliação, amostras semelhantes/deslocadas, repetições com sementes, percentis perto de zero e métricas indisponíveis. Documentada a diferença entre `r2_pdf` e o R² de uma rede que prevê lambdas.
+- **Validação da documentação:** HTML gerado sem avisos, 100 verificações de exemplos aprovadas pelo builder `doctest` e 18 testes da biblioteca passando. Publicação do site ainda pendente.
+- **GitHub Actions configurado:** `.github/workflows/docs.yml` valida testes, exemplos e HTML com uv/lock em pushes e PRs para `main`; publica no GitHub Pages após validação bem-sucedida de `main`. Execução manual disponível. A primeira execução remota e a conferência do site aguardam o push e a configuração de Pages como GitHub Actions.
+- **Workflow validado localmente:** `actionlint` sem erros, sincronização `uv sync --locked --group docs` aprovada, 18 testes e 100 verificações dos exemplos passando, HTML sem avisos.
+
+### Pendências para o próximo lançamento
+
+- [ ] Restringir o ajuste à região válida dos quatro momentos e verificar os resíduos antes de aceitar os lambdas. Multi-start continua sendo uma melhoria a avaliar para a estabilidade dos alvos da rede.
+- [ ] Concluir metadados/exportações e adicionar `LICENSE`, versão e notas de mudança, incluindo a nova amostragem aleatória e as alterações de `qp_min`/`tol`.
+- [ ] Validar a primeira execução remota do workflow de testes/Sphinx já configurado; ampliar a cobertura dos ajustes e a matriz de versões de Python/SO.
+- [ ] Selecionar GitHub Actions como fonte de Pages, conferir as permissões do ambiente `github-pages` para `main` e verificar a documentação após a primeira publicação automática.
+- [ ] Gerar e instalar wheel/sdist em ambiente limpo, executar os exemplos e só então publicar a versão escolhida.
+
+As pendências de vetorização, novos estimadores e estudo científico completo
+continuam nas fases abaixo; os itens concluídos de documentação referem-se à
+API FKML/Performance disponível neste checkout.
 
 ---
 
@@ -65,15 +93,14 @@ Documento de acompanhamento. Marque os itens (`- [ ]` → `- [x]`) à medida que
 
 Defeitos que invalidam a tese central do software. Um parecerista pega todos na primeira leitura.
 
-- [ ] **`rvs()` não gera números aleatórios.** [`glam.py:177`](pyglam/glam.py#L177) usa `np.linspace(a, 1-a, size)` — grade determinística. Não existe RNG algum no pacote; duas chamadas devolvem o mesmo vetor. Trocar por amostragem por transformada inversa com `np.random.default_rng(seed)`, expondo `seed`/`random_state`.
-  > **Prioridade máxima.** Enquanto isso não for feito, todo score de emulação (inclusive os da `Performance`) é otimista: compara amostra aleatória com malha fixa, sem o ruído amostral.
-- [ ] Remover o código morto `f` em [`glam.py:181-183`](pyglam/glam.py#L181-L183)
-- [ ] **`rvs()` aceita `lam1..lam4` e os ignora em silêncio** ([`glam.py:168`](pyglam/glam.py#L168)) — o corpo só usa `self.lam*`. Honrar ou remover
-- [ ] **`pdf()` muda o tamanho do vetor.** A máscara em [`glam.py:249`](pyglam/glam.py#L249) descarta pontos sem avisar; `len(pdf(x)) != len(x)` quebra qualquer `plt.plot`. Devolver `nan`/`0.0` preservando o formato; escalar na entrada → escalar na saída
-- [ ] **`cdf()`/`pdf()` levantam exceção fora do suporte.** `brentq` sem checagem de mudança de sinal: `cdf(50.0)` estoura em vez de devolver `1.0`. Tratar as caudas analiticamente
+- [x] **Amostragem aleatória em `rvs()`.** Transformada inversa com `np.random.default_rng`, argumento `random_state` para semente ou gerador, preservação da ordem sorteada e do tamanho solicitado. Mantido o corte padrão `quantile_trim=0.001` (0,1% em cada cauda); `quantile_trim=0.0` desativa o corte, além da proteção numérica da função quantil.
+- [x] Remover o código morto `f`, a filtragem por derivada e o argumento `qp_min` de `rvs()`.
+- [x] **Honrar `lam1..lam4` em `rvs()`.** Parâmetros fornecidos substituem os da instância apenas naquela chamada; validar parâmetros finitos e `lam2 > 0`.
+- [x] **Preservar o formato de `pdf()` e `cdf()`.** Escalar na entrada → escalar na saída; arrays mantêm dimensões e posições. `pdf()` retorna `NaN` nos pontos bloqueados por `qp_min`, sem removê-los.
+- [x] **Tratar `cdf()`/`pdf()` fora do suporte.** Limites analíticos da FKML: CDF retorna 0/1 e PDF retorna zero fora do suporte. Nos extremos finitos, PDF usa o limite lateral da densidade. Inversão sem o corte da `ppf` evita falhas de intervalo em observações nas caudas.
 - [ ] **Vetorizar `cdf`/`pdf`.** Hoje é um `brentq` por elemento em laço Python — o oposto do "high-performance" anunciado. Usar busca binária vetorizada sobre a `ppf` ou interpolação monotônica
 - [ ] **Validar a região de suporte no ajuste.** Sem restringir `λ2 > 0` nem a região de existência dos momentos (curtose exige `λ3, λ4 > -1/4`), as Gammas são avaliadas em polos. Hoje ajustar uma lognormal devolve `success=True` com `λ3 ≈ 27.9` — solução degenerada reportada como sucesso. Adicionar `bounds` e um método `region_of_validity()`
-- [ ] **Metadados errados:** `numpy` é importado mas não declarado em [`pyproject.toml`](pyproject.toml); `pandas` é declarado e nunca usado. Adicionar `__all__` (hoje `from pyglam import *` vaza `np` e `sc`) e `__version__`
+- [ ] **Metadados e exportações — parcial:** NumPy já declarado em [`pyproject.toml`](pyproject.toml). Falta revisar a dependência de `pandas`, adicionar `__all__` (hoje `from pyglam import *` vaza `np` e `sc`) e `__version__`.
 
 ---
 
@@ -81,12 +108,13 @@ Defeitos que invalidam a tese central do software. Um parecerista pega todos na 
 
 Sem isto, *desk reject* em qualquer revista séria.
 
+- [x] **Ambiente de desenvolvimento com uv.** `.venv`, `uv.lock`, Python 3.11 selecionado em `.python-version` e comandos de sincronização/testes documentados em `README-ENV.md`.
 - [ ] **Arquivo `LICENSE`** (MIT, coerente com o `pyproject.toml`). Hoje **não existe** — a API do GitHub reporta `license: null`. É bloqueio absoluto
-- [ ] Suíte `tests/` com pytest — propriedades matemáticas (`cdf(ppf(q)) == q`, monotonicidade da `ppf`, `pdf ≥ 0`, integral da `pdf` ≈ 1)
-- [ ] Testes de casos-limite (`λ3 → 0` cai em `log`) e de recuperação de λ conhecidos
-- [ ] Testes de regressão para cada bug da Fase 0
+- [ ] Suíte `tests/` com pytest — **parcial:** 18 testes com `unittest` já passam, incluindo `cdf(ppf(q))`, monotonicidade da CDF, `pdf ≥ 0` e integral da `pdf` ≈ 1. Ampliar propriedades e integrar a execução/cobertura no CI.
+- [ ] Testes de casos-limite e recuperação de λ conhecidos — **parcial:** formas iguais/próximas de zero, caudas pesadas e limites do suporte cobertos; recuperação dos parâmetros pelo ajuste ainda pendente.
+- [ ] Testes de regressão para cada bug da Fase 0 — **parcial:** geração aleatória, parâmetros por chamada, formato da PDF/CDF e comportamento fora do suporte cobertos.
 - [ ] Cobertura ≥ 90% (`pytest --cov=pyglam`)
-- [ ] CI em `.github/workflows/tests.yml` — pytest em Python 3.10–3.13 × Linux/macOS/Windows
+- [ ] CI multiplataforma — **parcial:** `.github/workflows/docs.yml` executa unittest, exemplos Sphinx e HTML em Linux com o Python de `.python-version`; falta ampliar para Python 3.10–3.13 × Linux/macOS/Windows e confirmar a primeira execução remota.
 - [ ] `ruff` + `mypy` no CI
 - [ ] **Consolidar as branches.** `main`, `joao_paulo/documentação` (Sphinx) e `renata_branch` (melhor material didático) estão divergentes e órfãs
 - [ ] Remover `dist/*.whl` e `dist/*.tar.gz` do versionamento (estão commitados) e adicionar ao `.gitignore`
@@ -169,10 +197,12 @@ Exigência explícita do JSS e expectativa forte no JCS. **A concorrência já p
 
 ## Fase 6 — Documentação e release citável `[~3 semanas]`
 
-- [ ] Mergear o Sphinx de `joao_paulo/documentação` para `main` e publicar no GitHub Pages
-- [ ] Incluir `fit_lambdas`, `moments` e `Performance` no autodoc (o `pyglam.rst` atual documenta só `rvs/ppf/pdf/cdf`)
-- [ ] Páginas de teoria: definição matemática da GLD, cada parametrização, cada estimador, com bibliografia
-- [ ] Guia do usuário + galeria de exemplos + referência de API
+- [x] Incorporar e adaptar as fontes Sphinx de `joao_paulo/documentação` ao checkout de `main`, com configuração e dependências reproduzíveis via uv. Artefatos gerados ficam fora do versionamento.
+- [ ] Publicação no GitHub Pages — **workflow pronto** em `.github/workflows/docs.yml`; falta confirmar a fonte GitHub Actions nas configurações do repositório e validar o site após o primeiro push para `main`.
+- [x] Incluir `fit_lambdas`, `moments` e `Performance` no autodoc, com introdução às classes e exemplos nos métodos públicos.
+- [ ] Páginas de teoria — **parcial:** FKML, função quantil, parâmetros e suporte documentados; faltam bibliografia científica completa e páginas dos futuros estimadores/parametrizações.
+- [x] Guia do usuário, exemplos executáveis e referência da API atual: `quickstart.rst`, `pyglam.rst` e `performance.rst`.
+- [x] Validar HTML sem avisos e executar os exemplos Sphinx: 100 verificações aprovadas pelo builder `doctest`. Instruções em `README-ENV.md`.
 - [ ] README reescrito: definição matemática, badges (PyPI, CI, cobertura, DOI), citação, referências
 - [ ] Release **v1.0.0** no PyPI
 - [ ] **Arquivamento no Zenodo para obter DOI**. Corrigir o `pyproject.toml` para que a metadata do wheel não descarte 4 dos 5 autores (o poetry-core mantém só o primeiro)
@@ -232,7 +262,7 @@ Há um descompasso que as revistas checam:
 
 Como comprovar que cada fase está pronta:
 
-- [ ] **Fase 0** — duas chamadas de `rvs()` com sementes diferentes produzem vetores diferentes; `len(pdf(x)) == len(x)`; `cdf(1e6) == 1.0` sem exceção
+- [x] **Regressões de amostragem e avaliação da Fase 0** — sementes diferentes geram vetores diferentes; PDF/CDF preservam formato; CDF retorna 0/1 e PDF zero fora de suportes limitados. A Fase 0 ainda tem as pendências de vetorização, ajuste e metadados listadas acima.
 - [ ] **Fase 1** — CI verde nas 12 combinações de SO × Python; cobertura ≥ 90%; `ruff check` e `mypy pyglam/` sem erro
 - [ ] **Fase 2** — para cada parametrização, `cdf(ppf(q)) ≈ q` em `1e-10`; cada estimador recupera λ conhecidos com n = 10.000; Tukey lambda bate com `scipy.stats.tukeylambda`
 - [ ] **Fase 3** — em dados normais, o KS não rejeita a GLD ajustada (p > 0,05); em dados bimodais mal ajustados, rejeita; `autofit` escolhe o método que a Fase 4 indica
@@ -245,6 +275,6 @@ Como comprovar que cada fase está pronta:
 
 ## Resposta curta
 
-**Publicável hoje?** Não — em nenhuma revista com JCR. São ~250 linhas no núcleo, uma parametrização, um estimador, zero testes, sem arquivo de licença, e a função de geração de amostras não gera nada aleatório.
+**Pronto para submissão hoje?** Ainda faltam validação científica e infraestrutura: há uma parametrização e um estimador, sem arquivo de licença ou estudo Monte Carlo completo. A geração aleatória já foi corrigida, o ambiente uv está configurado e 18 testes de amostragem e avaliação passam; as demais etapas continuam pendentes.
 
 **Publicável em ~9 meses?** Sim, com boa chance, se as Fases 2 a 4 forem executadas. O tema é legítimo, a lacuna em Python é real, e a equipe tem um coautor com precedente publicado exatamente na revista-alvo.
