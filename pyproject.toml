@@ -13,12 +13,19 @@ authors = [
 license = {text = "MIT"}
 requires-python = ">=3.10"
 dependencies = [
+                    "numpy>=1.23.5",
                     "scipy>=1.10.0",
                     "pandas>=2.0.0"
                 ]
 [build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]
 build-backend = "poetry.core.masonry.api"
+
+[dependency-groups]
+docs = [
+    "sphinx>=7,<9",
+    "sphinx-rtd-theme>=3,<4",
+]
 
 [project.urls]
 "Homepage" = "https://github.com/Pesquisa-UFCAT/pyGLAM"
