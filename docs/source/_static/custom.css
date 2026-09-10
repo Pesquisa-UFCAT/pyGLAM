@@ -1,0 +1,21 @@
+/* pyGLAM documentation: justified body text in the content column. */
+
+.rst-content p,
+.rst-content li,
+.rst-content dd,
+.rst-content blockquote {
+    text-align: justify;
+    text-justify: inter-word;
+}
+
+/* Narrow or centered contexts keep the alignment the theme gives them:
+   justifying a table cell opens large word gaps, and a figure caption is
+   meant to stay centered. */
+.rst-content table p,
+.rst-content table li,
+.rst-content table dd,
+.rst-content figcaption p,
+.rst-content .caption p,
+.rst-content .admonition-title {
+    text-align: inherit;
+}

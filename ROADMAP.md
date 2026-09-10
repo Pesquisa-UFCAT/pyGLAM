@@ -33,7 +33,7 @@ Documento de acompanhamento. Marque os itens (`- [ ]` → `- [x]`) à medida que
 | ✅ Fase 3 (parcial) — aderência | 4/10 | **em andamento** |
 | 🟨 Fase 0 — bugs bloqueantes | 5/8 | **em andamento** |
 | 🟨 Fase 1 — infraestrutura | 1/12 | **em andamento** |
-| ⬜ Fase 2 — núcleo científico | 0/11 | não iniciada |
+| 🟨 Fase 2 — núcleo científico | 1/11 | **em andamento** |
 | ⬜ Fase 4 — Monte Carlo | 0/5 | não iniciada |
 | ⬜ Fase 5 — validação cruzada | 0/4 | não iniciada |
 | 🟨 Fase 6 — docs e release | 4/9 | **em andamento** |
@@ -75,8 +75,19 @@ Documento de acompanhamento. Marque os itens (`- [ ]` → `- [x]`) à medida que
 - **GitHub Actions configurado:** `.github/workflows/docs.yml` valida testes, exemplos e HTML com uv/lock em pushes e PRs para `main`; publica no GitHub Pages após validação bem-sucedida de `main`. Execução manual disponível. A primeira execução remota e a conferência do site aguardam o push e a configuração de Pages como GitHub Actions.
 - **Workflow validado localmente:** `actionlint` sem erros, sincronização `uv sync --locked --group docs` aprovada, 18 testes e 100 verificações dos exemplos passando, HTML sem avisos.
 
+### Parametrização RS (Ramberg–Schmeiser) — 09/09/2026
+
+- Nova classe **`GlamRS`** em [`pyglam/glam.py`](pyglam/glam.py), com a mesma interface pública da FKML: `moments`, `fit_lambdas`, `rvs`, `ppf`, `cdf`, `pdf`. A função quantílica é `Q(u) = λ1 + (u^λ3 − (1−u)^λ4)/λ2`, sem o limite logarítmico que a FKML precisa em `λ3 = 0` ou `λ4 = 0`. As duas famílias coincidem em `λ3 = λ4 = 1` (uniforme).
+- Momentos teóricos pelos coeficientes A, B, C e D de Ramberg–Schmeiser; ajuste por casamento dos quatro momentos, como na FKML — e com a mesma limitação: o otimizador ainda não impõe `λ2 > 0` nem `λ3, λ4 > -1/4`.
+- Página [`docs/source/glam_rs.rst`](docs/source/glam_rs.rst) com fórmula, tabela de parâmetros, suporte/caudas, escolha de método e referência da classe, já incluída no `toctree`.
+- **142 verificações de exemplos** aprovadas pelo builder `doctest` (eram 100) e HTML sem avisos. Os 18 testes de `tests/` continuam passando, mas **ainda não cobrem a `GlamRS`**.
+- Doctest de `moments` ajustado: somar `0.0` normaliza o `-0.0` da assimetria em amostras simétricas.
+- **Documentação com texto justificado:** [`docs/source/_static/custom.css`](docs/source/_static/custom.css) registrado por `html_static_path`/`html_css_files` no `conf.py`. Justifica parágrafos, listas e definições da coluna de conteúdo; células de tabela, legendas e blocos de código mantêm o alinhamento do tema.
+
 ### Pendências para o próximo lançamento
 
+- [ ] Cobrir a `GlamRS` com testes equivalentes aos da FKML: `rvs` com semente, `cdf(ppf(q))`, formato e suporte de `pdf`/`cdf`, e o caso uniforme em que RS e FKML coincidem.
+- [ ] Unificar `GlamFKML` e `GlamRS` numa base comum — hoje as duas classes duplicam `_prepare_data`, ajuste, amostragem e inversão da CDF (~415 linhas repetidas).
 - [ ] Restringir o ajuste à região válida dos quatro momentos e verificar os resíduos antes de aceitar os lambdas. Multi-start continua sendo uma melhoria a avaliar para a estabilidade dos alvos da rede.
 - [ ] Concluir metadados/exportações e adicionar `LICENSE`, versão e notas de mudança, incluindo a nova amostragem aleatória e as alterações de `qp_min`/`tol`.
 - [ ] Validar a primeira execução remota do workflow de testes/Sphinx já configurado; ampliar a cobertura dos ajustes e a matriz de versões de Python/SO.
@@ -130,7 +141,7 @@ Sem isto, *desk reject* em qualquer revista séria.
 ### 2.1 Parametrizações — `pyglam/parameterizations.py`
 Refatorar `GlamFKML` para uma classe base `GLD` + subclasses, mantendo a API atual como fachada retrocompatível.
 
-- [ ] **RS** — Ramberg–Schmeiser *(obrigatória: é a que o `gld` e o `GLDEX` implementam; sem ela não há comparação justa)*
+- [x] **RS** — Ramberg–Schmeiser: classe `GlamRS` com a interface completa (`moments`, `fit_lambdas`, `rvs`, `ppf`, `cdf`, `pdf`) e página própria na documentação. *Falta a refatoração:* hoje é uma classe paralela à `GlamFKML`, não uma subclasse de uma base `GLD` comum, e o ajuste ainda não valida a região de existência dos momentos.
 - [ ] **VSL** — van Staden–Loots (baseada em L-momentos)
 - [ ] **Tukey lambda** — caso particular de 1 parâmetro; serve para validar contra `scipy.stats.tukeylambda`
 - [ ] `region_of_validity()` e condições de existência de momentos para cada uma
@@ -186,7 +197,7 @@ Interface uniforme `fit(data, method=..., **kwargs) -> GLDFitResult`, carregando
 
 ## Fase 5 — Validação cruzada contra as referências `[~3 semanas]`
 
-Exigência explícita do JSS e expectativa forte no JCS. **A concorrência já publicou:** `GLDEX` (R) saiu no JSS, `gld` (R) tem 3 parametrizações no CRAN, e o **`gldpy` já existe no PyPI com 3 parametrizações**. Hoje o pyGLAM tem menos funcionalidade que os três.
+Exigência explícita do JSS e expectativa forte no JCS. **A concorrência já publicou:** `GLDEX` (R) saiu no JSS, `gld` (R) tem 3 parametrizações no CRAN, e o **`gldpy` já existe no PyPI com 3 parametrizações**. Com a RS, o pyGLAM passa a ter duas parametrizações e um único estimador — ainda atrás dos três.
 
 - [ ] Gerar em R, uma única vez, valores de referência do `gld` e do `GLDEX` (mesmos λ, mesmos quantis) e **commitar como fixtures CSV** em `tests/fixtures/` — evita dependência de `rpy2` no CI
 - [ ] Testes de concordância numérica com tolerância explícita para `pdf`/`cdf`/`ppf` e para λ̂ nas parametrizações compartilhadas
@@ -200,9 +211,9 @@ Exigência explícita do JSS e expectativa forte no JCS. **A concorrência já p
 - [x] Incorporar e adaptar as fontes Sphinx de `joao_paulo/documentação` ao checkout de `main`, com configuração e dependências reproduzíveis via uv. Artefatos gerados ficam fora do versionamento.
 - [ ] Publicação no GitHub Pages — **workflow pronto** em `.github/workflows/docs.yml`; falta confirmar a fonte GitHub Actions nas configurações do repositório e validar o site após o primeiro push para `main`.
 - [x] Incluir `fit_lambdas`, `moments` e `Performance` no autodoc, com introdução às classes e exemplos nos métodos públicos.
-- [ ] Páginas de teoria — **parcial:** FKML, função quantil, parâmetros e suporte documentados; faltam bibliografia científica completa e páginas dos futuros estimadores/parametrizações.
-- [x] Guia do usuário, exemplos executáveis e referência da API atual: `quickstart.rst`, `pyglam.rst` e `performance.rst`.
-- [x] Validar HTML sem avisos e executar os exemplos Sphinx: 100 verificações aprovadas pelo builder `doctest`. Instruções em `README-ENV.md`.
+- [ ] Páginas de teoria — **parcial:** FKML e RS, função quantil, parâmetros e suporte documentados; faltam bibliografia científica completa e páginas dos futuros estimadores/parametrizações.
+- [x] Guia do usuário, exemplos executáveis e referência da API atual: `quickstart.rst`, `pyglam.rst`, `glam_rs.rst` e `performance.rst`, com o texto do site justificado por CSS próprio.
+- [x] Validar HTML sem avisos e executar os exemplos Sphinx: 142 verificações aprovadas pelo builder `doctest`. Instruções em `README-ENV.md`.
 - [ ] README reescrito: definição matemática, badges (PyPI, CI, cobertura, DOI), citação, referências
 - [ ] Release **v1.0.0** no PyPI
 - [ ] **Arquivamento no Zenodo para obter DOI**. Corrigir o `pyproject.toml` para que a metadata do wheel não descarte 4 dos 5 autores (o poetry-core mantém só o primeiro)
@@ -275,6 +286,6 @@ Como comprovar que cada fase está pronta:
 
 ## Resposta curta
 
-**Pronto para submissão hoje?** Ainda faltam validação científica e infraestrutura: há uma parametrização e um estimador, sem arquivo de licença ou estudo Monte Carlo completo. A geração aleatória já foi corrigida, o ambiente uv está configurado e 18 testes de amostragem e avaliação passam; as demais etapas continuam pendentes.
+**Pronto para submissão hoje?** Ainda faltam validação científica e infraestrutura: há duas parametrizações (FKML e RS) e um único estimador, sem arquivo de licença ou estudo Monte Carlo completo. A geração aleatória já foi corrigida, o ambiente uv está configurado e 18 testes de amostragem e avaliação passam; as demais etapas continuam pendentes.
 
 **Publicável em ~9 meses?** Sim, com boa chance, se as Fases 2 a 4 forem executadas. O tema é legítimo, a lacuna em Python é real, e a equipe tem um coautor com precedente publicado exatamente na revista-alvo.
