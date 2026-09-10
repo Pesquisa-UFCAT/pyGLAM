@@ -1,6 +1,137 @@
 import scipy as sc
 import numpy as np
 
+# Grade determinística de formas (lambda3, lambda4) para o multi-start. Cobre
+# os regimes qualitativos da GLD: caudas pesadas (formas negativas), quase
+# exponencial/logístico (formas perto de zero), suporte limitado (formas
+# positivas) e assimetria (formas desiguais). Formas <= -1/4 ficam de fora
+# porque a curtose não existe nessa região.
+_SHAPE_GRID = (
+    (0.5, 0.5), (0.2, 0.2), (1.0, 1.0), (2.0, 2.0),
+    (0.05, 0.05), (-0.1, -0.1), (-0.2, -0.2), (4.0, 4.0),
+    (0.1, 0.5), (0.5, 0.1), (-0.15, 0.3), (0.3, -0.15),
+    (1.0, 0.2), (0.2, 1.0), (-0.2, 1.0), (1.0, -0.2),
+)
+
+
+def _shape_candidates(n_candidates: int, seed=None) -> np.ndarray:
+    """Return ``n_candidates`` shape pairs (lam3, lam4) for the multi-start.
+
+    The fixed grid comes first, so a small number of starts is reproducible
+    without a seed. Beyond the grid, shapes are drawn log-uniformly in
+    ``lam + 1/4``, which samples the boundary of the moment domain and the
+    large-shape region on comparable terms.
+    """
+
+    grid = np.array(_SHAPE_GRID, dtype=float)
+    if n_candidates <= len(grid):
+        return grid[:n_candidates]
+
+    rng = np.random.default_rng(seed)
+    extra = rng.uniform(np.log(0.05), np.log(5.0), size=(n_candidates - len(grid), 2))
+
+    return np.vstack([grid, -0.25 + np.exp(extra)])
+
+
+def _in_moment_domain(x) -> bool:
+    """Report whether the four theoretical moments exist at ``x``.
+
+    They require a positive inverse scale and shapes above -1/4, the pole of
+    the kurtosis. Optimizer termination says nothing about this.
+    """
+
+    x = np.asarray(x, dtype=float)
+
+    return bool(np.all(np.isfinite(x)) and x[1] > 0.0 and x[2] > -0.25 and x[3] > -0.25)
+
+
+def _solve_from_starts(residuals, starts, method: str):
+    """Run the optimizer once per starting point and collect the solutions.
+
+    A start that makes the optimizer fail is skipped: it must not invalidate
+    the remaining ones. The failure is re-raised only when every start fails.
+    """
+
+    used, solutions = [], []
+    failure = None
+    for start in starts:
+        try:
+            if method == "root":
+                sol = sc.optimize.root(residuals, start, method="hybr")
+            else:
+                # least_squares é mais robusto que root fora do mínimo
+                sol = sc.optimize.least_squares(residuals, start, method="trf", max_nfev=5000, ftol=1e-5, xtol=1e-5, gtol=1e-5)
+        except Exception as error:
+            failure = error if failure is None else failure
+            continue
+        used.append(start)
+        solutions.append(sol)
+
+    if not solutions:
+        if failure is not None:
+            raise failure
+        raise ValueError("at least one starting point is required.")
+
+    return used, solutions
+
+
+def _quantile_distance(family, sample, params) -> float:
+    """Mean absolute gap between fitted and empirical quantiles.
+
+    This is the L1 (Wasserstein) distance between the sample and the fitted
+    distribution, evaluated on at most 2000 plotting positions. Parameters
+    that cannot be turned into a usable model score as infinite.
+    """
+
+    try:
+        model = family(*params)
+        size = min(sample.size, 2000)
+        probabilities = (np.arange(size) + 0.5) / size
+        fitted = np.asarray(model.ppf(probabilities), dtype=float)
+        if not np.all(np.isfinite(fitted)):
+            return np.inf
+        return float(np.mean(np.abs(fitted - np.quantile(sample, probabilities))))
+    except Exception:
+        return np.inf
+
+
+def _best_solution(solutions, residuals, starts, family, sample):
+    """Pick the best solution and record what the other starts reached.
+
+    Solutions inside the moment domain come first: a lower residual outside it
+    describes parameters whose moments do not exist. Cost then selects the
+    best, but four-moment matching is not injective — different parameters can
+    reproduce the same four moments — so every cost numerically tied with the
+    best is a candidate, and the tie goes to the smallest quantile distance to
+    the data. Without that step a difference such as 1e-13 against 1e-27, which
+    is optimizer noise, would decide the fit.
+
+    The returned result carries ``starts``, ``candidates``, ``n_starts``,
+    ``costs``, ``in_domain``, ``distances`` and ``best_start`` alongside the
+    SciPy fields, so another selection rule is one line away.
+    """
+
+    costs = np.array([0.5 * float(np.sum(np.asarray(residuals(sol.x), dtype=float) ** 2)) for sol in solutions])
+    in_domain = np.array([_in_moment_domain(sol.x) for sol in solutions])
+    distances = np.array([_quantile_distance(family, sample, sol.x) for sol in solutions])
+
+    pool = np.flatnonzero(in_domain) if in_domain.any() else np.arange(costs.size)
+    best_cost = float(costs[pool].min())
+    tied = pool[costs[pool] <= best_cost + 1e-8 + 1e-2 * best_cost]
+    best = int(tied[np.argmin(distances[tied])])
+
+    sol = solutions[best]
+    sol.starts = np.array(starts, dtype=float)
+    sol.candidates = np.array([solution.x for solution in solutions], dtype=float)
+    sol.n_starts = len(solutions)
+    sol.costs = costs
+    sol.in_domain = in_domain
+    sol.distances = distances
+    sol.best_start = best
+
+    return sol
+
+
 class GlamFKML:
     r"""Methods for the Generalized Lambda Distribution in its FKML parameterization.
 
@@ -162,7 +293,31 @@ class GlamFKML:
 
         return mean, var, skew, kurt
 
-    def fit_lambdas(self, data, x0=None, method="least_squares"):
+    def _start_from_shapes(self, lambda3: float, lambda4: float, mean_hat: float, var_hat: float):
+        """Complete a shape pair into a full starting point.
+
+        With the shapes fixed, matching the sample mean and variance is a
+        closed-form problem, so the candidate already reproduces two of the
+        four targets and the optimizer only has to work on skewness and
+        kurtosis. Returns ``None`` when the shapes have no positive variance.
+        """
+
+        try:
+            v1 = self._v1(lambda3, lambda4)
+            v2 = self._v2(lambda3, lambda4)
+            a2 = v2 - v1**2
+            if not np.isfinite(a2) or a2 <= 0:
+                return None
+            lambda2 = np.sqrt(a2 / var_hat)
+            lambda1 = mean_hat + (1.0 / lambda2) * (1.0 / (lambda3 + 1.0) - 1.0 / (lambda4 + 1.0))
+        except (ZeroDivisionError, FloatingPointError, ValueError):
+            return None
+
+        start = np.array([lambda1, lambda2, lambda3, lambda4], dtype=float)
+
+        return start if np.all(np.isfinite(start)) and lambda2 > 0 else None
+
+    def fit_lambdas(self, data, x0=None, method="least_squares", n_starts=1, seed=None):
         """Fit the GLAM-FKML distribution parameters to the data using moment matching.
 
         Match the sample mean, variance, skewness and Pearson kurtosis. The
@@ -173,6 +328,10 @@ class GlamFKML:
         :param x0: optional initial guess [lam1, lam2, lam3, lam4]; the default
             is [sample mean, inverse sample standard deviation, 0.5, 0.5]
         :param method: ``"least_squares"`` (default) or ``"root"``
+        :param n_starts: number of starting points; 1 (default) fits from ``x0``
+            alone, larger values add starts spread over the shape plane
+        :param seed: seed or NumPy Generator used only when ``n_starts`` exceeds
+            the fixed grid of shapes and extra starts must be drawn
         :return: SciPy OptimizeResult with parameters, residuals and convergence status
 
         ``sol.success`` describes optimizer termination, not distributional
@@ -180,6 +339,26 @@ class GlamFKML:
         domain: check finite parameters, lam2 > 0 and lam3, lam4 > -1/4 before
         interpreting a four-moment fit. Evaluate the fitted distribution with
         :class:`pyglam.performance.Performance` as well.
+
+        Moment matching has several local minima, and a single start converges
+        to whichever one it begins next to. With ``n_starts`` above 1 the fit
+        restarts from points spread over the shape plane, each completed so
+        that it already matches the sample mean and variance, and returns the
+        best result: solutions inside the moment domain come first, then the
+        lowest cost, and costs that are numerically tied are separated by the
+        quantile distance to the data, because different parameters can share
+        the same four moments. The attempts are reported in ``sol.costs``,
+        ``sol.in_domain`` and ``sol.distances``, their parameters in
+        ``sol.candidates``, their starting points in ``sol.starts``, and the
+        winner in ``sol.best_start``.
+
+        A better moment match is not always a better distributional fit: on
+        skewed data an exact four-moment solution can sit far from the sample,
+        while a start that ends with a larger cost stays close to it. That is a
+        limit of moment matching, not of the search. Compare ``sol.distances``
+        before accepting a multi-start result, and select by another rule with
+        ``sol.candidates[int(np.argmin(sol.distances))]`` when adherence
+        matters more than the moments.
 
         Examples:
             >>> import numpy as np
@@ -191,6 +370,14 @@ class GlamFKML:
             >>> model = GlamFKML(*sol.x)
             >>> model.rvs(size=100, random_state=42).shape
             (100,)
+
+            Ten starts spread over the shape plane, with every attempt kept:
+
+            >>> multi = GlamFKML().fit_lambdas(data, n_starts=10)
+            >>> multi.n_starts
+            10
+            >>> multi.candidates.shape
+            (10, 4)
         """
 
         mean_hat, var_hat, skew_hat, kurt_hat = self.moments(data)
@@ -201,6 +388,10 @@ class GlamFKML:
             x0 = np.array([mean_hat, 1.0/max(sd, 1e-8), 0.5, 0.5], dtype=float)
         else:
             x0 = np.array(x0, dtype=float)
+
+        n_starts = int(n_starts)
+        if n_starts < 1:
+            raise ValueError("n_starts must be at least 1.")
 
         def residuals(x):
             lambda1, lambda2, lambda3, lambda4 = x
@@ -223,14 +414,15 @@ class GlamFKML:
                               max(abs(kurt_hat), 1.0)], dtype=float)
             return r / scale
 
-        if method == "root":
-            sol = sc.optimize.root(residuals, x0, method="hybr")
-            return sol
+        starts = [x0]
+        for lambda3, lambda4 in _shape_candidates(n_starts - 1, seed):
+            start = self._start_from_shapes(lambda3, lambda4, mean_hat, var_hat)
+            if start is not None:
+                starts.append(start)
 
-        # default: least_squares (mais robusto)
-        sol = sc.optimize.least_squares(residuals, x0, method="trf", max_nfev=5000, ftol=1e-5, xtol=1e-5, gtol=1e-5)
+        used, solutions = _solve_from_starts(residuals, starts, method)
 
-        return sol
+        return _best_solution(solutions, residuals, used, type(self), np.sort(self._prepare_data(data)))
         
      # Função auxiliar φ(u,λ) usada na parametrização FKML da GLD.
     # Para λ ≠ 0: φ(u,λ) = (u^λ − 1)/λ
@@ -587,7 +779,31 @@ class GlamRS:
 
         return mean, var, skew, kurt
 
-    def fit_lambdas(self, data, x0=None, method="least_squares"):
+    def _start_from_shapes(self, lambda3: float, lambda4: float, mean_hat: float, var_hat: float):
+        """Complete a shape pair into a full starting point.
+
+        With the shapes fixed, matching the sample mean and variance is a
+        closed-form problem, so the candidate already reproduces two of the
+        four targets and the optimizer only has to work on skewness and
+        kurtosis. Returns ``None`` when the shapes have no positive variance.
+        """
+
+        try:
+            a = self._A(lambda3, lambda4)
+            b = self._B(lambda3, lambda4)
+            a2 = b - a**2
+            if not np.isfinite(a2) or a2 <= 0:
+                return None
+            lambda2 = np.sqrt(a2 / var_hat)
+            lambda1 = mean_hat - a / lambda2
+        except (ZeroDivisionError, FloatingPointError, ValueError):
+            return None
+
+        start = np.array([lambda1, lambda2, lambda3, lambda4], dtype=float)
+
+        return start if np.all(np.isfinite(start)) and lambda2 > 0 else None
+
+    def fit_lambdas(self, data, x0=None, method="least_squares", n_starts=1, seed=None):
         """Fit the GLAM-RS distribution parameters to the data using moment matching.
 
         Match the sample mean, variance, skewness and Pearson kurtosis. The
@@ -598,6 +814,10 @@ class GlamRS:
         :param x0: optional initial guess [lam1, lam2, lam3, lam4]; the default
             is [sample mean, inverse sample standard deviation, 0.5, 0.5]
         :param method: ``"least_squares"`` (default) or ``"root"``
+        :param n_starts: number of starting points; 1 (default) fits from ``x0``
+            alone, larger values add starts spread over the shape plane
+        :param seed: seed or NumPy Generator used only when ``n_starts`` exceeds
+            the fixed grid of shapes and extra starts must be drawn
         :return: SciPy OptimizeResult with parameters, residuals and convergence status
 
         ``sol.success`` describes optimizer termination, not distributional
@@ -605,6 +825,26 @@ class GlamRS:
         domain: check finite parameters, lam2 > 0 and lam3, lam4 > -1/4 before
         interpreting a four-moment fit. Evaluate the fitted distribution with
         :class:`pyglam.performance.Performance` as well.
+
+        Moment matching has several local minima, and a single start converges
+        to whichever one it begins next to. With ``n_starts`` above 1 the fit
+        restarts from points spread over the shape plane, each completed so
+        that it already matches the sample mean and variance, and returns the
+        best result: solutions inside the moment domain come first, then the
+        lowest cost, and costs that are numerically tied are separated by the
+        quantile distance to the data, because different parameters can share
+        the same four moments. The attempts are reported in ``sol.costs``,
+        ``sol.in_domain`` and ``sol.distances``, their parameters in
+        ``sol.candidates``, their starting points in ``sol.starts``, and the
+        winner in ``sol.best_start``.
+
+        A better moment match is not always a better distributional fit: on
+        skewed data an exact four-moment solution can sit far from the sample,
+        while a start that ends with a larger cost stays close to it. That is a
+        limit of moment matching, not of the search. Compare ``sol.distances``
+        before accepting a multi-start result, and select by another rule with
+        ``sol.candidates[int(np.argmin(sol.distances))]`` when adherence
+        matters more than the moments.
 
         Examples:
             >>> import numpy as np
@@ -616,6 +856,14 @@ class GlamRS:
             >>> model = GlamRS(*sol.x)
             >>> model.rvs(size=100, random_state=42).shape
             (100,)
+
+            Ten starts spread over the shape plane, with every attempt kept:
+
+            >>> multi = GlamRS().fit_lambdas(data, n_starts=10)
+            >>> multi.n_starts
+            10
+            >>> multi.candidates.shape
+            (10, 4)
         """
 
         mean_hat, var_hat, skew_hat, kurt_hat = self.moments(data)
@@ -626,6 +874,10 @@ class GlamRS:
             x0 = np.array([mean_hat, 1.0/max(sd, 1e-8), 0.5, 0.5], dtype=float)
         else:
             x0 = np.array(x0, dtype=float)
+
+        n_starts = int(n_starts)
+        if n_starts < 1:
+            raise ValueError("n_starts must be at least 1.")
 
         def residuals(x):
             lambda1, lambda2, lambda3, lambda4 = x
@@ -648,14 +900,15 @@ class GlamRS:
                               max(abs(kurt_hat), 1.0)], dtype=float)
             return r / scale
 
-        if method == "root":
-            sol = sc.optimize.root(residuals, x0, method="hybr")
-            return sol
+        starts = [x0]
+        for lambda3, lambda4 in _shape_candidates(n_starts - 1, seed):
+            start = self._start_from_shapes(lambda3, lambda4, mean_hat, var_hat)
+            if start is not None:
+                starts.append(start)
 
-        # default: least_squares (mais robusto)
-        sol = sc.optimize.least_squares(residuals, x0, method="trf", max_nfev=5000, ftol=1e-5, xtol=1e-5, gtol=1e-5)
+        used, solutions = _solve_from_starts(residuals, starts, method)
 
-        return sol
+        return _best_solution(solutions, residuals, used, type(self), np.sort(self._prepare_data(data)))
 
     def _gld_rs_quantile(self, u, l1, l2, l3, l4):
         u = np.clip(u, 1e-12, 1-1e-12)
