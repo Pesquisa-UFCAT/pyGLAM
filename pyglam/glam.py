@@ -95,11 +95,39 @@ def _quantile_distance(family, sample, params) -> float:
         return np.inf
 
 
+def _has_monotone_quantile(family, params, n_points: int = 512) -> bool:
+    """Report whether ``params`` describe a distribution at all.
+
+    Four-moment matching is not injective, and some of its roots have a
+    quantile function that decreases somewhere on (0, 1): the parameters
+    reproduce the four moments to machine precision and still do not define a
+    distribution. Optimizer termination cannot see this, so the quantile
+    function is sampled and required to be finite and non-decreasing.
+    """
+
+    try:
+        model = family(*params)
+        probabilities = np.linspace(1e-6, 1.0 - 1e-6, n_points)
+        quantiles = np.asarray(model.ppf(probabilities), dtype=float)
+    except Exception:
+        return False
+
+    if not np.all(np.isfinite(quantiles)):
+        return False
+
+    # a tolerance relative to the spread absorbs round-off in the quantile
+    # evaluation, not a real decrease
+    tolerance = 1e-9 * max(float(np.max(np.abs(quantiles))), 1.0)
+
+    return bool(np.all(np.diff(quantiles) >= -tolerance))
+
+
 def _best_solution(solutions, residuals, starts, family, sample):
     """Pick the best solution and record what the other starts reached.
 
-    Solutions inside the moment domain come first: a lower residual outside it
-    describes parameters whose moments do not exist. Cost then selects the
+    Solutions that are distributions come first: a lower residual is worthless
+    if the quantile function runs backwards, and a lower residual outside the
+    moment domain describes parameters whose moments do not exist. Cost then selects the
     best, but four-moment matching is not injective — different parameters can
     reproduce the same four moments — so every cost numerically tied with the
     best is a candidate, and the tie goes to the smallest quantile distance to
@@ -107,15 +135,24 @@ def _best_solution(solutions, residuals, starts, family, sample):
     is optimizer noise, would decide the fit.
 
     The returned result carries ``starts``, ``candidates``, ``n_starts``,
-    ``costs``, ``in_domain``, ``distances`` and ``best_start`` alongside the
-    SciPy fields, so another selection rule is one line away.
+    ``costs``, ``in_domain``, ``monotone``, ``distances`` and ``best_start``
+    alongside the SciPy fields, so another selection rule is one line away.
     """
 
     costs = np.array([0.5 * float(np.sum(np.asarray(residuals(sol.x), dtype=float) ** 2)) for sol in solutions])
     in_domain = np.array([_in_moment_domain(sol.x) for sol in solutions])
+    monotone = np.array([_has_monotone_quantile(family, sol.x) for sol in solutions])
     distances = np.array([_quantile_distance(family, sample, sol.x) for sol in solutions])
 
-    pool = np.flatnonzero(in_domain) if in_domain.any() else np.arange(costs.size)
+    # Candidates that are not distributions are never preferred, whatever their
+    # residual. The fallbacks keep a fit available when no candidate clears the
+    # stricter screens, so a hard case still returns instead of raising.
+    for mask in (in_domain & monotone, monotone, in_domain):
+        if mask.any():
+            pool = np.flatnonzero(mask)
+            break
+    else:
+        pool = np.arange(costs.size)
     best_cost = float(costs[pool].min())
     tied = pool[costs[pool] <= best_cost + 1e-8 + 1e-2 * best_cost]
     best = int(tied[np.argmin(distances[tied])])
@@ -126,6 +163,7 @@ def _best_solution(solutions, residuals, starts, family, sample):
     sol.n_starts = len(solutions)
     sol.costs = costs
     sol.in_domain = in_domain
+    sol.monotone = monotone
     sol.distances = distances
     sol.best_start = best
 

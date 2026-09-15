@@ -1,0 +1,9 @@
+Family,Distribution,fits,success (%),valid unscreened (%),valid (%),candidates valid (%)
+FKML,Gumbel,80,100.0,100.0,100.0,99.91666666666666
+FKML,Lognormal,80,100.0,100.0,100.0,99.25
+FKML,Normal,80,100.0,100.0,100.0,100.0
+FKML,Uniform,80,100.0,100.0,100.0,99.5
+RS,Gumbel,80,100.0,91.25,100.0,73.41666666666666
+RS,Lognormal,80,100.0,97.5,100.0,59.0
+RS,Normal,80,100.0,98.75,100.0,73.58333333333333
+RS,Uniform,80,100.0,75.0,100.0,62.58333333333333

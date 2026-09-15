@@ -7,6 +7,8 @@ authors = [
                 {name = "Prof. Wanderlei Malaquias Pereira Junior", email = "wanderlei_junior@ufcat.edu.br"},
                 {name = "Prof. Marcos Luiz Henrique", email = "marcos.henrique@ufpe.br"},
                 {name = "Prof. Ketson Roberto Maximiano dos Santos", email = "dossantk@umn.edu"},
+                {name = "Victor Hugo Moreira do Couto Souza"},
+                {name = "Renata Maria Pensin"},
             ]
 license = {text = "MIT"}
 requires-python = ">=3.10"
