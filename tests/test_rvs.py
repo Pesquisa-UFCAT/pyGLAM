@@ -48,10 +48,8 @@ class RandomVariatesTests(unittest.TestCase):
         self.assertGreater(sample.max(), 0.499)
         trimmed = model.rvs(10_000, quantile_trim=0.1, random_state=7)
         self.assertTrue(np.all((trimmed >= -0.4) & (trimmed <= 0.4)))
-        default = model.rvs(100_000, random_state=7)
-        self.assertTrue(np.all((default >= -0.499) & (default <= 0.499)))
-        assert_array_equal(default, model.rvs(100_000, quantile_trim=0.001, random_state=7))
-        self.assertLess(stats.kstest(default, "uniform", args=(-0.499, 0.998)).statistic, 0.01)
+        # the default keeps the tails
+        assert_array_equal(model.rvs(100_000, random_state=7), sample)
 
     def test_logistic_special_case_including_zero_and_near_zero_shapes(self):
         # FKML(3, 2, 0, 0) is Logistic(loc=3, scale=0.5).

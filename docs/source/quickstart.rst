@@ -36,9 +36,9 @@ fit, check that the parameters are finite and belong to its valid domain:
 Sample and evaluate the model
 -----------------------------
 
-Use ``random_state`` for reproducibility. This example explicitly disables
-trimming to compare a sample from the full fitted distribution with the reference
-data. Omitting ``quantile_trim`` retains the default cut of 0.001 per tail.
+Use ``random_state`` for reproducibility. This example samples the full fitted
+distribution, which is also the default (``quantile_trim=0.0``), to compare it
+with the reference data.
 
 .. doctest::
 

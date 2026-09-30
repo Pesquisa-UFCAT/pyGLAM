@@ -59,8 +59,8 @@ Both methods preserve the shape of arrays, return scalars for scalar input, and
 propagate NaN values in their original positions.
 
 ``rvs()`` draws uniform probabilities and transforms them with the quantile
-function. Its default ``quantile_trim=0.001`` excludes 0.1% of each tail. Set
-``quantile_trim=1e-6`` for a smaller cut, or ``0.0`` to disable it. Trimming changes
+function. Its default ``quantile_trim=0.0`` keeps both tails. Set, for example,
+``quantile_trim=0.001`` to exclude 0.1% of each tail. Trimming changes
 the sampled distribution and may affect moments substantially for heavy tails.
 The quantile function retains a numerical endpoint guard of ``1e-12``.
 

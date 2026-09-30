@@ -48,11 +48,10 @@ sample_b = emulator.rvs(size=1000, random_state=rng)
 ```
 
 Samples are returned in draw order, with exactly the requested size (or tuple shape).
-The default `quantile_trim=0.001` samples the central 99.8% of the distribution,
-excluding 0.1% from each tail to limit extreme draws. This is a truncated distribution:
-its moments can differ from those of the full FKML, especially with heavy tails.
-Set `quantile_trim=0.0` to sample the full distribution, subject to the quantile
-function's numerical probability guard of `1e-12`.
+The default `quantile_trim=0.0` samples the full distribution, subject to the quantile
+function's numerical probability guard of `1e-12`. A positive value such as `0.001`
+excludes that probability from each tail to limit extreme draws; the result is a truncated
+distribution whose moments can differ from those of the full FKML, especially with heavy tails.
 Optional `lam1`–`lam4` arguments override instance parameters for that call.
 `np.random.seed()` does not control the default generator; use `random_state` instead.
 

@@ -11,3 +11,17 @@ __pycache__/
 
 # Generated Sphinx documentation
 docs/build/
+
+# LaTeX build files of the manuscript
+texto/*.aux
+texto/*.bbl
+texto/*.bcf
+texto/*.blg
+texto/*.log
+texto/*.out
+texto/*.run.xml
+texto/*.fls
+texto/*.fdb_latexmk
+texto/*.synctex.gz
+texto/main.pdf
+.pytest_cache/
