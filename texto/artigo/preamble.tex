@@ -1,0 +1,104 @@
+% =====================================================================
+% PREAMBLE - same layout as the pyGLAM paper submitted to Computational
+% Statistics, with Portuguese (brazilian) as the main language.
+% =====================================================================
+
+% Language setting: Portuguese text, English kept for the abstract
+\usepackage[english,brazilian]{babel}
+
+% Set page size and margins
+\usepackage[a4paper,top=2cm,bottom=2cm,left=2.5cm,right=2.5cm,marginparwidth=1.75cm]{geometry}
+
+%----------- APA style references & citations (starting) ---
+\usepackage[style=apa, backend=biber, uniquename=false]{biblatex} % APA 7th edition style citations using biblatex
+
+\DeclareLanguageMapping{british}{british-apa} % Set language mapping
+\DeclareFieldFormat[article]{volume}{\apanum{#1}} % Format volume number
+
+% Modify 'and' to '&' in the bibliography
+\renewcommand*{\finalnamedelim}{%
+  \ifnumgreater{\value{liststop}}{2}{\finalandcomma}{}%
+  \addspace\&\space}
+%----------- APA style references & citations (ending) ---
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{mathtools}
+\usepackage{graphicx}
+\usepackage[colorlinks=true, allcolors=blue]{hyperref}
+\usepackage{xcolor}
+\usepackage{orcidlink}
+\usepackage{booktabs}       % For \toprule, \midrule, \bottomrule
+\usepackage{enumitem}
+\usepackage{subcaption}
+\usepackage[T1]{fontenc}    % Font encoding
+\usepackage[utf8]{inputenc} % direct accented characters in the source
+\usepackage{csquotes}
+\usepackage{url}
+\usepackage{icomma}         % decimal comma in math: $0,7$ without extra space
+
+\IfFileExists{helvet.sty}{\usepackage{helvet}}{}
+\IfFileExists{lmodern.sty}{\usepackage{lmodern}}{}
+
+% Customize line spacing
+\IfFileExists{setspace.sty}{%
+  \usepackage{setspace}
+  \onehalfspacing % 1.5 line spacing
+}{%
+  \linespread{1.25}
+}
+
+% Redefine section numbering format
+\IfFileExists{titlesec.sty}{%
+  \usepackage{titlesec}
+  \titleformat{\section}
+    {\normalfont\Large\bfseries}{\thesection.}{1em}{}
+}{}
+
+% Caption of tables above the table, bold labels
+\usepackage{float}
+\usepackage{caption}
+\captionsetup[table]{position=top}
+\captionsetup[table]{labelfont=bf}
+\captionsetup[figure]{labelfont=bf}
+
+% ---------------------------------------------------------------------
+% Code excerpts: \lstinputlisting[caption=..., label=...]{codigo/file.py}
+% ---------------------------------------------------------------------
+\usepackage{listings}
+\definecolor{codebg}{HTML}{F7F7F5}
+\definecolor{coderule}{HTML}{D9D9D6}
+\definecolor{codekw}{HTML}{1F5FAD}
+\definecolor{codestr}{HTML}{B0502A}
+\definecolor{codecom}{HTML}{6E6E68}
+\definecolor{codenum}{HTML}{9C9A91}
+\lstdefinestyle{pycode}{
+  language=Python,
+  basicstyle=\ttfamily\footnotesize,
+  keywordstyle=\color{codekw}\bfseries,
+  stringstyle=\color{codestr},
+  commentstyle=\color{codecom}\itshape,
+  numbers=left, numberstyle=\tiny\color{codenum}, numbersep=8pt,
+  backgroundcolor=\color{codebg},
+  frame=tb, framerule=0.6pt, rulecolor=\color{coderule},
+  framesep=4pt, xleftmargin=14pt, framexleftmargin=14pt,
+  aboveskip=10pt, belowskip=6pt,
+  showstringspaces=false, columns=fullflexible, keepspaces=true,
+  breaklines=true, tabsize=4, upquote=true,
+  morekeywords={True, False, None},
+  % accented characters in comments and strings under pdflatex
+  literate={á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'i}}1 {ó}{{\'o}}1 {ú}{{\'u}}1
+           {Á}{{\'A}}1 {É}{{\'E}}1 {Í}{{\'I}}1 {Ó}{{\'O}}1 {Ú}{{\'U}}1
+           {â}{{\^a}}1 {ê}{{\^e}}1 {ô}{{\^o}}1 {Â}{{\^A}}1 {Ê}{{\^E}}1 {Ô}{{\^O}}1
+           {ã}{{\~a}}1 {õ}{{\~o}}1 {Ã}{{\~A}}1 {Õ}{{\~O}}1
+           {à}{{\`a}}1 {À}{{\`A}}1 {ç}{{\c c}}1 {Ç}{{\c C}}1
+}
+\lstset{style=pycode}
+\renewcommand{\lstlistingname}{Código}
+\captionsetup[lstlisting]{labelfont=bf, singlelinecheck=false, skip=4pt}
+
+% Suppress the warning about \@parboxrestore
+\pdfsuppresswarningpagegroup=1
+
+\date{}  % Remove date

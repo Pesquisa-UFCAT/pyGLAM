@@ -1,0 +1,78 @@
+\section{Dados de grandezas físicas reais e modelagem por distribuições}\label{sec:dados}
+
+\subsection{O que significa dizer que uma grandeza segue uma distribuição?}
+
+Na física e na engenharia, afirmar que uma grandeza segue uma determinada distribuição de probabilidade significa estabelecer um modelo matemático descritivo para um conjunto de observações empíricas obtidas sob condições especificadas. A distribuição não é uma propriedade intrínseca da matéria ou do ambiente dissociada de como é medida; ela é indissociável da definição da própria variável de interesse. Por exemplo, modelar a velocidade instantânea do vento em uma rajada exige um tratamento estatístico diferente daquele aplicado à velocidade média diária. Da mesma forma, as precipitações diárias em uma bacia hidrográfica apresentam um comportamento distinto dos máximos anuais de precipitação utilizados em projetos de barragens.
+
+A forma observada da distribuição (como seu grau de assimetria ou espessura das caudas) depende fortemente das condições físicas do fenômeno, da resolução do procedimento de medição e da escala de agregação temporal ou espacial. É crucial destacar, para fins didáticos, que a mera semelhança visual entre um histograma empírico e a curva de densidade de um modelo teórico não prova a existência de um mecanismo físico gerador subjacente. Um histograma bimodal de temperaturas coletadas ao longo de um ano, por exemplo, não revela uma nova lei termodinâmica, mas frequentemente resulta da combinação de duas populações sazonais distintas (verão e inverno) com médias diferentes. A estatística descreve o padrão, mas a justificativa do modelo exige compreensão física.
+
+\subsection{Exemplos de relações entre grandezas e famílias de distribuições}
+
+Diferentes mecanismos físicos e teoremas probabilísticos dão origem a famílias clássicas de distribuições, cada qual com suas hipóteses fundamentais e limites de validade. A Tabela~\ref{tab:modelos_fisicos} resume as motivações teóricas para a adoção de alguns modelos de referência habituais.
+
+\begin{table}[htbp]
+\centering
+\caption{Relação entre fenômenos físicos, modelos estatísticos e suas premissas.}
+\label{tab:modelos_fisicos}
+\small
+\begin{tabular}{p{3.8cm} p{2.4cm} p{7.8cm}}
+\toprule
+\textbf{Grandeza ou situação} & \textbf{Modelo} & \textbf{Hipóteses ou limites físicos a explicar} \\
+\midrule
+Soma de múltiplas contribuições independentes & Normal (gaussiana) & O teorema central do limite exige condições (variância finita, independência). Não garante, por exemplo, que toda série temporal de temperatura seja normal. \\
+Módulo de duas componentes ortogonais gaussianas & Rayleigh & Assume componentes independentes, de média nula e mesma variância; sua aplicação ao vento atmosférico real requer verificação. \\
+Máximos por blocos (cheias anuais, rajadas) & Gumbel (valores extremos) & A família limite depende da forma da distribuição de origem. Nem todo valor máximo converge para um modelo de Gumbel. \\
+Resistência de materiais ou tempo até a falha & Weibull & A adequação depende da microestrutura do material, do modo de propagação da falha e das condições do ensaio. \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+A distribuição de Rayleigh ilustra como uma hipótese cinemática gera um modelo estatístico. Considere-se a velocidade horizontal do vento, com componentes ortogonais $V_x$ e $V_y$, e assuma-se que ambas são variáveis aleatórias independentes e normalmente distribuídas, com médias nulas e variâncias idênticas $\sigma^2$. A densidade conjunta é o produto das densidades marginais,
+\begin{equation}
+    f_{V_x,V_y}(v_x, v_y) = \frac{1}{2\pi\sigma^2} \exp\left( -\frac{v_x^2 + v_y^2}{2\sigma^2} \right).
+\end{equation}
+A grandeza física de interesse usualmente é o módulo da velocidade, $v = \sqrt{v_x^2 + v_y^2}$. Transformando para coordenadas polares, em que o elemento de área $dv_x\,dv_y$ se torna $v\,dv\,d\theta$, e integrando o ângulo $\theta$ de $0$ a $2\pi$, obtém-se a densidade da distribuição de Rayleigh,
+\begin{equation}
+    f_V(v) = \frac{v}{\sigma^2} \exp\left( -\frac{v^2}{2\sigma^2} \right), \qquad v \geq 0.
+    \label{eq:rayleigh}
+\end{equation}
+
+Nesta formulação, o parâmetro de escala $\sigma$ tem interpretação direta, pois, como $E[V^2] = E[V_x^2] + E[V_y^2] = 2\sigma^2$, a quantidade $\sigma^2$ é a energia cinética média por unidade de massa associada ao movimento horizontal. Cabe ressaltar que a atmosfera real está sujeita a efeitos de rugosidade do terreno e gradientes térmicos, de modo que as hipóteses da dedução não devem ser tomadas como válidas para o vento atmosférico sem a devida verificação empírica.
+
+\subsection{Por que isso importa na confiabilidade de materiais?}
+
+Compreender o comportamento distributivo transcende o mero ajuste de curvas; é o fundamento da teoria de confiabilidade estrutural e de materiais. Suponha-se que uma estrutura, como uma viga de concreto armado, possua uma resistência mecânica de comportamento aleatório, modelada pela variável $R$. Se esta estrutura é submetida a uma solicitação (carga) fixa conhecida $s$, a falha ocorrerá sempre que a resistência for inferior à solicitação.
+
+Neste cenário simplificado, a probabilidade de falha $P_f$ é exatamente o valor da função distribuição acumulada (FDA) de $R$ avaliada no ponto $s$,
+\begin{equation}
+    P_f = P(R < s) = F_R(s).
+\end{equation}
+
+Esse simples balanço mostra por que conhecer apenas a resistência média de um material é insuficiente para a engenharia. A segurança da estrutura é governada pelo comportamento da \textit{cauda inferior} da distribuição (os valores mais baixos e raros de resistência), e um modelo cuja cauda inferior não corresponda à dos dados pode subestimar a probabilidade de falha. Em projetos reais, tanto $R$ quanto $s$ são grandezas aleatórias, exigindo a avaliação da interferência probabilística entre ambas e evidenciando a necessidade de escolhas de distribuições que reflitam a física da falha, conforme discutido em diretrizes de referência sobre dados de falha \parencite{nist2012}.
+
+\subsection{Protocolo comum aos estudos de caso}\label{subsec:protocolo}
+
+Para garantir reprodutibilidade, rigor estatístico e clareza didática na análise dos dados, os estudos de caso desenvolvidos nas Seções~\ref{sec:vento} e \ref{sec:temperatura} seguem um protocolo dividido nas sete etapas sequenciais descritas a seguir.
+
+\begin{enumerate}
+    \item \textbf{Documentação dos dados e contextualização física:} identificação da fonte primária (instituição, estação de monitoramento, coordenadas e altitude), período de observação, grandeza física medida, resolução temporal das leituras (por exemplo, médias diárias ou valores instantâneos) e instrumental associado.
+
+    \item \textbf{Exame de qualidade e consistência física:} levantamento de dados ausentes, identificação de eventuais leituras espúrias e avaliação de restrições de suporte (por exemplo, a não negatividade da velocidade do vento ou os limites da umidade relativa). Os critérios de descarte ou tratamento de falhas são explicitados e fundamentados.
+
+    \item \textbf{Definição do recorte amostral:} estabelecimento prévio e justificado de janelas temporais ou espaciais homogêneas (como o recorte de um mês específico para atenuar a não estacionariedade sazonal), evitando seleções \textit{a posteriori} direcionadas a favorecer um modelo pré-determinado.
+
+    \item \textbf{Descrição estatística exploratória:} caracterização da amostra por medidas de posição, dispersão, assimetria ($\widehat\gamma_1$) e curtose ($\widehat\beta_2$), acompanhadas de quantis empíricos de referência ($Q_{0,05}$, $Q_{0,50}$, $Q_{0,95}$) e de gráficos da série temporal e do histograma.
+
+    \item \textbf{Estimação de parâmetros e ajuste das famílias:} ajuste dos modelos de referência, estimados por máxima verossimilhança com as restrições físicas de suporte (como a origem fixada em zero), e da GLD-FKML, estimada pelo método dos momentos com múltiplos pontos iniciais. A validade dos parâmetros e o suporte resultante são verificados.
+
+    \item \textbf{Diagnóstico de aderência e comparação quantílica:} avaliação comparativa por métricas nas unidades da grandeza. Utiliza-se a distância de Kolmogorov-Smirnov, $D_n = \sup_x |F_n(x) - \widehat{F}(x)|$, para medir a maior discrepância acumulada, e os desvios quantílicos
+    \begin{equation}
+        \Delta_p = Q_{\text{modelo}}(p) - Q_{\text{empírico}}(p), \quad p \in \{0,05;\, 0,50;\, 0,95\},
+        \label{eq:delta}
+    \end{equation}
+    cujo sinal indica subestimação (negativo) ou superestimação (positivo). Os ajustes são comparados visualmente em painéis com densidades sobrepostas, funções acumuladas e gráficos quantil-quantil (Q-Q).
+
+    \item \textbf{Interpretação nas unidades do fenômeno e limites de validade:} tradução física das discrepâncias para o contexto da aplicação, comparando-as com a incerteza de medição e discutindo o princípio da parcimônia frente ao custo de parâmetros adicionais.
+\end{enumerate}
+
+A distância $D_n$ é usada aqui como medida descritiva. Os p-valores usuais do teste de Kolmogorov-Smirnov não se aplicam diretamente, porque os parâmetros são estimados com os mesmos dados, as observações diárias são dependentes entre si e os valores registrados são arredondados.

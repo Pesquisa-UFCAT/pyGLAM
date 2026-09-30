@@ -1,0 +1,1383 @@
+% $ biblatex auxiliary file $
+% $ biblatex bbl format version 3.3 $
+% Do not modify the above lines!
+%
+% This is an auxiliary file used by the 'biblatex' package.
+% This file may safely be deleted. It will be recreated by
+% biber as required.
+%
+\begingroup
+\makeatletter
+\@ifundefined{ver@biblatex.sty}
+  {\@latex@error
+     {Missing 'biblatex' package}
+     {The bibliography requires the 'biblatex' package.}
+      \aftergroup\endinput}
+  {}
+\endgroup
+
+
+\refsection{0}
+  \datalist[entry]{apa/apasortcite//global/global/global}
+    \entry{freimer1988}{article}{}{}
+      \name{author}{4}{}{%
+        {{hash=85064291c5278edc183abcc31a8167a6}{%
+           family={Freimer},
+           familyi={F\bibinitperiod},
+           given={Marshall},
+           giveni={M\bibinitperiod}}}%
+        {{hash=05799de5a5bc5a99d3bc033b624c6f19}{%
+           family={Kollia},
+           familyi={K\bibinitperiod},
+           given={Georgia},
+           giveni={G\bibinitperiod}}}%
+        {{hash=3300d20a58f22533e938d1b4ea603267}{%
+           family={Mudholkar},
+           familyi={M\bibinitperiod},
+           given={Govind\bibnamedelima S.},
+           giveni={G\bibinitperiod\bibinitdelim S\bibinitperiod}}}%
+        {{hash=5a02815733b022f8db68eb3e94b7899e}{%
+           family={Lin},
+           familyi={L\bibinitperiod},
+           given={C.\bibnamedelimi Thomas},
+           giveni={C\bibinitperiod\bibinitdelim T\bibinitperiod}}}%
+      }
+      \strng{namehash}{da61949f8aa66c06586d6f218c67b364}
+      \strng{fullhash}{c54a1a3804b019b9185bcb077d0b3646}
+      \strng{fullhashraw}{c54a1a3804b019b9185bcb077d0b3646}
+      \strng{bibnamehash}{c54a1a3804b019b9185bcb077d0b3646}
+      \strng{authorbibnamehash}{c54a1a3804b019b9185bcb077d0b3646}
+      \strng{authornamehash}{da61949f8aa66c06586d6f218c67b364}
+      \strng{authorfullhash}{c54a1a3804b019b9185bcb077d0b3646}
+      \strng{authorfullhashraw}{c54a1a3804b019b9185bcb077d0b3646}
+      \field{sortinit}{F}
+      \field{sortinithash}{2638baaa20439f1b5a8f80c6c08a13b4}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Communications in Statistics - Theory and Methods}
+      \field{number}{10}
+      \field{title}{A Study of the Generalized {Tukey} Lambda Family}
+      \field{volume}{17}
+      \field{year}{1988}
+      \field{pages}{3547\bibrangedash 3567}
+      \range{pages}{21}
+      \verb{doi}
+      \verb 10.1080/03610928808829820
+      \endverb
+    \endentry
+    \entry{giannoukou2025mfgllam}{article}{}{}
+      \name{author}{4}{}{%
+        {{hash=3a81fc14c759311311962455b828e083}{%
+           family={Giannoukou},
+           familyi={G\bibinitperiod},
+           given={Katerina},
+           giveni={K\bibinitperiod}}}%
+        {{hash=7afef6ee783e8990761814d43f03fb33}{%
+           family={Zhu},
+           familyi={Z\bibinitperiod},
+           given={Xu-Jia},
+           giveni={X\bibinithyphendelim J\bibinitperiod}}}%
+        {{hash=df25edd86550b4ac6dfd6bb02ed2ee34}{%
+           family={Marelli},
+           familyi={M\bibinitperiod},
+           given={Stefano},
+           giveni={S\bibinitperiod}}}%
+        {{hash=2abed76f47b747f79ac23afd26cf6fc1}{%
+           family={Sudret},
+           familyi={S\bibinitperiod},
+           given={Bruno},
+           giveni={B\bibinitperiod}}}%
+      }
+      \strng{namehash}{d629689d7cae6b14ff9072cacc40990f}
+      \strng{fullhash}{b92a2c4f1e0f749110fb90a35dfc6a28}
+      \strng{fullhashraw}{b92a2c4f1e0f749110fb90a35dfc6a28}
+      \strng{bibnamehash}{b92a2c4f1e0f749110fb90a35dfc6a28}
+      \strng{authorbibnamehash}{b92a2c4f1e0f749110fb90a35dfc6a28}
+      \strng{authornamehash}{d629689d7cae6b14ff9072cacc40990f}
+      \strng{authorfullhash}{b92a2c4f1e0f749110fb90a35dfc6a28}
+      \strng{authorfullhashraw}{b92a2c4f1e0f749110fb90a35dfc6a28}
+      \field{sortinit}{G}
+      \field{sortinithash}{32d67eca0634bf53703493fb1090a2e8}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Computer Methods in Applied Mechanics and Engineering}
+      \field{note}{Disponível via arXiv:2507.10303 [stat.ML]}
+      \field{title}{{MF-GLaM}: A Multifidelity Stochastic Emulator Using Generalized Lambda Models}
+      \field{year}{2025}
+      \verb{doi}
+      \verb 10.48550/arXiv.2507.10303
+      \endverb
+    \endentry
+    \entry{hastings1947}{article}{}{}
+      \name{author}{4}{}{%
+        {{hash=de5f38db6593fb4794deb22197442e3b}{%
+           family={Hastings},
+           familyi={H\bibinitperiod},
+           given={Cecil},
+           giveni={C\bibinitperiod}}}%
+        {{hash=fc73c2b06b97e5d0cdd9cc9ab8a840d4}{%
+           family={Mosteller},
+           familyi={M\bibinitperiod},
+           given={Frederick},
+           giveni={F\bibinitperiod}}}%
+        {{hash=9edab5dbc1987bcb98d6de058f00fc47}{%
+           family={Tukey},
+           familyi={T\bibinitperiod},
+           given={John\bibnamedelima W.},
+           giveni={J\bibinitperiod\bibinitdelim W\bibinitperiod}}}%
+        {{hash=ea9d33ca3a62e60f984833950e8a0d5f}{%
+           family={Winsor},
+           familyi={W\bibinitperiod},
+           given={Charles\bibnamedelima P.},
+           giveni={C\bibinitperiod\bibinitdelim P\bibinitperiod}}}%
+      }
+      \strng{namehash}{e94069beddffe7c29c3b0691d47d9e17}
+      \strng{fullhash}{641029b3027cfbc2a282f43836c70b78}
+      \strng{fullhashraw}{641029b3027cfbc2a282f43836c70b78}
+      \strng{bibnamehash}{641029b3027cfbc2a282f43836c70b78}
+      \strng{authorbibnamehash}{641029b3027cfbc2a282f43836c70b78}
+      \strng{authornamehash}{e94069beddffe7c29c3b0691d47d9e17}
+      \strng{authorfullhash}{641029b3027cfbc2a282f43836c70b78}
+      \strng{authorfullhashraw}{641029b3027cfbc2a282f43836c70b78}
+      \field{sortinit}{H}
+      \field{sortinithash}{23a3aa7c24e56cfa16945d55545109b5}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{The Annals of Mathematical Statistics}
+      \field{number}{3}
+      \field{title}{Low Moments for Small Samples: A Comparative Study of Order Statistics}
+      \field{volume}{18}
+      \field{year}{1947}
+      \field{pages}{413\bibrangedash 426}
+      \range{pages}{14}
+      \verb{doi}
+      \verb 10.1214/aoms/1177730388
+      \endverb
+    \endentry
+    \entry{inmet2025}{misc}{}{}
+      \name{author}{1}{}{%
+        {{hash=5fad54c7c5263b7937529e80abc66483}{%
+           family={{Instituto Nacional de Meteorologia -- INMET}},
+           familyi={I\bibinitperiod}}}%
+      }
+      \strng{namehash}{5fad54c7c5263b7937529e80abc66483}
+      \strng{fullhash}{5fad54c7c5263b7937529e80abc66483}
+      \strng{fullhashraw}{5fad54c7c5263b7937529e80abc66483}
+      \strng{bibnamehash}{5fad54c7c5263b7937529e80abc66483}
+      \strng{authorbibnamehash}{5fad54c7c5263b7937529e80abc66483}
+      \strng{authornamehash}{5fad54c7c5263b7937529e80abc66483}
+      \strng{authorfullhash}{5fad54c7c5263b7937529e80abc66483}
+      \strng{authorfullhashraw}{5fad54c7c5263b7937529e80abc66483}
+      \field{sortinit}{I}
+      \field{sortinithash}{8d291c51ee89b6cd86bf5379f0b151d8}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{howpublished}{\url{https://portal.inmet.gov.br/}}
+      \field{note}{Série histórica diária (2000--2025)}
+      \field{title}{Banco de Dados Meteorológicos para Ensino e Pesquisa ({BDMEP}): Estação Automática A001}
+      \field{year}{2025}
+    \endentry
+    \entry{johnson1949}{article}{}{}
+      \name{author}{1}{}{%
+        {{hash=42134aac82ec7ee488d5679523870362}{%
+           family={Johnson},
+           familyi={J\bibinitperiod},
+           given={Norman\bibnamedelima L.},
+           giveni={N\bibinitperiod\bibinitdelim L\bibinitperiod}}}%
+      }
+      \strng{namehash}{42134aac82ec7ee488d5679523870362}
+      \strng{fullhash}{42134aac82ec7ee488d5679523870362}
+      \strng{fullhashraw}{42134aac82ec7ee488d5679523870362}
+      \strng{bibnamehash}{42134aac82ec7ee488d5679523870362}
+      \strng{authorbibnamehash}{42134aac82ec7ee488d5679523870362}
+      \strng{authornamehash}{42134aac82ec7ee488d5679523870362}
+      \strng{authorfullhash}{42134aac82ec7ee488d5679523870362}
+      \strng{authorfullhashraw}{42134aac82ec7ee488d5679523870362}
+      \field{sortinit}{J}
+      \field{sortinithash}{b2f54a9081ace9966a7cb9413811edb4}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Biometrika}
+      \field{number}{1-2}
+      \field{title}{Systems of Frequency Curves Generated by Methods of Translation}
+      \field{volume}{36}
+      \field{year}{1949}
+      \field{pages}{149\bibrangedash 176}
+      \range{pages}{28}
+      \verb{doi}
+      \verb 10.1093/biomet/36.1-2.149
+      \endverb
+    \endentry
+    \entry{KingGld}{manual}{}{}
+      \name{author}{4}{}{%
+        {{hash=102836d79c5163d4c0ff79518bd33d34}{%
+           family={King},
+           familyi={K\bibinitperiod},
+           given={Robert},
+           giveni={R\bibinitperiod}}}%
+        {{hash=10cd4dd416ef582ff031a3e0da0ddf29}{%
+           family={Dean},
+           familyi={D\bibinitperiod},
+           given={Benjamin},
+           giveni={B\bibinitperiod}}}%
+        {{hash=438ce59844c32cf281c12103ce38f1fb}{%
+           family={Klinke},
+           familyi={K\bibinitperiod},
+           given={Sigbert},
+           giveni={S\bibinitperiod}}}%
+        {{hash=6695bf912fe3eeeaab30973ae2afa620}{%
+           family={Staden},
+           familyi={S\bibinitperiod},
+           given={Paul},
+           giveni={P\bibinitperiod},
+           prefix={van},
+           prefixi={v\bibinitperiod}}}%
+      }
+      \strng{namehash}{c4dbe96324ce4d2915aeeabf11279148}
+      \strng{fullhash}{07121c485448fc75f57f3b0880bbbc1b}
+      \strng{fullhashraw}{07121c485448fc75f57f3b0880bbbc1b}
+      \strng{bibnamehash}{07121c485448fc75f57f3b0880bbbc1b}
+      \strng{authorbibnamehash}{07121c485448fc75f57f3b0880bbbc1b}
+      \strng{authornamehash}{c4dbe96324ce4d2915aeeabf11279148}
+      \strng{authorfullhash}{07121c485448fc75f57f3b0880bbbc1b}
+      \strng{authorfullhashraw}{07121c485448fc75f57f3b0880bbbc1b}
+      \field{sortinit}{K}
+      \field{sortinithash}{c02bf6bff1c488450c352b40f5d853ab}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{note}{R package version 2.6.8}
+      \field{title}{{gld}: Estimation and Use of the Generalised ({T}ukey) Lambda Distribution}
+      \field{year}{2025}
+      \verb{urlraw}
+      \verb https://CRAN.R-project.org/package=gld
+      \endverb
+      \verb{url}
+      \verb https://CRAN.R-project.org/package=gld
+      \endverb
+    \endentry
+    \entry{nist2012}{misc}{}{}
+      \name{author}{1}{}{%
+        {{hash=11756b698b3000879fd0247e9fa769f8}{%
+           family={{NIST/SEMATECH}},
+           familyi={N\bibinitperiod}}}%
+      }
+      \strng{namehash}{11756b698b3000879fd0247e9fa769f8}
+      \strng{fullhash}{11756b698b3000879fd0247e9fa769f8}
+      \strng{fullhashraw}{11756b698b3000879fd0247e9fa769f8}
+      \strng{bibnamehash}{11756b698b3000879fd0247e9fa769f8}
+      \strng{authorbibnamehash}{11756b698b3000879fd0247e9fa769f8}
+      \strng{authornamehash}{11756b698b3000879fd0247e9fa769f8}
+      \strng{authorfullhash}{11756b698b3000879fd0247e9fa769f8}
+      \strng{authorfullhashraw}{11756b698b3000879fd0247e9fa769f8}
+      \field{sortinit}{N}
+      \field{sortinithash}{22369a73d5f88983a108b63f07f37084}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{howpublished}{\url{https://www.itl.nist.gov/div898/handbook/apr/section2/apr21.htm}}
+      \field{note}{Acessado em: 25 set. 2026}
+      \field{title}{e-Handbook of Statistical Methods: Choice of Distribution for Life/Failure Data}
+      \field{year}{2012}
+    \endentry
+    \entry{pearson1895}{article}{}{}
+      \name{author}{1}{}{%
+        {{hash=b69135425e9c9d6adc927b94c33421d4}{%
+           family={Pearson},
+           familyi={P\bibinitperiod},
+           given={Karl},
+           giveni={K\bibinitperiod}}}%
+      }
+      \strng{namehash}{b69135425e9c9d6adc927b94c33421d4}
+      \strng{fullhash}{b69135425e9c9d6adc927b94c33421d4}
+      \strng{fullhashraw}{b69135425e9c9d6adc927b94c33421d4}
+      \strng{bibnamehash}{b69135425e9c9d6adc927b94c33421d4}
+      \strng{authorbibnamehash}{b69135425e9c9d6adc927b94c33421d4}
+      \strng{authornamehash}{b69135425e9c9d6adc927b94c33421d4}
+      \strng{authorfullhash}{b69135425e9c9d6adc927b94c33421d4}
+      \strng{authorfullhashraw}{b69135425e9c9d6adc927b94c33421d4}
+      \field{sortinit}{P}
+      \field{sortinithash}{ff3bcf24f47321b42cb156c2cc8a8422}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Philosophical Transactions of the Royal Society of London. A}
+      \field{title}{Contributions to the Mathematical Theory of Evolution. {II}. Skew Variation in Homogeneous Material}
+      \field{volume}{186}
+      \field{year}{1895}
+      \field{pages}{343\bibrangedash 414}
+      \range{pages}{72}
+      \verb{doi}
+      \verb 10.1098/rsta.1895.0010
+      \endverb
+    \endentry
+    \entry{pyglam}{manual}{}{}
+      \name{author}{5}{}{%
+        {{hash=35df1738db1f05de490bc584f691312d}{%
+           family={Pereira\bibnamedelima Junior},
+           familyi={P\bibinitperiod\bibinitdelim J\bibinitperiod},
+           given={Wanderlei\bibnamedelima Malaquias},
+           giveni={W\bibinitperiod\bibinitdelim M\bibinitperiod}}}%
+        {{hash=279b1de9205eb0e9919c218bd1d71c1e}{%
+           family={Henrique},
+           familyi={H\bibinitperiod},
+           given={Marcos\bibnamedelima Luiz},
+           giveni={M\bibinitperiod\bibinitdelim L\bibinitperiod}}}%
+        {{hash=e3f2b1a6d09b5463d10371d75d86a1be}{%
+           family={Santos},
+           familyi={S\bibinitperiod},
+           given={Ketson\bibnamedelimb Roberto\bibnamedelima Maximiano},
+           giveni={K\bibinitperiod\bibinitdelim R\bibinitperiod\bibinitdelim M\bibinitperiod},
+           prefix={dos},
+           prefixi={d\bibinitperiod}}}%
+        {{hash=39d696ffcea014ef7e2c01a9c28e5b34}{%
+           family={Souza},
+           familyi={S\bibinitperiod},
+           given={Victor\bibnamedelimb Hugo\bibnamedelimb Moreira\bibnamedelimb do\bibnamedelima Couto},
+           giveni={V\bibinitperiod\bibinitdelim H\bibinitperiod\bibinitdelim M\bibinitperiod\bibinitdelim d\bibinitperiod\bibinitdelim C\bibinitperiod}}}%
+        {{hash=7b16cfc294196f90eaf1babde42c378a}{%
+           family={Pensin},
+           familyi={P\bibinitperiod},
+           given={Renata\bibnamedelima Maria},
+           giveni={R\bibinitperiod\bibinitdelim M\bibinitperiod}}}%
+      }
+      \strng{namehash}{b2fd685a46c924bfb539785c225d5169}
+      \strng{fullhash}{e99f206122f06c5cd821c962f307fde1}
+      \strng{fullhashraw}{e99f206122f06c5cd821c962f307fde1}
+      \strng{bibnamehash}{e99f206122f06c5cd821c962f307fde1}
+      \strng{authorbibnamehash}{e99f206122f06c5cd821c962f307fde1}
+      \strng{authornamehash}{b2fd685a46c924bfb539785c225d5169}
+      \strng{authorfullhash}{e99f206122f06c5cd821c962f307fde1}
+      \strng{authorfullhashraw}{e99f206122f06c5cd821c962f307fde1}
+      \field{sortinit}{P}
+      \field{sortinithash}{ff3bcf24f47321b42cb156c2cc8a8422}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{note}{Pacote Python, versão 1.1.0}
+      \field{title}{{pyGLAM}: Generalized Lambda Distribution Models in {Python}}
+      \field{year}{2026}
+      \verb{urlraw}
+      \verb https://github.com/Pesquisa-UFCAT/pyGLAM
+      \endverb
+      \verb{url}
+      \verb https://github.com/Pesquisa-UFCAT/pyGLAM
+      \endverb
+    \endentry
+    \entry{ramberg1974}{article}{}{}
+      \name{author}{2}{}{%
+        {{hash=3737631fe1b52726c3afb67be896b0e1}{%
+           family={Ramberg},
+           familyi={R\bibinitperiod},
+           given={John\bibnamedelima S.},
+           giveni={J\bibinitperiod\bibinitdelim S\bibinitperiod}}}%
+        {{hash=4501d8ecf26c0408adbd0535a025f171}{%
+           family={Schmeiser},
+           familyi={S\bibinitperiod},
+           given={Bruce\bibnamedelima W.},
+           giveni={B\bibinitperiod\bibinitdelim W\bibinitperiod}}}%
+      }
+      \strng{namehash}{e07d19fa5740ed7d7c95ff591f7f2ef3}
+      \strng{fullhash}{e07d19fa5740ed7d7c95ff591f7f2ef3}
+      \strng{fullhashraw}{e07d19fa5740ed7d7c95ff591f7f2ef3}
+      \strng{bibnamehash}{e07d19fa5740ed7d7c95ff591f7f2ef3}
+      \strng{authorbibnamehash}{e07d19fa5740ed7d7c95ff591f7f2ef3}
+      \strng{authornamehash}{e07d19fa5740ed7d7c95ff591f7f2ef3}
+      \strng{authorfullhash}{e07d19fa5740ed7d7c95ff591f7f2ef3}
+      \strng{authorfullhashraw}{e07d19fa5740ed7d7c95ff591f7f2ef3}
+      \field{sortinit}{R}
+      \field{sortinithash}{5e1c39a9d46ffb6bebd8f801023a9486}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Communications of the ACM}
+      \field{number}{2}
+      \field{title}{An Approximate Method for Generating Asymmetric Random Variables}
+      \field{volume}{17}
+      \field{year}{1974}
+      \field{pages}{78\bibrangedash 82}
+      \range{pages}{5}
+      \verb{doi}
+      \verb 10.1145/360827.360840
+      \endverb
+    \endentry
+    \entry{tukey1960}{report}{}{}
+      \name{author}{1}{}{%
+        {{hash=9edab5dbc1987bcb98d6de058f00fc47}{%
+           family={Tukey},
+           familyi={T\bibinitperiod},
+           given={John\bibnamedelima W.},
+           giveni={J\bibinitperiod\bibinitdelim W\bibinitperiod}}}%
+      }
+      \list{institution}{1}{%
+        {Statistical Techniques Research Group, Princeton University}%
+      }
+      \strng{namehash}{9edab5dbc1987bcb98d6de058f00fc47}
+      \strng{fullhash}{9edab5dbc1987bcb98d6de058f00fc47}
+      \strng{fullhashraw}{9edab5dbc1987bcb98d6de058f00fc47}
+      \strng{bibnamehash}{9edab5dbc1987bcb98d6de058f00fc47}
+      \strng{authorbibnamehash}{9edab5dbc1987bcb98d6de058f00fc47}
+      \strng{authornamehash}{9edab5dbc1987bcb98d6de058f00fc47}
+      \strng{authorfullhash}{9edab5dbc1987bcb98d6de058f00fc47}
+      \strng{authorfullhashraw}{9edab5dbc1987bcb98d6de058f00fc47}
+      \field{sortinit}{T}
+      \field{sortinithash}{9af77f0292593c26bde9a56e688eaee9}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{number}{36}
+      \field{title}{The Practical Relationship between the Common Transformations of Percentages of Counts and of Amounts}
+      \field{type}{Technical Report}
+      \field{year}{1960}
+    \endentry
+    \entry{scipy2020}{article}{}{}
+      \name{author}{35}{}{%
+        {{hash=18703a2bb6a62484483c193a212da2f8}{%
+           family={Virtanen},
+           familyi={V\bibinitperiod},
+           given={Pauli},
+           giveni={P\bibinitperiod}}}%
+        {{hash=646fbfe08374cc41c2f9bd971d8c4725}{%
+           family={Gommers},
+           familyi={G\bibinitperiod},
+           given={Ralf},
+           giveni={R\bibinitperiod}}}%
+        {{hash=d500f4849030f34359cdb3e1513acf83}{%
+           family={Oliphant},
+           familyi={O\bibinitperiod},
+           given={Travis\bibnamedelima E.},
+           giveni={T\bibinitperiod\bibinitdelim E\bibinitperiod}}}%
+        {{hash=35bb9c71f55048509a3e9018c349ed73}{%
+           family={Haberland},
+           familyi={H\bibinitperiod},
+           given={Matt},
+           giveni={M\bibinitperiod}}}%
+        {{hash=fbb0c40f5d70be8ce47ce9daafdf5749}{%
+           family={Reddy},
+           familyi={R\bibinitperiod},
+           given={Tyler},
+           giveni={T\bibinitperiod}}}%
+        {{hash=9fd9ed8466bbb96364ae008f2a665e6e}{%
+           family={Cournapeau},
+           familyi={C\bibinitperiod},
+           given={David},
+           giveni={D\bibinitperiod}}}%
+        {{hash=09a667aa6a26526bfcccb2676a494e55}{%
+           family={Burovski},
+           familyi={B\bibinitperiod},
+           given={Evgeni},
+           giveni={E\bibinitperiod}}}%
+        {{hash=3d6efaaa3d9682e20787eb06ff70a3d7}{%
+           family={Peterson},
+           familyi={P\bibinitperiod},
+           given={Pearu},
+           giveni={P\bibinitperiod}}}%
+        {{hash=4c7e4c94b846fa41e2fc0a88e0dc656d}{%
+           family={Weckesser},
+           familyi={W\bibinitperiod},
+           given={Warren},
+           giveni={W\bibinitperiod}}}%
+        {{hash=7447cb057596bc2645d3980bb04f5c78}{%
+           family={Bright},
+           familyi={B\bibinitperiod},
+           given={Jonathan},
+           giveni={J\bibinitperiod}}}%
+        {{hash=1b5d87f5a394ee92a6edb4c1de058cab}{%
+           family={{van der Walt}},
+           familyi={v\bibinitperiod},
+           given={Stéfan\bibnamedelima J.},
+           giveni={S\bibinitperiod\bibinitdelim J\bibinitperiod}}}%
+        {{hash=626cc151613864abeb653c0d8172d98c}{%
+           family={Brett},
+           familyi={B\bibinitperiod},
+           given={Matthew},
+           giveni={M\bibinitperiod}}}%
+        {{hash=57849e8550281b202bd611bf6f11e14b}{%
+           family={Wilson},
+           familyi={W\bibinitperiod},
+           given={Joshua},
+           giveni={J\bibinitperiod}}}%
+        {{hash=b053969d2c6a9ec8689980fb6463cd56}{%
+           family={Millman},
+           familyi={M\bibinitperiod},
+           given={K.\bibnamedelimi Jarrod},
+           giveni={K\bibinitperiod\bibinitdelim J\bibinitperiod}}}%
+        {{hash=fbaf80580622bd40577f4a6d38021c0a}{%
+           family={Mayorov},
+           familyi={M\bibinitperiod},
+           given={Nikolay},
+           giveni={N\bibinitperiod}}}%
+        {{hash=7bcf847eaccba039f7a4523540673aea}{%
+           family={Nelson},
+           familyi={N\bibinitperiod},
+           given={Andrew\bibnamedelimb R.\bibnamedelimi J.},
+           giveni={A\bibinitperiod\bibinitdelim R\bibinitperiod\bibinitdelim J\bibinitperiod}}}%
+        {{hash=4b3d26f886661aa723985bcfd835ba18}{%
+           family={Jones},
+           familyi={J\bibinitperiod},
+           given={Eric},
+           giveni={E\bibinitperiod}}}%
+        {{hash=9ad1d38817acd2f00cb7f324ec7d37ea}{%
+           family={Kern},
+           familyi={K\bibinitperiod},
+           given={Robert},
+           giveni={R\bibinitperiod}}}%
+        {{hash=8d336f110675c46226ece1db501ce712}{%
+           family={Larson},
+           familyi={L\bibinitperiod},
+           given={Eric},
+           giveni={E\bibinitperiod}}}%
+        {{hash=65b1934a87acb0abe09c469aaf11c326}{%
+           family={Carey},
+           familyi={C\bibinitperiod},
+           given={C.\bibnamedelimi J.},
+           giveni={C\bibinitperiod\bibinitdelim J\bibinitperiod}}}%
+        {{hash=9989e8a18827e34b15112d671f52bd35}{%
+           family={Polat},
+           familyi={P\bibinitperiod},
+           given={İlhan},
+           giveni={İ\bibinitperiod}}}%
+        {{hash=b8b88d61c79de60e6e1b5d44e03f5dec}{%
+           family={Feng},
+           familyi={F\bibinitperiod},
+           given={Yu},
+           giveni={Y\bibinitperiod}}}%
+        {{hash=bf4be16325cb4f641345ca394443fd18}{%
+           family={Moore},
+           familyi={M\bibinitperiod},
+           given={Eric\bibnamedelima W.},
+           giveni={E\bibinitperiod\bibinitdelim W\bibinitperiod}}}%
+        {{hash=0fd9a0e34f1b2adda41357c948d14986}{%
+           family={VanderPlas},
+           familyi={V\bibinitperiod},
+           given={Jake},
+           giveni={J\bibinitperiod}}}%
+        {{hash=c6a95a8ced3b86b4e7e60a74bc6ebf5a}{%
+           family={Laxalde},
+           familyi={L\bibinitperiod},
+           given={Denis},
+           giveni={D\bibinitperiod}}}%
+        {{hash=85242652d69220e83cf71ceb8d90a8cb}{%
+           family={Perktold},
+           familyi={P\bibinitperiod},
+           given={Josef},
+           giveni={J\bibinitperiod}}}%
+        {{hash=5bca159e697db439e23b8947dfa4b614}{%
+           family={Cimrman},
+           familyi={C\bibinitperiod},
+           given={Robert},
+           giveni={R\bibinitperiod}}}%
+        {{hash=70b659f5067a8a2efbee66f770681598}{%
+           family={Henriksen},
+           familyi={H\bibinitperiod},
+           given={Ian},
+           giveni={I\bibinitperiod}}}%
+        {{hash=fa5163c76600eb11a4d07a28f0701cb0}{%
+           family={Quintero},
+           familyi={Q\bibinitperiod},
+           given={E.\bibnamedelimi A.},
+           giveni={E\bibinitperiod\bibinitdelim A\bibinitperiod}}}%
+        {{hash=db2b4761cc46be347b418e68660c9554}{%
+           family={Harris},
+           familyi={H\bibinitperiod},
+           given={Charles\bibnamedelima R.},
+           giveni={C\bibinitperiod\bibinitdelim R\bibinitperiod}}}%
+        {{hash=7d86aea5ad1f2b4e27f2f014c71712c2}{%
+           family={Archibald},
+           familyi={A\bibinitperiod},
+           given={Anne\bibnamedelima M.},
+           giveni={A\bibinitperiod\bibinitdelim M\bibinitperiod}}}%
+        {{hash=3876f7c3dbbb1a17823dcd135d07cfc6}{%
+           family={Ribeiro},
+           familyi={R\bibinitperiod},
+           given={Antônio\bibnamedelima H.},
+           giveni={A\bibinitperiod\bibinitdelim H\bibinitperiod}}}%
+        {{hash=bab4e5caee2d67831e464ce575022b37}{%
+           family={Pedregosa},
+           familyi={P\bibinitperiod},
+           given={Fabian},
+           giveni={F\bibinitperiod}}}%
+        {{hash=8928c27c900ec0b05492cbba126c5196}{%
+           family={{van Mulbregt}},
+           familyi={v\bibinitperiod},
+           given={Paul},
+           giveni={P\bibinitperiod}}}%
+        {{hash=aa8bf7a30651c7bc3d20ff02fc843dd9}{%
+           family={{SciPy 1.0 Contributors}},
+           familyi={S\bibinitperiod}}}%
+      }
+      \strng{namehash}{f252038edd7f112d75da3bf0c1edecbc}
+      \strng{fullhash}{371a3f5cdbab4f8c68cab2e17d157950}
+      \strng{fullhashraw}{371a3f5cdbab4f8c68cab2e17d157950}
+      \strng{bibnamehash}{0cdbee7bc557397e3e6f406a603f21f7}
+      \strng{authorbibnamehash}{0cdbee7bc557397e3e6f406a603f21f7}
+      \strng{authornamehash}{f252038edd7f112d75da3bf0c1edecbc}
+      \strng{authorfullhash}{371a3f5cdbab4f8c68cab2e17d157950}
+      \strng{authorfullhashraw}{371a3f5cdbab4f8c68cab2e17d157950}
+      \field{sortinit}{V}
+      \field{sortinithash}{afb52128e5b4dc4b843768c0113d673b}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Nature Methods}
+      \field{title}{{{SciPy} 1.0: Fundamental Algorithms for Scientific Computing in Python}}
+      \field{volume}{17}
+      \field{year}{2020}
+      \field{pages}{261\bibrangedash 272}
+      \range{pages}{12}
+      \verb{doi}
+      \verb 10.1038/s41592-019-0686-2
+      \endverb
+    \endentry
+    \entry{zhu2021}{article}{}{}
+      \name{author}{2}{}{%
+        {{hash=7afef6ee783e8990761814d43f03fb33}{%
+           family={Zhu},
+           familyi={Z\bibinitperiod},
+           given={Xu-Jia},
+           giveni={X\bibinithyphendelim J\bibinitperiod}}}%
+        {{hash=2abed76f47b747f79ac23afd26cf6fc1}{%
+           family={Sudret},
+           familyi={S\bibinitperiod},
+           given={Bruno},
+           giveni={B\bibinitperiod}}}%
+      }
+      \strng{namehash}{9b184e00e4bce828c4ec2394e0275713}
+      \strng{fullhash}{9b184e00e4bce828c4ec2394e0275713}
+      \strng{fullhashraw}{9b184e00e4bce828c4ec2394e0275713}
+      \strng{bibnamehash}{9b184e00e4bce828c4ec2394e0275713}
+      \strng{authorbibnamehash}{9b184e00e4bce828c4ec2394e0275713}
+      \strng{authornamehash}{9b184e00e4bce828c4ec2394e0275713}
+      \strng{authorfullhash}{9b184e00e4bce828c4ec2394e0275713}
+      \strng{authorfullhashraw}{9b184e00e4bce828c4ec2394e0275713}
+      \field{sortinit}{Z}
+      \field{sortinithash}{96892c0b0a36bb8557c40c49813d48b3}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{SIAM/ASA Journal on Uncertainty Quantification}
+      \field{number}{4}
+      \field{title}{Emulation of Stochastic Simulators Using Generalized Lambda Models}
+      \field{volume}{9}
+      \field{year}{2021}
+      \field{pages}{1345\bibrangedash 1374}
+      \range{pages}{30}
+      \verb{doi}
+      \verb 10.1137/20M1337302
+      \endverb
+    \endentry
+  \enddatalist
+  \datalist[entry]{apa/global//global/global/global}
+    \entry{freimer1988}{article}{}{}
+      \name{author}{4}{}{%
+        {{hash=85064291c5278edc183abcc31a8167a6}{%
+           family={Freimer},
+           familyi={F\bibinitperiod},
+           given={Marshall},
+           giveni={M\bibinitperiod}}}%
+        {{hash=05799de5a5bc5a99d3bc033b624c6f19}{%
+           family={Kollia},
+           familyi={K\bibinitperiod},
+           given={Georgia},
+           giveni={G\bibinitperiod}}}%
+        {{hash=3300d20a58f22533e938d1b4ea603267}{%
+           family={Mudholkar},
+           familyi={M\bibinitperiod},
+           given={Govind\bibnamedelima S.},
+           giveni={G\bibinitperiod\bibinitdelim S\bibinitperiod}}}%
+        {{hash=5a02815733b022f8db68eb3e94b7899e}{%
+           family={Lin},
+           familyi={L\bibinitperiod},
+           given={C.\bibnamedelimi Thomas},
+           giveni={C\bibinitperiod\bibinitdelim T\bibinitperiod}}}%
+      }
+      \strng{namehash}{da61949f8aa66c06586d6f218c67b364}
+      \strng{fullhash}{c54a1a3804b019b9185bcb077d0b3646}
+      \strng{fullhashraw}{c54a1a3804b019b9185bcb077d0b3646}
+      \strng{bibnamehash}{c54a1a3804b019b9185bcb077d0b3646}
+      \strng{authorbibnamehash}{c54a1a3804b019b9185bcb077d0b3646}
+      \strng{authornamehash}{da61949f8aa66c06586d6f218c67b364}
+      \strng{authorfullhash}{c54a1a3804b019b9185bcb077d0b3646}
+      \strng{authorfullhashraw}{c54a1a3804b019b9185bcb077d0b3646}
+      \field{sortinit}{F}
+      \field{sortinithash}{2638baaa20439f1b5a8f80c6c08a13b4}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Communications in Statistics - Theory and Methods}
+      \field{number}{10}
+      \field{title}{A Study of the Generalized {Tukey} Lambda Family}
+      \field{volume}{17}
+      \field{year}{1988}
+      \field{pages}{3547\bibrangedash 3567}
+      \range{pages}{21}
+      \verb{doi}
+      \verb 10.1080/03610928808829820
+      \endverb
+    \endentry
+    \entry{giannoukou2025mfgllam}{article}{}{}
+      \name{author}{4}{}{%
+        {{hash=3a81fc14c759311311962455b828e083}{%
+           family={Giannoukou},
+           familyi={G\bibinitperiod},
+           given={Katerina},
+           giveni={K\bibinitperiod}}}%
+        {{hash=7afef6ee783e8990761814d43f03fb33}{%
+           family={Zhu},
+           familyi={Z\bibinitperiod},
+           given={Xu-Jia},
+           giveni={X\bibinithyphendelim J\bibinitperiod}}}%
+        {{hash=df25edd86550b4ac6dfd6bb02ed2ee34}{%
+           family={Marelli},
+           familyi={M\bibinitperiod},
+           given={Stefano},
+           giveni={S\bibinitperiod}}}%
+        {{hash=2abed76f47b747f79ac23afd26cf6fc1}{%
+           family={Sudret},
+           familyi={S\bibinitperiod},
+           given={Bruno},
+           giveni={B\bibinitperiod}}}%
+      }
+      \strng{namehash}{d629689d7cae6b14ff9072cacc40990f}
+      \strng{fullhash}{b92a2c4f1e0f749110fb90a35dfc6a28}
+      \strng{fullhashraw}{b92a2c4f1e0f749110fb90a35dfc6a28}
+      \strng{bibnamehash}{b92a2c4f1e0f749110fb90a35dfc6a28}
+      \strng{authorbibnamehash}{b92a2c4f1e0f749110fb90a35dfc6a28}
+      \strng{authornamehash}{d629689d7cae6b14ff9072cacc40990f}
+      \strng{authorfullhash}{b92a2c4f1e0f749110fb90a35dfc6a28}
+      \strng{authorfullhashraw}{b92a2c4f1e0f749110fb90a35dfc6a28}
+      \field{sortinit}{G}
+      \field{sortinithash}{32d67eca0634bf53703493fb1090a2e8}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Computer Methods in Applied Mechanics and Engineering}
+      \field{note}{Disponível via arXiv:2507.10303 [stat.ML]}
+      \field{title}{{MF-GLaM}: A Multifidelity Stochastic Emulator Using Generalized Lambda Models}
+      \field{year}{2025}
+      \verb{doi}
+      \verb 10.48550/arXiv.2507.10303
+      \endverb
+    \endentry
+    \entry{hastings1947}{article}{}{}
+      \name{author}{4}{}{%
+        {{hash=de5f38db6593fb4794deb22197442e3b}{%
+           family={Hastings},
+           familyi={H\bibinitperiod},
+           given={Cecil},
+           giveni={C\bibinitperiod}}}%
+        {{hash=fc73c2b06b97e5d0cdd9cc9ab8a840d4}{%
+           family={Mosteller},
+           familyi={M\bibinitperiod},
+           given={Frederick},
+           giveni={F\bibinitperiod}}}%
+        {{hash=9edab5dbc1987bcb98d6de058f00fc47}{%
+           family={Tukey},
+           familyi={T\bibinitperiod},
+           given={John\bibnamedelima W.},
+           giveni={J\bibinitperiod\bibinitdelim W\bibinitperiod}}}%
+        {{hash=ea9d33ca3a62e60f984833950e8a0d5f}{%
+           family={Winsor},
+           familyi={W\bibinitperiod},
+           given={Charles\bibnamedelima P.},
+           giveni={C\bibinitperiod\bibinitdelim P\bibinitperiod}}}%
+      }
+      \strng{namehash}{e94069beddffe7c29c3b0691d47d9e17}
+      \strng{fullhash}{641029b3027cfbc2a282f43836c70b78}
+      \strng{fullhashraw}{641029b3027cfbc2a282f43836c70b78}
+      \strng{bibnamehash}{641029b3027cfbc2a282f43836c70b78}
+      \strng{authorbibnamehash}{641029b3027cfbc2a282f43836c70b78}
+      \strng{authornamehash}{e94069beddffe7c29c3b0691d47d9e17}
+      \strng{authorfullhash}{641029b3027cfbc2a282f43836c70b78}
+      \strng{authorfullhashraw}{641029b3027cfbc2a282f43836c70b78}
+      \field{sortinit}{H}
+      \field{sortinithash}{23a3aa7c24e56cfa16945d55545109b5}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{The Annals of Mathematical Statistics}
+      \field{number}{3}
+      \field{title}{Low Moments for Small Samples: A Comparative Study of Order Statistics}
+      \field{volume}{18}
+      \field{year}{1947}
+      \field{pages}{413\bibrangedash 426}
+      \range{pages}{14}
+      \verb{doi}
+      \verb 10.1214/aoms/1177730388
+      \endverb
+    \endentry
+    \entry{inmet2025}{misc}{}{}
+      \name{author}{1}{}{%
+        {{hash=5fad54c7c5263b7937529e80abc66483}{%
+           family={{Instituto Nacional de Meteorologia -- INMET}},
+           familyi={I\bibinitperiod}}}%
+      }
+      \strng{namehash}{5fad54c7c5263b7937529e80abc66483}
+      \strng{fullhash}{5fad54c7c5263b7937529e80abc66483}
+      \strng{fullhashraw}{5fad54c7c5263b7937529e80abc66483}
+      \strng{bibnamehash}{5fad54c7c5263b7937529e80abc66483}
+      \strng{authorbibnamehash}{5fad54c7c5263b7937529e80abc66483}
+      \strng{authornamehash}{5fad54c7c5263b7937529e80abc66483}
+      \strng{authorfullhash}{5fad54c7c5263b7937529e80abc66483}
+      \strng{authorfullhashraw}{5fad54c7c5263b7937529e80abc66483}
+      \field{sortinit}{I}
+      \field{sortinithash}{8d291c51ee89b6cd86bf5379f0b151d8}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{howpublished}{\url{https://portal.inmet.gov.br/}}
+      \field{note}{Série histórica diária (2000--2025)}
+      \field{title}{Banco de Dados Meteorológicos para Ensino e Pesquisa ({BDMEP}): Estação Automática A001}
+      \field{year}{2025}
+    \endentry
+    \entry{johnson1949}{article}{}{}
+      \name{author}{1}{}{%
+        {{hash=42134aac82ec7ee488d5679523870362}{%
+           family={Johnson},
+           familyi={J\bibinitperiod},
+           given={Norman\bibnamedelima L.},
+           giveni={N\bibinitperiod\bibinitdelim L\bibinitperiod}}}%
+      }
+      \strng{namehash}{42134aac82ec7ee488d5679523870362}
+      \strng{fullhash}{42134aac82ec7ee488d5679523870362}
+      \strng{fullhashraw}{42134aac82ec7ee488d5679523870362}
+      \strng{bibnamehash}{42134aac82ec7ee488d5679523870362}
+      \strng{authorbibnamehash}{42134aac82ec7ee488d5679523870362}
+      \strng{authornamehash}{42134aac82ec7ee488d5679523870362}
+      \strng{authorfullhash}{42134aac82ec7ee488d5679523870362}
+      \strng{authorfullhashraw}{42134aac82ec7ee488d5679523870362}
+      \field{sortinit}{J}
+      \field{sortinithash}{b2f54a9081ace9966a7cb9413811edb4}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Biometrika}
+      \field{number}{1-2}
+      \field{title}{Systems of Frequency Curves Generated by Methods of Translation}
+      \field{volume}{36}
+      \field{year}{1949}
+      \field{pages}{149\bibrangedash 176}
+      \range{pages}{28}
+      \verb{doi}
+      \verb 10.1093/biomet/36.1-2.149
+      \endverb
+    \endentry
+    \entry{KingGld}{manual}{}{}
+      \name{author}{4}{}{%
+        {{hash=102836d79c5163d4c0ff79518bd33d34}{%
+           family={King},
+           familyi={K\bibinitperiod},
+           given={Robert},
+           giveni={R\bibinitperiod}}}%
+        {{hash=10cd4dd416ef582ff031a3e0da0ddf29}{%
+           family={Dean},
+           familyi={D\bibinitperiod},
+           given={Benjamin},
+           giveni={B\bibinitperiod}}}%
+        {{hash=438ce59844c32cf281c12103ce38f1fb}{%
+           family={Klinke},
+           familyi={K\bibinitperiod},
+           given={Sigbert},
+           giveni={S\bibinitperiod}}}%
+        {{hash=6695bf912fe3eeeaab30973ae2afa620}{%
+           family={Staden},
+           familyi={S\bibinitperiod},
+           given={Paul},
+           giveni={P\bibinitperiod},
+           prefix={van},
+           prefixi={v\bibinitperiod}}}%
+      }
+      \strng{namehash}{c4dbe96324ce4d2915aeeabf11279148}
+      \strng{fullhash}{07121c485448fc75f57f3b0880bbbc1b}
+      \strng{fullhashraw}{07121c485448fc75f57f3b0880bbbc1b}
+      \strng{bibnamehash}{07121c485448fc75f57f3b0880bbbc1b}
+      \strng{authorbibnamehash}{07121c485448fc75f57f3b0880bbbc1b}
+      \strng{authornamehash}{c4dbe96324ce4d2915aeeabf11279148}
+      \strng{authorfullhash}{07121c485448fc75f57f3b0880bbbc1b}
+      \strng{authorfullhashraw}{07121c485448fc75f57f3b0880bbbc1b}
+      \field{sortinit}{K}
+      \field{sortinithash}{c02bf6bff1c488450c352b40f5d853ab}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{note}{R package version 2.6.8}
+      \field{title}{{gld}: Estimation and Use of the Generalised ({T}ukey) Lambda Distribution}
+      \field{year}{2025}
+      \verb{urlraw}
+      \verb https://CRAN.R-project.org/package=gld
+      \endverb
+      \verb{url}
+      \verb https://CRAN.R-project.org/package=gld
+      \endverb
+    \endentry
+    \entry{nist2012}{misc}{}{}
+      \name{author}{1}{}{%
+        {{hash=11756b698b3000879fd0247e9fa769f8}{%
+           family={{NIST/SEMATECH}},
+           familyi={N\bibinitperiod}}}%
+      }
+      \strng{namehash}{11756b698b3000879fd0247e9fa769f8}
+      \strng{fullhash}{11756b698b3000879fd0247e9fa769f8}
+      \strng{fullhashraw}{11756b698b3000879fd0247e9fa769f8}
+      \strng{bibnamehash}{11756b698b3000879fd0247e9fa769f8}
+      \strng{authorbibnamehash}{11756b698b3000879fd0247e9fa769f8}
+      \strng{authornamehash}{11756b698b3000879fd0247e9fa769f8}
+      \strng{authorfullhash}{11756b698b3000879fd0247e9fa769f8}
+      \strng{authorfullhashraw}{11756b698b3000879fd0247e9fa769f8}
+      \field{sortinit}{N}
+      \field{sortinithash}{22369a73d5f88983a108b63f07f37084}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{howpublished}{\url{https://www.itl.nist.gov/div898/handbook/apr/section2/apr21.htm}}
+      \field{note}{Acessado em: 25 set. 2026}
+      \field{title}{e-Handbook of Statistical Methods: Choice of Distribution for Life/Failure Data}
+      \field{year}{2012}
+    \endentry
+    \entry{pearson1895}{article}{}{}
+      \name{author}{1}{}{%
+        {{hash=b69135425e9c9d6adc927b94c33421d4}{%
+           family={Pearson},
+           familyi={P\bibinitperiod},
+           given={Karl},
+           giveni={K\bibinitperiod}}}%
+      }
+      \strng{namehash}{b69135425e9c9d6adc927b94c33421d4}
+      \strng{fullhash}{b69135425e9c9d6adc927b94c33421d4}
+      \strng{fullhashraw}{b69135425e9c9d6adc927b94c33421d4}
+      \strng{bibnamehash}{b69135425e9c9d6adc927b94c33421d4}
+      \strng{authorbibnamehash}{b69135425e9c9d6adc927b94c33421d4}
+      \strng{authornamehash}{b69135425e9c9d6adc927b94c33421d4}
+      \strng{authorfullhash}{b69135425e9c9d6adc927b94c33421d4}
+      \strng{authorfullhashraw}{b69135425e9c9d6adc927b94c33421d4}
+      \field{sortinit}{P}
+      \field{sortinithash}{ff3bcf24f47321b42cb156c2cc8a8422}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Philosophical Transactions of the Royal Society of London. A}
+      \field{title}{Contributions to the Mathematical Theory of Evolution. {II}. Skew Variation in Homogeneous Material}
+      \field{volume}{186}
+      \field{year}{1895}
+      \field{pages}{343\bibrangedash 414}
+      \range{pages}{72}
+      \verb{doi}
+      \verb 10.1098/rsta.1895.0010
+      \endverb
+    \endentry
+    \entry{pyglam}{manual}{}{}
+      \name{author}{5}{}{%
+        {{hash=35df1738db1f05de490bc584f691312d}{%
+           family={Pereira\bibnamedelima Junior},
+           familyi={P\bibinitperiod\bibinitdelim J\bibinitperiod},
+           given={Wanderlei\bibnamedelima Malaquias},
+           giveni={W\bibinitperiod\bibinitdelim M\bibinitperiod}}}%
+        {{hash=279b1de9205eb0e9919c218bd1d71c1e}{%
+           family={Henrique},
+           familyi={H\bibinitperiod},
+           given={Marcos\bibnamedelima Luiz},
+           giveni={M\bibinitperiod\bibinitdelim L\bibinitperiod}}}%
+        {{hash=e3f2b1a6d09b5463d10371d75d86a1be}{%
+           family={Santos},
+           familyi={S\bibinitperiod},
+           given={Ketson\bibnamedelimb Roberto\bibnamedelima Maximiano},
+           giveni={K\bibinitperiod\bibinitdelim R\bibinitperiod\bibinitdelim M\bibinitperiod},
+           prefix={dos},
+           prefixi={d\bibinitperiod}}}%
+        {{hash=39d696ffcea014ef7e2c01a9c28e5b34}{%
+           family={Souza},
+           familyi={S\bibinitperiod},
+           given={Victor\bibnamedelimb Hugo\bibnamedelimb Moreira\bibnamedelimb do\bibnamedelima Couto},
+           giveni={V\bibinitperiod\bibinitdelim H\bibinitperiod\bibinitdelim M\bibinitperiod\bibinitdelim d\bibinitperiod\bibinitdelim C\bibinitperiod}}}%
+        {{hash=7b16cfc294196f90eaf1babde42c378a}{%
+           family={Pensin},
+           familyi={P\bibinitperiod},
+           given={Renata\bibnamedelima Maria},
+           giveni={R\bibinitperiod\bibinitdelim M\bibinitperiod}}}%
+      }
+      \strng{namehash}{b2fd685a46c924bfb539785c225d5169}
+      \strng{fullhash}{e99f206122f06c5cd821c962f307fde1}
+      \strng{fullhashraw}{e99f206122f06c5cd821c962f307fde1}
+      \strng{bibnamehash}{e99f206122f06c5cd821c962f307fde1}
+      \strng{authorbibnamehash}{e99f206122f06c5cd821c962f307fde1}
+      \strng{authornamehash}{b2fd685a46c924bfb539785c225d5169}
+      \strng{authorfullhash}{e99f206122f06c5cd821c962f307fde1}
+      \strng{authorfullhashraw}{e99f206122f06c5cd821c962f307fde1}
+      \field{sortinit}{P}
+      \field{sortinithash}{ff3bcf24f47321b42cb156c2cc8a8422}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{note}{Pacote Python, versão 1.1.0}
+      \field{title}{{pyGLAM}: Generalized Lambda Distribution Models in {Python}}
+      \field{year}{2026}
+      \verb{urlraw}
+      \verb https://github.com/Pesquisa-UFCAT/pyGLAM
+      \endverb
+      \verb{url}
+      \verb https://github.com/Pesquisa-UFCAT/pyGLAM
+      \endverb
+    \endentry
+    \entry{ramberg1974}{article}{}{}
+      \name{author}{2}{}{%
+        {{hash=3737631fe1b52726c3afb67be896b0e1}{%
+           family={Ramberg},
+           familyi={R\bibinitperiod},
+           given={John\bibnamedelima S.},
+           giveni={J\bibinitperiod\bibinitdelim S\bibinitperiod}}}%
+        {{hash=4501d8ecf26c0408adbd0535a025f171}{%
+           family={Schmeiser},
+           familyi={S\bibinitperiod},
+           given={Bruce\bibnamedelima W.},
+           giveni={B\bibinitperiod\bibinitdelim W\bibinitperiod}}}%
+      }
+      \strng{namehash}{e07d19fa5740ed7d7c95ff591f7f2ef3}
+      \strng{fullhash}{e07d19fa5740ed7d7c95ff591f7f2ef3}
+      \strng{fullhashraw}{e07d19fa5740ed7d7c95ff591f7f2ef3}
+      \strng{bibnamehash}{e07d19fa5740ed7d7c95ff591f7f2ef3}
+      \strng{authorbibnamehash}{e07d19fa5740ed7d7c95ff591f7f2ef3}
+      \strng{authornamehash}{e07d19fa5740ed7d7c95ff591f7f2ef3}
+      \strng{authorfullhash}{e07d19fa5740ed7d7c95ff591f7f2ef3}
+      \strng{authorfullhashraw}{e07d19fa5740ed7d7c95ff591f7f2ef3}
+      \field{sortinit}{R}
+      \field{sortinithash}{5e1c39a9d46ffb6bebd8f801023a9486}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Communications of the ACM}
+      \field{number}{2}
+      \field{title}{An Approximate Method for Generating Asymmetric Random Variables}
+      \field{volume}{17}
+      \field{year}{1974}
+      \field{pages}{78\bibrangedash 82}
+      \range{pages}{5}
+      \verb{doi}
+      \verb 10.1145/360827.360840
+      \endverb
+    \endentry
+    \entry{tukey1960}{report}{}{}
+      \name{author}{1}{}{%
+        {{hash=9edab5dbc1987bcb98d6de058f00fc47}{%
+           family={Tukey},
+           familyi={T\bibinitperiod},
+           given={John\bibnamedelima W.},
+           giveni={J\bibinitperiod\bibinitdelim W\bibinitperiod}}}%
+      }
+      \list{institution}{1}{%
+        {Statistical Techniques Research Group, Princeton University}%
+      }
+      \strng{namehash}{9edab5dbc1987bcb98d6de058f00fc47}
+      \strng{fullhash}{9edab5dbc1987bcb98d6de058f00fc47}
+      \strng{fullhashraw}{9edab5dbc1987bcb98d6de058f00fc47}
+      \strng{bibnamehash}{9edab5dbc1987bcb98d6de058f00fc47}
+      \strng{authorbibnamehash}{9edab5dbc1987bcb98d6de058f00fc47}
+      \strng{authornamehash}{9edab5dbc1987bcb98d6de058f00fc47}
+      \strng{authorfullhash}{9edab5dbc1987bcb98d6de058f00fc47}
+      \strng{authorfullhashraw}{9edab5dbc1987bcb98d6de058f00fc47}
+      \field{sortinit}{T}
+      \field{sortinithash}{9af77f0292593c26bde9a56e688eaee9}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{number}{36}
+      \field{title}{The Practical Relationship between the Common Transformations of Percentages of Counts and of Amounts}
+      \field{type}{Technical Report}
+      \field{year}{1960}
+    \endentry
+    \entry{scipy2020}{article}{}{}
+      \name{author}{35}{}{%
+        {{hash=18703a2bb6a62484483c193a212da2f8}{%
+           family={Virtanen},
+           familyi={V\bibinitperiod},
+           given={Pauli},
+           giveni={P\bibinitperiod}}}%
+        {{hash=646fbfe08374cc41c2f9bd971d8c4725}{%
+           family={Gommers},
+           familyi={G\bibinitperiod},
+           given={Ralf},
+           giveni={R\bibinitperiod}}}%
+        {{hash=d500f4849030f34359cdb3e1513acf83}{%
+           family={Oliphant},
+           familyi={O\bibinitperiod},
+           given={Travis\bibnamedelima E.},
+           giveni={T\bibinitperiod\bibinitdelim E\bibinitperiod}}}%
+        {{hash=35bb9c71f55048509a3e9018c349ed73}{%
+           family={Haberland},
+           familyi={H\bibinitperiod},
+           given={Matt},
+           giveni={M\bibinitperiod}}}%
+        {{hash=fbb0c40f5d70be8ce47ce9daafdf5749}{%
+           family={Reddy},
+           familyi={R\bibinitperiod},
+           given={Tyler},
+           giveni={T\bibinitperiod}}}%
+        {{hash=9fd9ed8466bbb96364ae008f2a665e6e}{%
+           family={Cournapeau},
+           familyi={C\bibinitperiod},
+           given={David},
+           giveni={D\bibinitperiod}}}%
+        {{hash=09a667aa6a26526bfcccb2676a494e55}{%
+           family={Burovski},
+           familyi={B\bibinitperiod},
+           given={Evgeni},
+           giveni={E\bibinitperiod}}}%
+        {{hash=3d6efaaa3d9682e20787eb06ff70a3d7}{%
+           family={Peterson},
+           familyi={P\bibinitperiod},
+           given={Pearu},
+           giveni={P\bibinitperiod}}}%
+        {{hash=4c7e4c94b846fa41e2fc0a88e0dc656d}{%
+           family={Weckesser},
+           familyi={W\bibinitperiod},
+           given={Warren},
+           giveni={W\bibinitperiod}}}%
+        {{hash=7447cb057596bc2645d3980bb04f5c78}{%
+           family={Bright},
+           familyi={B\bibinitperiod},
+           given={Jonathan},
+           giveni={J\bibinitperiod}}}%
+        {{hash=1b5d87f5a394ee92a6edb4c1de058cab}{%
+           family={{van der Walt}},
+           familyi={v\bibinitperiod},
+           given={Stéfan\bibnamedelima J.},
+           giveni={S\bibinitperiod\bibinitdelim J\bibinitperiod}}}%
+        {{hash=626cc151613864abeb653c0d8172d98c}{%
+           family={Brett},
+           familyi={B\bibinitperiod},
+           given={Matthew},
+           giveni={M\bibinitperiod}}}%
+        {{hash=57849e8550281b202bd611bf6f11e14b}{%
+           family={Wilson},
+           familyi={W\bibinitperiod},
+           given={Joshua},
+           giveni={J\bibinitperiod}}}%
+        {{hash=b053969d2c6a9ec8689980fb6463cd56}{%
+           family={Millman},
+           familyi={M\bibinitperiod},
+           given={K.\bibnamedelimi Jarrod},
+           giveni={K\bibinitperiod\bibinitdelim J\bibinitperiod}}}%
+        {{hash=fbaf80580622bd40577f4a6d38021c0a}{%
+           family={Mayorov},
+           familyi={M\bibinitperiod},
+           given={Nikolay},
+           giveni={N\bibinitperiod}}}%
+        {{hash=7bcf847eaccba039f7a4523540673aea}{%
+           family={Nelson},
+           familyi={N\bibinitperiod},
+           given={Andrew\bibnamedelimb R.\bibnamedelimi J.},
+           giveni={A\bibinitperiod\bibinitdelim R\bibinitperiod\bibinitdelim J\bibinitperiod}}}%
+        {{hash=4b3d26f886661aa723985bcfd835ba18}{%
+           family={Jones},
+           familyi={J\bibinitperiod},
+           given={Eric},
+           giveni={E\bibinitperiod}}}%
+        {{hash=9ad1d38817acd2f00cb7f324ec7d37ea}{%
+           family={Kern},
+           familyi={K\bibinitperiod},
+           given={Robert},
+           giveni={R\bibinitperiod}}}%
+        {{hash=8d336f110675c46226ece1db501ce712}{%
+           family={Larson},
+           familyi={L\bibinitperiod},
+           given={Eric},
+           giveni={E\bibinitperiod}}}%
+        {{hash=65b1934a87acb0abe09c469aaf11c326}{%
+           family={Carey},
+           familyi={C\bibinitperiod},
+           given={C.\bibnamedelimi J.},
+           giveni={C\bibinitperiod\bibinitdelim J\bibinitperiod}}}%
+        {{hash=9989e8a18827e34b15112d671f52bd35}{%
+           family={Polat},
+           familyi={P\bibinitperiod},
+           given={İlhan},
+           giveni={İ\bibinitperiod}}}%
+        {{hash=b8b88d61c79de60e6e1b5d44e03f5dec}{%
+           family={Feng},
+           familyi={F\bibinitperiod},
+           given={Yu},
+           giveni={Y\bibinitperiod}}}%
+        {{hash=bf4be16325cb4f641345ca394443fd18}{%
+           family={Moore},
+           familyi={M\bibinitperiod},
+           given={Eric\bibnamedelima W.},
+           giveni={E\bibinitperiod\bibinitdelim W\bibinitperiod}}}%
+        {{hash=0fd9a0e34f1b2adda41357c948d14986}{%
+           family={VanderPlas},
+           familyi={V\bibinitperiod},
+           given={Jake},
+           giveni={J\bibinitperiod}}}%
+        {{hash=c6a95a8ced3b86b4e7e60a74bc6ebf5a}{%
+           family={Laxalde},
+           familyi={L\bibinitperiod},
+           given={Denis},
+           giveni={D\bibinitperiod}}}%
+        {{hash=85242652d69220e83cf71ceb8d90a8cb}{%
+           family={Perktold},
+           familyi={P\bibinitperiod},
+           given={Josef},
+           giveni={J\bibinitperiod}}}%
+        {{hash=5bca159e697db439e23b8947dfa4b614}{%
+           family={Cimrman},
+           familyi={C\bibinitperiod},
+           given={Robert},
+           giveni={R\bibinitperiod}}}%
+        {{hash=70b659f5067a8a2efbee66f770681598}{%
+           family={Henriksen},
+           familyi={H\bibinitperiod},
+           given={Ian},
+           giveni={I\bibinitperiod}}}%
+        {{hash=fa5163c76600eb11a4d07a28f0701cb0}{%
+           family={Quintero},
+           familyi={Q\bibinitperiod},
+           given={E.\bibnamedelimi A.},
+           giveni={E\bibinitperiod\bibinitdelim A\bibinitperiod}}}%
+        {{hash=db2b4761cc46be347b418e68660c9554}{%
+           family={Harris},
+           familyi={H\bibinitperiod},
+           given={Charles\bibnamedelima R.},
+           giveni={C\bibinitperiod\bibinitdelim R\bibinitperiod}}}%
+        {{hash=7d86aea5ad1f2b4e27f2f014c71712c2}{%
+           family={Archibald},
+           familyi={A\bibinitperiod},
+           given={Anne\bibnamedelima M.},
+           giveni={A\bibinitperiod\bibinitdelim M\bibinitperiod}}}%
+        {{hash=3876f7c3dbbb1a17823dcd135d07cfc6}{%
+           family={Ribeiro},
+           familyi={R\bibinitperiod},
+           given={Antônio\bibnamedelima H.},
+           giveni={A\bibinitperiod\bibinitdelim H\bibinitperiod}}}%
+        {{hash=bab4e5caee2d67831e464ce575022b37}{%
+           family={Pedregosa},
+           familyi={P\bibinitperiod},
+           given={Fabian},
+           giveni={F\bibinitperiod}}}%
+        {{hash=8928c27c900ec0b05492cbba126c5196}{%
+           family={{van Mulbregt}},
+           familyi={v\bibinitperiod},
+           given={Paul},
+           giveni={P\bibinitperiod}}}%
+        {{hash=aa8bf7a30651c7bc3d20ff02fc843dd9}{%
+           family={{SciPy 1.0 Contributors}},
+           familyi={S\bibinitperiod}}}%
+      }
+      \strng{namehash}{f252038edd7f112d75da3bf0c1edecbc}
+      \strng{fullhash}{371a3f5cdbab4f8c68cab2e17d157950}
+      \strng{fullhashraw}{371a3f5cdbab4f8c68cab2e17d157950}
+      \strng{bibnamehash}{0cdbee7bc557397e3e6f406a603f21f7}
+      \strng{authorbibnamehash}{0cdbee7bc557397e3e6f406a603f21f7}
+      \strng{authornamehash}{f252038edd7f112d75da3bf0c1edecbc}
+      \strng{authorfullhash}{371a3f5cdbab4f8c68cab2e17d157950}
+      \strng{authorfullhashraw}{371a3f5cdbab4f8c68cab2e17d157950}
+      \field{sortinit}{V}
+      \field{sortinithash}{afb52128e5b4dc4b843768c0113d673b}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Nature Methods}
+      \field{title}{{{SciPy} 1.0: Fundamental Algorithms for Scientific Computing in Python}}
+      \field{volume}{17}
+      \field{year}{2020}
+      \field{pages}{261\bibrangedash 272}
+      \range{pages}{12}
+      \verb{doi}
+      \verb 10.1038/s41592-019-0686-2
+      \endverb
+    \endentry
+    \entry{zhu2021}{article}{}{}
+      \name{author}{2}{}{%
+        {{hash=7afef6ee783e8990761814d43f03fb33}{%
+           family={Zhu},
+           familyi={Z\bibinitperiod},
+           given={Xu-Jia},
+           giveni={X\bibinithyphendelim J\bibinitperiod}}}%
+        {{hash=2abed76f47b747f79ac23afd26cf6fc1}{%
+           family={Sudret},
+           familyi={S\bibinitperiod},
+           given={Bruno},
+           giveni={B\bibinitperiod}}}%
+      }
+      \strng{namehash}{9b184e00e4bce828c4ec2394e0275713}
+      \strng{fullhash}{9b184e00e4bce828c4ec2394e0275713}
+      \strng{fullhashraw}{9b184e00e4bce828c4ec2394e0275713}
+      \strng{bibnamehash}{9b184e00e4bce828c4ec2394e0275713}
+      \strng{authorbibnamehash}{9b184e00e4bce828c4ec2394e0275713}
+      \strng{authornamehash}{9b184e00e4bce828c4ec2394e0275713}
+      \strng{authorfullhash}{9b184e00e4bce828c4ec2394e0275713}
+      \strng{authorfullhashraw}{9b184e00e4bce828c4ec2394e0275713}
+      \field{sortinit}{Z}
+      \field{sortinithash}{96892c0b0a36bb8557c40c49813d48b3}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{SIAM/ASA Journal on Uncertainty Quantification}
+      \field{number}{4}
+      \field{title}{Emulation of Stochastic Simulators Using Generalized Lambda Models}
+      \field{volume}{9}
+      \field{year}{2021}
+      \field{pages}{1345\bibrangedash 1374}
+      \range{pages}{30}
+      \verb{doi}
+      \verb 10.1137/20M1337302
+      \endverb
+    \endentry
+  \enddatalist
+\endrefsection
+\endinput
+

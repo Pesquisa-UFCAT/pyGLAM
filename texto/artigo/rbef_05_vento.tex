@@ -1,0 +1,99 @@
+\section{Ajuste de distribuições e interpretação de dados de vento}\label{sec:vento}
+
+\subsection{Apresentação breve da biblioteca e do ambiente}
+
+Para a condução deste estudo de caso e a reprodução dos ajustes propostos, emprega-se a biblioteca \texttt{pyglam} (versão 1.1.0) \parencite{pyglam}, desenvolvida em Python e disponibilizada publicamente, e as distribuições clássicas da biblioteca \texttt{scipy.stats} \parencite{scipy2020}. O pacote implementa a parametrização FKML da família lambda generalizada e o seu ajuste pelo método dos momentos, descrito na Seção~\ref{sec:gld}.
+
+O fluxo de trabalho computacional apoia-se em funções fundamentais da biblioteca, sendo \texttt{GlamFKML} usada para a instanciação do modelo paramétrico, \texttt{fit\_lambdas} para a execução do algoritmo de ajuste e os métodos \texttt{pdf} (função densidade de probabilidade), \texttt{cdf} (função distribuição acumulada) e \texttt{ppf} (função quantil, do inglês \textit{percent point function}). Adicionalmente, o método \texttt{rvs} permite a geração de amostras aleatórias via transformação inversa. Cabe ressaltar uma característica do desenho da biblioteca. A função de ajuste retorna a solução do otimizador (\texttt{sol.x}), e o usuário instancia explicitamente o modelo ajustado (\texttt{modelo = GlamFKML(*sol.x)}), em vez de alterar a instância original.
+
+\subsection{Origem, unidade e qualidade dos dados}
+
+% REVISÃO: completar com os metadados da estação A001 (coordenadas, altitude, altura do
+% anemômetro e definição da média diária pelo INMET), como pede a etapa 1 do protocolo.
+Os dados empíricos utilizados neste estudo são as velocidades médias diárias do vento (em m/s) da estação meteorológica automática A001, em Brasília (DF), do Instituto Nacional de Meteorologia \parencite{inmet2025}. O arquivo compreende o período de 06/05/2000 a 25/04/2025, com 9.121 registros diários sem datas repetidas; destes, 8.840 contêm a velocidade do vento e 281 estão vazios. Não há registros nulos ou negativos, e os valores têm resolução de $0,1\,\text{m/s}$.
+
+As velocidades diárias válidas variam entre o mínimo de $0,7\,\text{m/s}$ e o máximo de $5,5\,\text{m/s}$, com média amostral de $2,345\,\text{m/s}$ e desvio padrão de $0,711\,\text{m/s}$ (calculado com divisor $n$).
+
+\subsection{Caracterização exploratória}
+
+Antes da imposição de qualquer modelo probabilístico, a estatística descritiva e a visualização exploratória fornecem o comportamento de base da grandeza física. A velocidade média diária do vento apresenta assimetria positiva, limitando-se inferiormente pelo zero físico e estendendo-se em uma cauda direita que acomoda dias excepcionalmente ventosos.
+
+A Figura~\ref{fig:exploratoria} mostra a série temporal e o histograma, evidenciando a concentração da massa de probabilidade na faixa de $1,5$ a $3,0\,\text{m/s}$. A Tabela~\ref{tab:descritiva} sintetiza as estatísticas descritivas dos dois estudos de caso, incluindo os quantis de 5\%, 50\% e 95\%, que servirão de referência numérica para avaliar as curvas ajustadas.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.85\textwidth]{figura2_vento_exploratoria_pt.png}
+\caption{Velocidade média diária do vento na estação automática A001, em Brasília (DF), com (a) a série temporal e a média móvel de 30 dias e (b) o histograma.}
+\label{fig:exploratoria}
+\end{figure}
+
+\begin{table}[htbp]
+\centering
+\caption{Estatísticas descritivas dos dois estudos de caso. Desvio padrão com divisor $n$ e curtose de Pearson (igual a $3$ para a normal).}
+\label{tab:descritiva}
+\small
+\begin{tabular}{lcc}
+\toprule
+\textbf{Estatística} & \textbf{Vento (m/s)} & \textbf{Temperatura em julho ($^\circ$C)} \\
+\midrule
+\input{tab_descritiva}\unskip \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Famílias comparadas e estimação}
+
+O ajuste estatístico compara três modelos paramétricos, a GLD-FKML (quatro parâmetros, estimada pelo método dos momentos) e dois modelos clássicos de referência com origem fixada no zero físico, a distribuição de Rayleigh (um parâmetro) e a distribuição de Weibull (dois parâmetros), ambas ajustadas por máxima verossimilhança.
+
+A adoção da distribuição de Rayleigh no escopo atmosférico assume as hipóteses da Seção~\ref{sec:dados} (componentes de vento gaussianas, ortogonais e independentes). O estimador de máxima verossimilhança para esta família é $\widehat\sigma = \sqrt{\sum_{i=1}^n v_i^2 / (2n)}$, que fornece $\widehat\sigma = 1,733\,\text{m/s}$. No entanto, uma limitação estrutural surge imediatamente dos dados, pois o coeficiente de variação (CV) da distribuição de Rayleigh com origem em zero é uma constante, $\sqrt{(4-\pi)/\pi} \approx 0,523$, independentemente de $\sigma$. Em contrapartida, o CV empírico da amostra diária analisada é de $0,303$. Esta discrepância impede que o modelo de Rayleigh se adapte à forma da distribuição dos dados observados, qualquer que seja sua escala.
+
+A introdução do modelo de Weibull flexibiliza essa restrição ao incorporar um parâmetro de forma (sendo a Rayleigh seu caso particular quando esse parâmetro vale $2$). O ajuste fornece forma $\widehat k = 3,448$ e escala $\widehat c = 2,605\,\text{m/s}$, o que oferece uma base de comparação mais justa com a flexibilidade dos quatro parâmetros da GLD-FKML.
+
+Para a GLD-FKML, o sistema de equações não lineares do ajuste por momentos é sensível à aproximação inicial. O algoritmo explora por isso $15$ pontos de partida e seleciona, entre os candidatos que definem uma distribuição válida, a solução de menor resíduo (Seção~\ref{sec:gld}). Os quinze candidatos foram válidos, e a solução obtida, $\widehat{\boldsymbol\lambda} = (2,191;\, 1,727;\, 0,556;\, 0,099)$, reproduz os quatro momentos da amostra. Como $\lambda_3$ e $\lambda_4$ são positivos, a Equação~\eqref{eq:suporte} indica que o modelo ajustado tem suporte limitado, de $1,148$ a $8,057\,\text{m/s}$; a consequência desse resultado é discutida na Seção~\ref{subsec:vento_interpretacao}.
+
+O Código~\ref{lst:ajuste}, que continua o Código~\ref{lst:quantil}, executa esse ajuste, calcula os limites do suporte pela Equação~\eqref{eq:suporte} e conta as observações que ficam fora dele.
+
+\lstinputlisting[float=htbp, caption={Ajuste da GLD-FKML aos dados de vento pelo método dos momentos e verificação do suporte.}, label=lst:ajuste]{codigo/02_ajuste_momentos.py}
+
+\subsection{O que medir e como ensinar a leitura do desempenho}
+
+A avaliação de modelos não deve se encerrar em métricas opacas, mas traduzir a precisão na unidade física do problema. O diagnóstico deste estudo concentra-se em dois aspectos.
+
+\begin{enumerate}
+    \item \textbf{Aderência global:} distância de Kolmogorov-Smirnov, $D_n = \sup_v |F_n(v) - \widehat{F}(v)|$, que quantifica o maior desvio absoluto entre a acumulada empírica e a do modelo.
+    \item \textbf{Desvios nas caudas e no centro:} diferenças quantílicas $\Delta_p$ da Equação~\eqref{eq:delta}, nos percentis $p \in \{0,05;\, 0,50;\, 0,95\}$. O sinal de $\Delta_p$ indica imediatamente se o modelo subestima (negativo) ou superestima (positivo) o vento, em m/s.
+\end{enumerate}
+
+O Código~\ref{lst:avaliacao} calcula as duas métricas para a GLD ajustada no Código~\ref{lst:ajuste}. Para os modelos de Rayleigh e de Weibull, basta trocar \texttt{gld} pela distribuição correspondente da biblioteca \texttt{scipy.stats}, que oferece os mesmos métodos \texttt{ppf} e \texttt{cdf}.
+
+\lstinputlisting[float=htbp, caption={Desvios quantílicos e distância de Kolmogorov-Smirnov do modelo ajustado.}, label=lst:avaliacao]{codigo/03_avaliacao.py}
+
+A Tabela~\ref{tab:desempenho_vento} compila estas métricas. A Figura~\ref{fig:diagnosticos} reúne a densidade, a função acumulada e o gráfico Q-Q, permitindo localizar em quais quantis cada modelo se afasta dos dados.
+
+\begin{table}[htbp]
+\centering
+\caption{Desempenho dos modelos ajustados aos dados diários de vento. As diferenças de quantis $\Delta_p$ estão em m/s.}
+\label{tab:desempenho_vento}
+\begin{tabular}{lccccc}
+\toprule
+\textbf{Modelo} & \textbf{Parâmetros} & \textbf{$D_n$} & \textbf{$\Delta_{0,05}$} & \textbf{$\Delta_{0,50}$} & \textbf{$\Delta_{0,95}$} \\
+\midrule
+\input{tab_vento}\unskip \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\textwidth]{figura3_vento_diagnosticos_pt.png}
+\caption{Diagnóstico comparativo dos modelos ajustados ao vento, com (a) densidades sobrepostas ao histograma, (b) funções distribuição acumuladas e (c) gráfico quantil-quantil, em que a linha pontilhada indica concordância perfeita.}
+\label{fig:diagnosticos}
+\end{figure}
+
+\subsection{Interpretação física e didática}\label{subsec:vento_interpretacao}
+
+A leitura dos resultados revela que o coeficiente de variação fixo da distribuição de Rayleigh a torna larga demais para estes dados. Ela subestima o quantil de 5\% em $0,845\,\text{m/s}$ e a mediana em $0,159\,\text{m/s}$, e superestima o quantil de 95\% em $0,542\,\text{m/s}$, sendo inadequada para descrever o regime diário neste sítio. O modelo de Weibull melhora bastante a aderência, mas ainda erra o quantil de 5\% em $0,299\,\text{m/s}$ e a mediana em $0,142\,\text{m/s}$.
+
+A GLD-FKML, que reproduz a assimetria e a curtose da amostra, reduz a distância $D_n$ à metade da obtida com a Weibull e mantém os três desvios quantílicos abaixo de $0,05\,\text{m/s}$, inferiores à resolução de $0,1\,\text{m/s}$ dos dados. Contudo, do ponto de vista didático, é imprescindível examinar o suporte do modelo ajustado. O limite inferior de $1,148\,\text{m/s}$ é positivo, o que evita atribuir probabilidade a velocidades negativas, mas está acima do menor valor observado, e $84$ dias da amostra ($0,95\%$) registraram velocidades menores, às quais o modelo atribui probabilidade nula. O ajuste por momentos reproduz os quatro resumos da amostra, mas nada no método obriga o suporte a conter todas as observações. A lição central do exemplo é que a qualidade global do ajuste não dispensa a verificação da cauda relevante para a aplicação.
+
+Por fim, os dados analisados são médias diárias. Eles descrevem a variabilidade de um dia para outro, mas não permitem recuperar a distribuição das velocidades instantâneas, que é a relevante para estimar a potência eólica, proporcional ao cubo da velocidade. Estender a análise a esse fim exigiria dados de maior resolução temporal.

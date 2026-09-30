@@ -1,0 +1,16 @@
+% REVISÃO: seção escrita na revisão (o rascunho da aluna tinha apenas o marcador do
+% modelo). Conclusões limitadas ao que os dois exemplos mostraram.
+
+\section{Considerações finais}\label{sec:consideracoes}
+
+Este artigo apresentou um percurso didático para a modelagem probabilística de dados físicos reais com a distribuição lambda generalizada, na parametrização FKML, ajustada pelo método dos momentos e comparada com distribuições clássicas pertinentes a cada grandeza.
+
+Os dois exemplos levaram a conclusões diferentes, e essa diferença é o seu valor didático. Para a velocidade média diária do vento, a flexibilidade da GLD fez diferença. A distribuição de Rayleigh, com coeficiente de variação fixo, não descreve os dados; a de Weibull melhora bastante o ajuste; e a GLD reduz os desvios nos quantis de interesse a menos da resolução das medições. O mesmo exemplo, porém, mostrou que reproduzir os quatro momentos da amostra não garante um suporte compatível com as observações, pois o modelo ajustado exclui os dias de vento mais fraco. Para a temperatura de julho, a GLD também se aproxima mais dos dados, mas as discrepâncias da normal são da ordem da incerteza de medição, e o modelo de dois parâmetros permanece uma escolha defensável. As conclusões valem para as variáveis, os recortes e o método de estimação analisados.
+
+A formulação por quantis mostrou-se vantajosa em três aspectos. Os percentis são obtidos diretamente e lidos nas unidades da grandeza, o que torna a comparação entre modelos interpretável em m/s ou em $^\circ$C. A amostragem por transformação inversa é imediata. E os parâmetros têm efeitos visualizáveis sobre a forma da distribuição. Em contrapartida, a densidade e a função acumulada exigem procedimentos numéricos, e o ajuste por momentos requer verificar a validade, o domínio dos momentos, o suporte e a aderência de cada solução.
+
+O material aborda dificuldades conceituais recorrentes no ensino, como distinguir densidade e probabilidade, interpretar quantis, compreender momentos de ordem alta, reconhecer que a convergência numérica não garante aderência, separar a adequação estatística da explicação física e perceber os efeitos do recorte e da agregação temporal. Por não ter sido aplicado em sala de aula, o material não permite afirmar ganhos de aprendizagem, o que fica como passo seguinte.
+
+% REVISÃO: inserir o endereço do repositório dos materiais didáticos quando estiver
+% criado e acessível (o plano P2 recomenda um repositório próprio, separado do pyGLAM).
+Os Códigos~\ref{lst:quantil} a \ref{lst:avaliacao} mostram o essencial do procedimento. O notebook didático completo, que reproduz todas as figuras e tabelas deste artigo com explicações entre as etapas, os trechos de código e os dados acompanham o artigo para download, com as instruções de execução. A biblioteca \texttt{pyglam} está disponível em \url{https://github.com/Pesquisa-UFCAT/pyGLAM} e pode ser instalada com \texttt{pip install pyglam}.

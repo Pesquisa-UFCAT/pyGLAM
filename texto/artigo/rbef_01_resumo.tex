@@ -1,0 +1,18 @@
+% REVISÃO: resumo e abstract escritos na revisão (o rascunho tinha o texto do modelo).
+
+\begin{abstract}
+A distribuição normal costuma ser a única referência apresentada aos estudantes para descrever a variabilidade de grandezas físicas, embora muitas delas sejam assimétricas ou limitadas. Este artigo apresenta uma abordagem didática para a modelagem probabilística de dados físicos reais com a distribuição lambda generalizada, na parametrização FKML, definida por uma função quantil explícita. Explica-se o significado dos quatro parâmetros, as condições de validade e de suporte e o ajuste pelo método dos momentos, implementado na biblioteca Python \texttt{pyglam}. O procedimento é aplicado a dois conjuntos de dados de uma estação meteorológica automática do INMET em Brasília, que são a velocidade média diária do vento, comparada às distribuições de Rayleigh e de Weibull, e a temperatura média diária de julho, comparada à distribuição normal. A avaliação usa a distância de Kolmogorov-Smirnov e os desvios de quantis nas unidades da grandeza. No vento, a distribuição flexível reduz os desvios de quantis a menos da resolução das medições, mas seu suporte exclui os dias de vento mais fraco; na temperatura, a normal já descreve os dados dentro da incerteza instrumental. Os exemplos mostram que um bom ajuste exige examinar o suporte e a aderência, e não apenas os momentos, e que a escolha do modelo depende da pergunta física. Todos os resultados são reproduzidos por um notebook disponibilizado com o artigo.
+
+\medskip
+\noindent\textbf{Palavras-chave}: distribuição lambda generalizada; função quantil; método dos momentos; dados meteorológicos; ensino de estatística; Python.
+\end{abstract}
+
+\begin{otherlanguage}{english}
+\begin{abstract}
+\noindent\textbf{Flexible modelling of physical phenomena with the generalized lambda distribution: a didactic computational approach with pyGLAM.}
+The normal distribution is often the only reference students are given to describe the variability of physical quantities, although many of them are skewed or bounded. This paper presents a didactic approach to the probabilistic modelling of real physical data with the generalized lambda distribution, in the FKML parameterization, defined by an explicit quantile function. It explains the meaning of the four parameters, the conditions of validity and support, and the fit by the method of moments, implemented in the Python library \texttt{pyglam}. The procedure is applied to two data sets from an automatic weather station of INMET in Brasília, Brazil, namely the daily mean wind speed, compared with the Rayleigh and Weibull distributions, and the daily mean temperature in July, compared with the normal distribution. The assessment uses the Kolmogorov-Smirnov distance and quantile deviations in the units of the quantity. For the wind, the flexible distribution reduces the quantile deviations below the resolution of the measurements, but its support excludes the calmest days; for the temperature, the normal distribution already describes the data within the instrumental uncertainty. The examples show that a good fit requires examining the support and the goodness of fit, not only the moments, and that the choice of model depends on the physical question. All results are reproduced by a notebook provided with the paper.
+
+\medskip
+\noindent\textbf{Keywords}: generalized lambda distribution; quantile function; method of moments; meteorological data; statistics education; Python.
+\end{abstract}
+\end{otherlanguage}
