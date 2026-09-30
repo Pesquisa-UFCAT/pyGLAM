@@ -11,9 +11,19 @@ def numerical_moments(model):
     """Mean, variance, skewness and Pearson kurtosis by integrating Q(u)^k over (0, 1)."""
     l1, l2, l3, l4 = model._validated_lambdas()
 
+    def quantile(u, v):
+        # u and v = 1 - u are passed separately, so neither tail loses precision
+        return l1 + (u**l3 - v**l4) / l2
+
     def raw(k):
-        q = lambda u: model._gld_rs_quantile(u, l1, l2, l3, l4) ** k
-        return integrate.quad(q, 0.0, 1.0, limit=400, epsabs=1e-12, epsrel=1e-10)[0]
+        # Q^k behaves like u^(k lambda) at the endpoints, singular for negative shapes;
+        # u = t^5 on each half turns that into a bounded integrand
+        top = 0.5**0.2
+        left = integrate.quad(lambda t: quantile(t**5, 1 - t**5) ** k * 5 * t**4, 0.0, top,
+                              limit=200, epsabs=1e-13, epsrel=1e-11)[0]
+        right = integrate.quad(lambda t: quantile(1 - t**5, t**5) ** k * 5 * t**4, 0.0, top,
+                               limit=200, epsabs=1e-13, epsrel=1e-11)[0]
+        return left + right
 
     m1, m2, m3, m4 = (raw(k) for k in range(1, 5))
     var = m2 - m1**2
