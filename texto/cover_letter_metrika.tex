@@ -1,0 +1,63 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=2cm]{geometry}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+\usepackage{microtype}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.6em}
+\pagestyle{empty}
+
+\begin{document}
+
+\textbf{Wanderlei Malaquias Pereira Junior}\\
+Universidade Federal de Catalão (UFCAT), Catalão, Goiás, Brazil\\
+Department of Civil, Environmental, and Geo-Engineering, University of Minnesota,\\
+Minneapolis, MN, United States\\
+\href{mailto:wanderlei_junior@ufcat.edu.br}{wanderlei\_junior@ufcat.edu.br}
+
+October 20, 2026
+
+The Editors-in-Chief\\
+\emph{Metrika}\\
+Springer
+
+\textbf{Re: Submission of the manuscript ``\texttt{pyGLAM}: Moment matching and diagnostics for generalized lambda distributions in Python''}
+
+Dear Editors,
+
+On behalf of all authors, I am pleased to submit the manuscript ``\texttt{pyGLAM}: Moment matching and diagnostics for generalized lambda distributions in Python'' for consideration as an original article in \emph{Metrika}.
+
+The generalized lambda distribution (GLD) is a four-parameter family defined through its quantile function. It is widely used to summarise a simulated or empirical sample by a distribution rather than by a few moments. The family has several parameterizations, notably the Ramberg--Schmeiser (RS) and the Freimer--Kollia--Mudholkar--Lin (FKML) forms. These parameterizations cover different regions of the parameter space, impose different validity conditions, and can be fitted by several competing estimators. In practice, a user of a fitted GLD usually cannot tell whether a poor fit comes from the sample, from the family, or from the estimator. The manuscript addresses this question.
+
+The main contributions are the following.
+
+\begin{enumerate}[leftmargin=*, itemsep=0.5em]
+\item \textbf{A decomposition of the fitting error.} The error of a GLD fit is separated into a sampling component, which decays at the rate $N^{-1/2}$, and a structural component, which does not. The decomposition is estimated from the slope of the Kolmogorov--Smirnov distance against sample size, with a bootstrap confidence interval. In a factorial Monte Carlo study (two parameterizations, six target distributions, four sample sizes, 100 replicates per cell), the normal and the uniform show no structural component, the Gumbel and the Beta a small one, and the Gamma a floor under both parameterizations. On a Student-$t$ with four degrees of freedom, the same diagnostic points to the estimator rather than to the family.
+
+\item \textbf{Roots of the moment equations that are not distributions.} Four-moment matching admits roots that reproduce the four sample moments, are reported as converged by the optimizer, and have a decreasing quantile function, so they are not valid distributions. We impose the admissible regions of the RS form inside the objective and screen the candidates of both forms for monotonicity. All 4{,}800 selected fits in the study were valid.
+
+\item \textbf{An open-source implementation.} The methods are implemented in the Python package \texttt{pyGLAM} (MIT licence, available from PyPI, version 1.1.0). It offers both parameterizations behind one interface, multi-start moment matching restricted to valid distributions, and a goodness-of-fit module. Its quantile, distribution and density functions and its moments agree with the R packages \texttt{gld} and \texttt{GLDEX} to numerical precision. Its fits of the same samples are valid, reproduce the sample moments, and run several times faster.
+\end{enumerate}
+
+We believe the manuscript suits \emph{Metrika} because its central results concern the statistical behaviour of an estimator, namely how the error of moment matching for a quantile-defined family splits into sampling and structural parts and when the moment equations return invalid solutions. The software is the vehicle that makes these results reproducible and usable. The package, its documentation with executable examples, and the notebooks that generate every table and figure are publicly available, so all results can be reproduced.
+
+\begin{tabular}{@{}ll}
+Source code: & \url{https://github.com/Pesquisa-UFCAT/pyGLAM}\\
+Documentation: & \url{https://pesquisa-ufcat.github.io/pyGLAM/}
+\end{tabular}
+
+The manuscript is original and is not under consideration for publication elsewhere. All authors have read and approved the submitted version and agree to its submission to \emph{Metrika}. We have no conflicts of interest to declare.
+
+Thank you for considering our work. I look forward to hearing from you.
+
+Sincerely,
+
+\vspace{1em}
+Wanderlei Malaquias Pereira Junior (corresponding author)\\
+on behalf of Marcos Luiz Henrique, Ketson Roberto Maximiano dos Santos, Victor Hugo Moreira do Couto Souza and Renata Maria Pensin
+
+\end{document}

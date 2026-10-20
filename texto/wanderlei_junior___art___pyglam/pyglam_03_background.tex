@@ -1,0 +1,144 @@
+\section{The generalized lambda distribution}\label{sec:background}
+
+\subsection{Two parameterizations}
+
+The GLD is defined by its quantile function. In the Ramberg-Schmeiser (RS)
+form \parencite{RambergSchmeiser1974},
+\begin{equation}
+    Q_{\mathrm{RS}}(u) = \lambda_1 + \frac{u^{\lambda_3} - (1-u)^{\lambda_4}}{\lambda_2},
+    \qquad 0 < u < 1,
+    \label{eq:qrs}
+\end{equation}
+while the FKML form of \textcite{FreimerEtAl1988} writes
+\begin{equation}
+    Q_{\mathrm{FKML}}(u) = \lambda_1 +
+    \frac{\varphi(u; \lambda_3) - \varphi(1-u; \lambda_4)}{\lambda_2},
+    \qquad
+    \varphi(u; \lambda) =
+    \begin{cases}
+        \dfrac{u^{\lambda} - 1}{\lambda}, & \lambda \neq 0, \\[8pt]
+        \ln u,                            & \lambda = 0.
+    \end{cases}
+    \label{eq:qfkml}
+\end{equation}
+In both, $\lambda_1$ is a location parameter, $\lambda_2$ an inverse scale
+parameter, and $\lambda_3, \lambda_4$ control the left and the right tail
+separately. In the FKML form $\lambda_2 > 0$, whereas in the RS form the sign of
+$\lambda_2$ is tied to the signs of the shape parameters, as
+Section~\ref{subsec:validity} details. The two families coincide at
+$\lambda_3 = \lambda_4 = 1$, where both reduce to a uniform distribution. The
+FKML form is the reparameterization that removes the restrictions the RS form
+places on the joint signs of the shape parameters, at the cost of requiring the
+logarithmic limit in Equation~\eqref{eq:qfkml}.
+
+Because $Q$ is available in closed form and its inverse is not, the natural
+operations are sampling and quantile evaluation: a variate is drawn as
+$Q(U)$ with $U \sim \mathrm{Uniform}(0,1)$, at the cost of one uniform draw. The
+density is available only in the quantile-density form
+\begin{equation}
+    f(Q(u)) = \frac{1}{Q'(u)},
+    \label{eq:density}
+\end{equation}
+so evaluating $f$ or $F$ at a given $x$ requires inverting $Q$ numerically.
+
+\subsection{Support and moments}
+
+The support $S = [Q(0^{+}), Q(1^{-})]$ follows from the limits of $Q$. For the
+lower endpoint,
+\begin{equation}
+    Q_{\mathrm{RS}}(0^{+}) =
+    \begin{cases}
+        \lambda_1 - 1/\lambda_2, & \lambda_3 > 0, \\
+        \lambda_1,               & \lambda_3 = 0, \\
+        -\infty,                 & \lambda_3 < 0,
+    \end{cases}
+    \qquad
+    Q_{\mathrm{FKML}}(0^{+}) =
+    \begin{cases}
+        \lambda_1 - 1/(\lambda_2\lambda_3), & \lambda_3 > 0, \\
+        -\infty,                            & \lambda_3 \leq 0,
+    \end{cases}
+    \label{eq:support_lower}
+\end{equation}
+and for the upper endpoint,
+\begin{equation}
+    Q_{\mathrm{RS}}(1^{-}) =
+    \begin{cases}
+        \lambda_1 + 1/\lambda_2, & \lambda_4 > 0, \\
+        \lambda_1,               & \lambda_4 = 0, \\
+        +\infty,                 & \lambda_4 < 0,
+    \end{cases}
+    \qquad
+    Q_{\mathrm{FKML}}(1^{-}) =
+    \begin{cases}
+        \lambda_1 + 1/(\lambda_2\lambda_4), & \lambda_4 > 0, \\
+        +\infty,                            & \lambda_4 \leq 0,
+    \end{cases}
+    \label{eq:support_upper}
+\end{equation}
+where the infinite RS endpoints use $\lambda_2 < 0$, which the admissible
+regions of Section~\ref{subsec:validity} require whenever a shape parameter is
+negative. This is a fact worth keeping in view: \emph{a fitted GLD with
+$\lambda_3, \lambda_4 > 0$ is bounded}. Approximating an unbounded target with
+such a fit truncates its tails by construction, and the discrepancy that remains
+is not a numerical artefact.
+
+The first four moments exist when $\lambda_3, \lambda_4 > -1/4$, the pole of the
+fourth moment. For the FKML form, they follow from the quantities
+\begin{equation}
+    v_k = \int_{0}^{1} [s(u)]^k \, du, \qquad k = 1, \ldots, 4,
+\end{equation}
+of the standardized quantile core
+\begin{equation}
+    s(u) = \frac{u^{\lambda_3}}{\lambda_3} - \frac{(1-u)^{\lambda_4}}{\lambda_4},
+    \label{eq:su_definition}
+\end{equation}
+which are given explicitly by
+\begin{equation}
+    v_k = \sum_{j=0}^{k} \binom{k}{j} \frac{(-1)^j}{\lambda_3^{k-j} \lambda_4^j}
+    B\big(\lambda_3(k-j)+1, \, \lambda_4 j+1\big),
+    \label{eq:vk_beta}
+\end{equation}
+where $B(a, b)$ denotes the Euler beta function. From these, the mean, variance,
+skewness and Pearson kurtosis are obtained in closed form; the RS form uses the
+analogous coefficients $A$, $B$, $C$ and $D$ of \textcite{RambergSchmeiser1974},
+with the skewness carrying the sign of $\lambda_2$. Both sets are implemented in
+the package.
+
+\subsection{Validity}\label{subsec:validity}
+
+A parameter vector is a distribution only if $Q$ is non-decreasing on $(0,1)$.
+Differentiating Equations~\eqref{eq:qrs} and \eqref{eq:qfkml},
+\begin{equation}
+    Q'_{\mathrm{RS}}(u) =
+    \frac{\lambda_3 u^{\lambda_3-1} + \lambda_4 (1-u)^{\lambda_4-1}}{\lambda_2},
+    \qquad
+    Q'_{\mathrm{FKML}}(u) =
+    \frac{u^{\lambda_3-1} + (1-u)^{\lambda_4-1}}{\lambda_2}.
+    \label{eq:qprime}
+\end{equation}
+In the FKML form both terms of the numerator are positive for \emph{any} real
+$\lambda_3, \lambda_4$, so $\lambda_2 > 0$ alone guarantees a valid
+distribution.
+
+In the RS form each shape parameter multiplies its own term, so a negative
+$\lambda_3$ or $\lambda_4$ contributes a term of the opposite sign, and $Q'$ can
+change sign on $(0,1)$. The admissible parameter vectors form the regions
+catalogued by \textcite{KarianDudewicz2000}. Within the moment domain
+$\lambda_3, \lambda_4 > -1/4$ four of them remain:
+\begin{itemize}
+    \item $\lambda_2 > 0$ and $\lambda_3, \lambda_4 \geq 0$, not both zero;
+    \item $\lambda_2 < 0$ and $\lambda_3, \lambda_4 \leq 0$, not both zero;
+    \item $\lambda_2 < 0$, $-1 < \lambda_3 < 0$, $\lambda_4 > 1$ and
+    \begin{equation*}
+        \frac{(1-\lambda_3)^{1-\lambda_3}\,(\lambda_4-1)^{\lambda_4-1}}
+             {(\lambda_4-\lambda_3)^{\lambda_4-\lambda_3}}
+        < -\frac{\lambda_3}{\lambda_4};
+    \end{equation*}
+    \item the mirror image of the previous region, with the roles of
+    $\lambda_3$ and $\lambda_4$ exchanged.
+\end{itemize}
+The moment equations themselves do not encode these conditions: the
+coefficients $A$ to $D$ are finite, and the equations can be solved, for vectors
+that lie outside every region and do not define a distribution.
+Section~\ref{sec:software} describes how the estimator excludes them.

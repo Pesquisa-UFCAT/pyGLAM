@@ -1,0 +1,68 @@
+\section{Introduction}\label{sec:introduction}
+
+Many computational experiments produce a sample rather than a number. A
+stochastic simulator run repeatedly at a fixed design point, a bootstrap
+replication, or the conditional response of a reliability model at a given age
+all yield a cloud of values whose distribution, not merely its mean and variance,
+is the object of interest. Carrying that cloud forward is expensive, and
+summarising it by a named distribution is often impossible because the shape does
+not match any of the usual families.
+
+Quantile-defined distributions address exactly this situation. Instead of
+specifying a density, they specify the inverse cumulative distribution function
+$Q(u) = F^{-1}(u)$ in closed form. The generalized lambda distribution (GLD) is
+the most widely used member of that class: with four parameters it covers a broad
+region of the skewness-kurtosis plane, it includes symmetric and asymmetric
+shapes, bounded and unbounded supports, and light and heavy tails, and sampling
+from it is a single inverse transform \parencite{RambergSchmeiser1974,
+FreimerEtAl1988, KarianDudewicz2000}. These properties made it a standard tool
+for input modelling in simulation and for compressing a simulated response into a
+small parameter vector.
+
+The GLD exists in several parameterizations, and they are not interchangeable.
+The Ramberg-Schmeiser (RS) form \parencite{RambergSchmeiser1974} and the
+FKML form of \textcite{FreimerEtAl1988} write the same idea with different
+algebra, cover different regions of the parameter space, and impose different
+validity conditions. Estimation is likewise not settled: moment matching,
+percentile matching \parencite{KarianDudewicz1999}, L-moments
+\parencite{KarvanenNuutinen2008}, the starship method
+\parencite{KingMacGillivray1999} and discretised maximum likelihood
+\parencite{Su2007CSDA} all appear in the literature, with no single method
+dominating across target shapes.
+
+Software support for the family is concentrated in R, where \texttt{GLDEX}
+\parencite{Su2007JSS} and \texttt{gld} \parencite{KingGld} offer several
+parameterizations and estimators. In Python the situation is thinner: the
+distributions available expose one parameterization at a time, and none of them
+ships a facility for judging how good a particular fit is. For a family chosen
+precisely because it approximates rather than reproduces a target, that is the
+question that matters. Python is where the surrounding work increasingly happens,
+from uncertainty quantification \parencite{OlivierEtAl2020} to optimization
+\parencite{BlankDeb2020}, so the gap is a practical one.
+
+This paper presents \texttt{pyGLAM}, an open-source Python package that
+implements the FKML and RS parameterizations behind one interface, fits them by
+multi-start moment matching, and scores the result with a goodness-of-fit module.
+Section~\ref{sec:background} states the two parameterizations and their validity
+conditions. Section~\ref{sec:software} describes the implementation.
+Section~\ref{sec:study} cross-validates the implementation against the R
+packages and reports a factorial Monte Carlo study whose purpose is not only to
+verify the implementation but to answer a question the choice of
+parameterization raises: when a GLD fit stops improving with more data, is the
+obstacle the sample, the family or the estimator? Section~\ref{sec:conclusions}
+closes.
+
+The contributions are threefold. First, a Python implementation of two GLD
+parameterizations with an integrated goodness-of-fit module, validated against
+the established R packages \texttt{gld} and \texttt{GLDEX}. Second, a
+decomposition of the fitting error into a sampling component and a structural
+component, estimated from the convergence rate of the Kolmogorov-Smirnov
+distance with a bootstrap confidence interval, which locates a structural
+component on some targets and not on others, shows that the two
+parameterizations can match the same moments with distributions that fail in
+different places, and shows that a slow convergence can also point to the
+estimator rather than to the family. Third, an estimator that keeps every fit a
+distribution: four-moment matching admits roots that reproduce the four moments
+and still have a decreasing quantile function, the optimizer reports them as
+converged, and the package excludes them through the admissible regions of the
+Ramberg-Schmeiser form and a monotonicity screen applied to both forms.

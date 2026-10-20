@@ -1,0 +1,30 @@
+\begin{abstract}
+The generalized lambda distribution (GLD) is a four-parameter quantile-defined
+family able to reproduce a wide range of shapes with a single functional form,
+which makes it attractive whenever a simulation output must be summarised by a
+distribution rather than by a few moments. Its software support, however, is
+concentrated in R, and the Python packages available expose one parameterization
+at a time and no facility for assessing how good a fit actually is. This paper
+presents \texttt{pyGLAM}, an open-source Python package implementing the FKML and
+the Ramberg-Schmeiser parameterizations behind a single interface, fitting them
+by multi-start moment matching restricted to valid distributions, and scoring
+the result with a goodness-of-fit module. Its quantile, distribution and density
+functions and its moments agree with the R packages \texttt{gld} and
+\texttt{GLDEX} to numerical precision, and its fits of the same samples are
+valid, reproduce the sample moments and run several times faster. A factorial
+Monte Carlo study over two parameterizations, six target distributions and four
+sample sizes, with one hundred replicates per cell, measures the error of each
+fit against the analytical target. The slope of the Kolmogorov-Smirnov distance
+against sample size, with a bootstrap confidence interval, separates a sampling
+component, which decays at the rate $N^{-1/2}$, from a structural component,
+which does not. The normal and the uniform show no structural component, the
+Gumbel and the Beta a small one, and the Gamma a floor under both
+parameterizations, which match the same moments with distributions that fail in
+different places. On a Student-$t$ with four degrees of freedom the same
+diagnostic points to the estimator rather than the family. The study also shows
+that moment matching admits roots that are not distributions and are reported as
+converged by the optimizer, and that the package keeps every selected fit valid.
+\end{abstract}
+
+\noindent\textbf{Keywords}: generalized lambda distribution; quantile
+distributions; method of moments; goodness of fit; statistical software; Python.

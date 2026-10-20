@@ -1,0 +1,396 @@
+\section{Numerical study}\label{sec:study}
+
+\subsection{Design}
+
+Six target distributions were chosen to exercise different geometries: the
+\textbf{normal} (symmetric, unbounded), the \textbf{Gumbel} (right-skewed,
+exponential right tail), the \textbf{uniform} (compact support, no mode), the
+\textbf{Student-$t$} with $\nu = 4$ degrees of freedom (symmetric, polynomial
+tails), the \textbf{Gamma} with shape $2$ (right-skewed, bounded on the left, with
+a density that rises linearly from zero) and the \textbf{Beta}$(2, 5)$ (bounded
+on both sides and asymmetric). The Student-$t$ is deliberately placed on the
+edge of what four-moment matching can do: its tails decay like $|x|^{-5}$, which
+corresponds to the shape value $\lambda = -1/4$ at which the fourth moment of the
+GLD ceases to exist, and its own kurtosis is infinite. For each target, samples of
+size $N \in \{50;\, 200;\, 1{,}000;\, 5{,}000\}$ were drawn and fitted by moment
+matching with $15$ multi-start attempts, under both parameterizations. Each cell
+was replicated $100$ times with independent samples, giving
+$2 \times 6 \times 4 \times 100 = 4{,}800$ fits.
+
+The seed of a replicate is drawn from a seed sequence keyed by the target, $N$
+and the replicate index, but not by the parameterization, so FKML and RS are
+fitted to \emph{identical} samples. The comparison between them is therefore
+paired, and any difference is a property of the parameterization rather than of
+the draw.
+
+\subsection{Metrics}
+
+The primary metric is computed against the \emph{analytical} target, not against
+a sample, so that it measures the approximation error of the family itself rather
+than the noise of a reference draw. Parameterising by $u$ turns the
+Kolmogorov-Smirnov distance into a form that needs no root finding,
+\begin{equation}
+    \mathrm{KS} = \sup_{x} \bigl| F_{\mathrm{GLD}}(x) - F_{\mathrm{target}}(x) \bigr|
+                = \sup_{0<u<1} \bigl| u - F_{\mathrm{target}}(Q(u)) \bigr|,
+    \label{eq:ks}
+\end{equation}
+evaluated on a grid of $4{,}001$ probabilities, augmented by the two terms that
+account for the mass the target places outside a compact GLD support, where
+$F_{\mathrm{GLD}}$ is pinned at $0$ or $1$.
+
+Alongside it we report the sample-based metrics a practitioner can actually
+compute, from a reference sample of the target and a sample of the fitted GLD,
+both of size $\max(N, 20{,}000)$ and both drawn without tail trimming: the
+Kullback-Leibler divergence $D(p \,\|\, q)$ of the target density $p$ from the
+fitted density $q$, the Wasserstein distance, and quantile errors at $P_5$,
+$P_{50}$ and $P_{95}$ normalised by the distance between the $P_5$ and $P_{95}$
+of the target. The divergence is computed between Gaussian kernel density
+estimates on a grid that spans the reference sample, with a small floor on the
+densities. When the fitted GLD has compact support and the target does not, the
+exact $D(p \,\|\, q)$ is infinite; the smoothed estimate stays finite and should
+be read as a comparison of the bulk of the two densities, not of their extreme
+tails, which the KS distance and the quantile errors cover.
+
+A goodness-of-fit test is also reported, run at the sample size actually
+available, $N$ against $N$. Against a large reference sample the two-sample test
+asks whether the GLD \emph{is} the target; it is not, so the test rejects
+essentially always and its $p$-value carries no information. At size $N$ it asks
+the question a practitioner asks of their own data.
+
+Every metric is summarised over the $100$ replicates of a cell by its median,
+and the KS distance also by its interquartile range (IQR).
+
+\subsection{Accuracy}
+
+Figure~\ref{fig:pyglam_fits} shows the fitted densities at $N = 1{,}000$ and
+Tables~\ref{tab:metrics_fkml} and \ref{tab:metrics_rs} consolidate the metrics.
+
+\begin{figure}[p]
+    \centering
+    \includegraphics[width=\linewidth,height=0.86\textheight,keepaspectratio]{z_pyglam_fits_en.pdf}
+    \caption{GLD fitted by moment matching to the six target distributions
+    ($N = 1{,}000$), one row per target and one column per parameterization,
+    both fitted to the same sample. The histogram is the sample and the solid line
+    the density of the fitted GLD.}
+    \label{fig:pyglam_fits}
+\end{figure}
+
+\begin{table}[p]
+\centering
+\caption{Fit quality of the FKML parameterization: medians over 100 independent
+replicates per cell, and the interquartile range of the KS distance. Quantile
+errors are normalised by the distance between the $P_5$ and the $P_{95}$ of the
+target.}
+\label{tab:metrics_fkml}
+\small
+\setlength{\tabcolsep}{4.5pt}
+\begin{tabular}{lrrrrrrrr}
+\toprule
+\textbf{Distribution} & \textbf{$N$} & \textbf{KS} & \textbf{IQR} & \textbf{$D(p\|q)$} &
+\textbf{Wass.} & \textbf{$P_5$ (\%)} & \textbf{$P_{50}$ (\%)} & \textbf{$P_{95}$ (\%)} \\
+\midrule
+\input{z_tab_pyglam_metrics_fkml_en}\unskip \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[p]
+\centering
+\caption{Fit quality of the Ramberg-Schmeiser parameterization, on the same
+samples and with the same summaries as Table~\ref{tab:metrics_fkml}.}
+\label{tab:metrics_rs}
+\small
+\setlength{\tabcolsep}{4.5pt}
+\begin{tabular}{lrrrrrrrr}
+\toprule
+\textbf{Distribution} & \textbf{$N$} & \textbf{KS} & \textbf{IQR} & \textbf{$D(p\|q)$} &
+\textbf{Wass.} & \textbf{$P_5$ (\%)} & \textbf{$P_{50}$ (\%)} & \textbf{$P_{95}$ (\%)} \\
+\midrule
+\input{z_tab_pyglam_metrics_rs_en}\unskip \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Both parameterizations recover all six targets to a practically useful accuracy.
+At $N = 5{,}000$ the median error at $P_{50}$ is at most $0.44\%$ of the
+reference spread under FKML and at most $0.52\%$ under RS on every target but
+the Gamma, where it is $1.45\%$; the largest median error anywhere in that row is
+$2.51\%$, at the $P_{95}$ of the Gamma under RS. The coefficient of determination
+between the estimated densities at $N = 5{,}000$ is at least $0.974$ for every
+target except the uniform. There the fitted GLD density turns upward near the two
+endpoints while the target is flat, and that comparison is also the one most
+affected by the boundary bias of the kernel density estimates; the coefficient
+is negative at $N = 50$ and recovers to $0.93$ at $N = 5{,}000$ under both
+forms.
+
+On the normal and the uniform the two parameterizations are practically
+indistinguishable in every metric. On the Student-$t$ and the Beta, FKML reaches
+the smaller KS distance at every $N \geq 1{,}000$. On the Gumbel, RS reaches the
+smaller KS distance and divergence at $N = 5{,}000$. On the Gamma the ranking
+depends on the metric: RS reaches the smaller KS distance at every
+$N \geq 200$, and FKML the smaller divergence, Wasserstein distance and median
+error at every $N \geq 1{,}000$.
+
+\subsection{Sampling error or structural error?}\label{subsec:regimes}
+
+The interesting question is not how large the error is but what limits it. The
+error of a moment-based fit can be decomposed into a \emph{sampling} component,
+from estimating four moments on a finite sample, and a \emph{structural}
+component, from the family not containing the target exactly. In simplified form,
+\begin{equation}
+    E(N) \approx E_{\mathrm{sampling}}(N) + E_{\mathrm{structural}},
+    \qquad
+    E_{\mathrm{sampling}}(N) \propto N^{-1/2}.
+    \label{eq:decomposition}
+\end{equation}
+The sampling component decreases with $N$, whereas the structural component
+remains approximately constant. When the error is dominated by sampling,
+\begin{equation}
+    \mathrm{KS} \propto N^{-1/2}
+    \quad \Longrightarrow \quad
+    \log \mathrm{KS} \approx C - \tfrac{1}{2}\log N,
+\end{equation}
+so regressing the logarithm of the median KS distance on $\log N$ separates the
+two regimes. A slope near $-1/2$ with a high coefficient of determination means
+the error is predominantly sampling and the fit is as good as the data allows,
+whereas a slope near zero means a structural floor dominates and more data will
+not help. We label a slope below $-0.45$ as \emph{sampling-limited}, a slope
+between $-0.45$ and $-0.30$ as \emph{mixed}, and a flatter one as
+\emph{structural floor}. The $95\%$ confidence interval of each slope comes from
+$2{,}000$ bootstrap resamples, drawn independently within each sample size.
+Table~\ref{tab:rates} reports the regression and
+Figure~\ref{fig:pyglam_convergence} shows it.
+
+\begin{table}[htbp]
+\centering
+\caption{Convergence of the median Kolmogorov-Smirnov distance to the analytical
+target: slope of $\log \mathrm{KS}$ against $\log N$ with its bootstrap $95\%$
+confidence interval, coefficient of determination, and the regime the slope
+implies.}
+\label{tab:rates}
+\small
+\begin{tabular}{llrcrl}
+\toprule
+\textbf{Param.} & \textbf{Distribution} & \textbf{Slope} & \textbf{95\% CI} &
+\textbf{$R^2$} & \textbf{Regime} \\
+\midrule
+\input{z_tab_pyglam_rates_en}\unskip \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[p]
+    \centering
+    \includegraphics[width=\linewidth,height=0.86\textheight,keepaspectratio]{z_pyglam_convergence_en.pdf}
+    \caption{Convergence of the Kolmogorov-Smirnov distance between the fitted
+    GLD and the analytical target, against sample size, one panel per
+    parameterization. Logarithmic axes; each point is the median of 100
+    independent replicates and the band their interquartile range. The dashed
+    guide has slope $-1/2$, the theoretical sampling rate.}
+    \label{fig:pyglam_convergence}
+\end{figure}
+
+For the normal and the uniform the two parameterizations behave identically and
+converge close to the theoretical rate, with slopes between $-0.484$ and $-0.455$
+and $R^2 \geq 0.993$. There is no detectable structural component: the GLD
+represents a symmetric unbounded target and a bounded one with the precision the
+data allows, and the choice of parameterization is immaterial.
+
+The Beta and the Gumbel fall in the mixed regime under both forms, a small
+structural component that slows the decay without stopping it. On the Gumbel the
+two confidence intervals overlap, $[-0.387, -0.344]$ under FKML and
+$[-0.410, -0.354]$ under RS, and the rates cannot be told apart. The fitted
+parameters show that the two forms reach the exponential right tail of the
+Gumbel in different ways. In the FKML form an exponential tail is the
+logarithmic case $\lambda_4 = 0$ of Equation~\eqref{eq:qfkml}, and the fits
+settle near it, at a median $\lambda_4 = -0.024$ at $N = 5{,}000$. The RS form
+has no logarithmic case: it can only approach an exponential tail as the limit
+in which $\lambda_2$, $\lambda_3$ and $\lambda_4$ vanish together while their
+ratios stay finite, and that is where its fits go, with all three medians within
+$0.04$ of zero. The limit is the common edge of the region with positive shapes
+and the region with negative shapes, and the fits land on both sides of it: at
+$N = 5{,}000$, $14\%$ of them have $\lambda_2 < 0$, with a median KS distance of
+$0.0178$ against $0.0119$ for the others.
+
+The Gamma is the one target with a structural floor under both forms, with
+slopes of $-0.193$ (FKML) and $-0.221$ (RS). Its density rises linearly from zero
+at the left endpoint, which neither moment-matched GLD reproduces. The FKML fit,
+at a median $\lambda_3 = 0.94$ and $\lambda_4 = -0.005$, rises almost vertically
+at that endpoint (Figure~\ref{fig:pyglam_fits}), and its median KS distance stops
+at $0.034$. The RS fit takes a strongly asymmetric shape, with a median
+$\lambda_3 = 31$ and $\lambda_4 = 0.63$, whose density at the left endpoint is
+finite and positive; its median KS distance stops at $0.026$, at the price of
+the larger divergence and median error noted above. Both fits reproduce the same
+four sample moments, and they differ in which part of the distribution they get
+wrong, which is the case for scoring every fit with the diagnostics of
+Section~\ref{sec:software} rather than trusting the moment match alone.
+
+The Student-$t$ shows a mixed regime under both forms, with slopes of $-0.396$
+under FKML and $-0.363$ under RS. Here the limitation is not the family but the
+estimator. Because the kurtosis of the target is infinite, the sample kurtosis
+does not converge: over the replicates of the study its median grows from $4.1$
+at $N = 50$ to $10.2$ at $N = 5{,}000$. The moments being matched therefore move
+with $N$, and the fitted shapes follow them towards the pole of the fourth
+moment: the median $\lambda_3$ goes from $-0.02$ at $N = 200$ to $-0.14$ at
+$N = 5{,}000$ under FKML, and from $-0.06$ to $-0.14$ under RS. With both shapes negative the fitted
+distributions are unbounded on both sides, as the target is, but moment matching
+cannot settle on a limit, and the convergence slows accordingly.
+
+Three consequences follow. First, whether a structural component appears depends
+on the target: none for the normal and the uniform, a small one for the Gumbel
+and the Beta, a floor for the Gamma. Second, where the parameterizations differ,
+the difference is not always in the rate but in the shape of the error: on the
+Gamma the two forms match the same moments with distributions that fail in
+different places, and on the Gumbel a share of the RS fits falls on the wrong
+side of a degenerate limit, which a study of one parameterization, or of mean errors
+alone, would not reveal. Third, the regime decomposition also diagnoses
+the estimator, as the Student-$t$ shows: a target at the edge of the moment
+domain slows moment matching under either form, and the remedy there is a
+different estimator rather than a different parameterization.
+
+The classical test behaves as its power dictates. At the $5\%$ level, the
+rejection rate of the Kolmogorov-Smirnov test at size $N$ stays between $3\%$ and
+$9\%$ for the normal at every sample size, consistent with the nominal level. On
+the targets with a structural component it grows with $N$ while the fit itself
+improves: at $N = 5{,}000$ it reaches $26\%$ (FKML) and $35\%$ (RS) on the Gumbel,
+$24\%$ and $29\%$ on the Student-$t$, and $76\%$ and $74\%$ on the Gamma. The
+apparent paradox is only the test gaining power: with more data it detects a
+residual discrepancy that remains small in magnitude.
+
+\subsection{Validity and cost of the fits}\label{subsec:validity_results}
+
+Section~\ref{subsec:validity} showed that validity is a sign condition on
+$\lambda_2$ under FKML and a region condition under RS, and
+Section~\ref{sec:software} described how the estimator enforces both.
+Table~\ref{tab:validity} reports the result, together with the fitting time.
+
+\begin{table}[htbp]
+\centering
+\caption{Validity and cost of the fits, over 400 fits per cell.
+\emph{Candidates} is the share of the 15 multi-start candidates whose quantile
+function is finite and non-decreasing; \emph{selected} is the share of the fits
+returned by the estimator that are distributions. The optimizer reported
+convergence for every fit. Times are per fit, in seconds.}
+\label{tab:validity}
+\small
+\begin{tabular}{llrrrrr}
+\toprule
+& & & \multicolumn{2}{c}{\textbf{Valid (\%)}} & \multicolumn{2}{c}{\textbf{Time (s)}} \\
+\cmidrule(lr){4-5} \cmidrule(lr){6-7}
+\textbf{Param.} & \textbf{Distribution} & \textbf{Fits} &
+\textbf{Candidates} & \textbf{Selected} & \textbf{Mean} & \textbf{SD} \\
+\midrule
+\input{z_tab_pyglam_validity_en}\unskip \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Every selected fit is a distribution. Under RS every candidate is one as well,
+because the admissible regions are imposed inside the residual function and the
+solver never leaves them. Under FKML the objective does not constrain the sign of
+$\lambda_2$, and $29$ of the $36{,}000$ candidates were not distributions, $28$ of
+them because they ended with $\lambda_2 < 0$: parameter vectors that reproduce
+the four sample moments and are reported as converged by the optimizer, yet whose
+quantile function is decreasing. Most of them, $24$, occur on the uniform. The
+screens of
+Section~\ref{sec:software} exclude them before selection. The general point is
+that optimizer convergence says nothing about validity: the moment equations
+admit such roots, and only an explicit check keeps them out of the result.
+
+A fit takes $0.28$ seconds on average under RS, with little dispersion, and
+$0.57$ seconds under FKML, with a median of $0.18$ seconds and a long right tail
+driven by the uniform target, where a fit takes $2.29$ seconds on average. These
+times were measured inside $31$ worker processes running in parallel on a
+$32$-thread workstation, and the whole study, including the scoring of every
+fit, took about seven minutes of wall time.
+
+\subsection{Comparison with the R implementations}\label{subsec:r_comparison}
+
+The implementation was cross-validated against the R packages \texttt{gld}
+\parencite{KingGld} and \texttt{GLDEX} \parencite{Su2007JSS, SuGLDEX}, running on
+R 4.6.1 \parencite{RCore}, in two parts.
+
+The first part compares the functions themselves. For six parameter vectors of
+each parameterization, spanning the fits of this study, asymmetric and
+heavy-tailed shapes, and, for RS, the regions with positive, negative and mixed
+signs, the quantile function, the CDF and the density of \texttt{pyGLAM} were
+evaluated on $199$ probabilities and compared with \texttt{qgl}, \texttt{pgl} and
+\texttt{dgl} of \texttt{gld}, and the first four moments with
+\texttt{fun.theo.mv.gld} of \texttt{GLDEX}. Table~\ref{tab:r_functions} reports
+the largest discrepancy. The quantile functions agree to rounding error and the
+moments to $10^{-9}$ or better; the CDF and the density agree to $10^{-8}$, the
+tolerance of the numerical inversion of the quantile function.
+
+\begin{table}[htbp]
+\centering
+\caption{Largest discrepancy between \texttt{pyGLAM} and the R packages over six
+parameter vectors per parameterization: quantile relative to the range of the
+evaluated quantiles, CDF in probability, density relative to its maximum, mean in
+standard deviations, variance relatively, skewness and kurtosis in absolute
+terms.}
+\label{tab:r_functions}
+\footnotesize
+\setlength{\tabcolsep}{3.5pt}
+\begin{tabular}{lrccccccc}
+\toprule
+\textbf{Param.} & \textbf{Sets} & \textbf{Quantile} & \textbf{CDF} & \textbf{Density} &
+\textbf{Mean} & \textbf{Variance} & \textbf{Skewness} & \textbf{Kurtosis} \\
+\midrule
+\input{z_tab_pyglam_r_functions_en}\unskip \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The second part compares the fits. Fifty samples of each target at
+$N = 1{,}000$ and $N = 5{,}000$ were fitted by moment matching with
+\texttt{pyGLAM} and with \texttt{fun.RMFMKL.mm} and \texttt{fun.RPRS.mm} of
+\texttt{GLDEX}, and every fit was scored by the same code. Because the moment
+equations have several roots, the parameters are not expected to coincide; the
+comparison is on the fitted distributions, and Table~\ref{tab:r_fits} reports
+the KS distance and the Wasserstein distance to the analytical target, the
+latter normalised by the distance between the $P_5$ and the $P_{95}$ of the
+target, together with the largest gap between the two fitted quantile functions
+on $[0.01, 0.99]$, in the same units. All $2{,}400$ fits of both packages were
+valid distributions.
+
+\begin{table}[htbp]
+\centering
+\caption{Fits of the same samples by \texttt{pyGLAM} (py) and \texttt{GLDEX} (R):
+share of valid fits, medians over 50 samples of the KS distance and of the
+normalised Wasserstein distance to the target, and median of the largest gap
+between the two fitted quantile functions.}
+\label{tab:r_fits}
+\footnotesize
+\setlength{\tabcolsep}{3.5pt}
+\begin{tabular}{llrrrrrrrr}
+\toprule
+& & & \multicolumn{2}{c}{\textbf{Valid (\%)}} & \multicolumn{2}{c}{\textbf{KS}} &
+\multicolumn{2}{c}{\textbf{Wasserstein}} & \textbf{Quantile} \\
+\cmidrule(lr){4-5} \cmidrule(lr){6-7} \cmidrule(lr){8-9}
+\textbf{Param.} & \textbf{Distribution} & \textbf{$N$} & \textbf{py} & \textbf{R} &
+\textbf{py} & \textbf{R} & \textbf{py} & \textbf{R} & \textbf{gap} \\
+\midrule
+\input{z_tab_pyglam_r_fits_en}\unskip \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+On the normal and the Student-$t$ the two packages return the same distribution
+under both parameterizations, with a quantile gap below $10^{-4}$, and so they
+do for the RS fits of the Beta and, at $N = 5{,}000$, of the Gumbel. On the
+uniform the gaps stay below $0.004$. Elsewhere the two packages land on different
+solutions, for two different reasons. Under FKML, \texttt{pyGLAM} reproduces the
+sample moments to the precision of the solver, whereas \texttt{GLDEX} stops at a
+median moment discrepancy of $0.08$ to $0.10$ on the Gumbel, the Gamma and the
+Beta. The inexact solution is not always the worse one: it is farther from the
+target on the Beta, with a median KS distance of $0.028$ against $0.010$ at
+$N = 5{,}000$, but closer on the Gamma, with $0.024$ against $0.031$, another
+instance of a closer moment match not being a closer distribution. Under RS,
+both packages reproduce the moments of the Gamma, but at different roots: the
+dense search of \texttt{GLDEX}, over $10{,}000$ quasi-random starting points,
+reaches one with a median KS distance of $0.015$, whereas the $15$ starts of
+\texttt{pyGLAM} reach $0.027$, and the full grid of $29$ starts $0.025$.
+
+\texttt{pyGLAM} is also faster. Measured under the same conditions, with one
+process per core, a fit takes a median of $0.17$ seconds under FKML and $0.18$
+under RS, against $1.09$ and $4.92$ seconds for \texttt{GLDEX}.

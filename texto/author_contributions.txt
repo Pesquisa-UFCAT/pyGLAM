@@ -1,0 +1,6 @@
+Author contributions follow the CRediT taxonomy.
+Wanderlei Malaquias Pereira Junior: Methodology, Validation, Supervision, Writing – original draft, Writing – review & editing.
+Marcos Luiz Henrique: Methodology, Formal analysis, Validation.
+Ketson Roberto Maximiano dos Santos: Methodology, Supervision, Writing – original draft, Writing – review & editing.
+Victor Hugo Moreira do Couto Souza: Methodology, Validation, Visualization, Writing – original draft, Writing – review & editing.
+Renata Maria Pensin: Validation, Visualization.

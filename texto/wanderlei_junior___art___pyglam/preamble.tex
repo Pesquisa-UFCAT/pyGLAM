@@ -1,0 +1,156 @@
+% =====================================================================
+% PREAMBLE - adaptado do modelo do professor (paper_model/preamble.tex)
+% Alteracoes em relacao ao modelo:
+%  (i)   idioma principal -> portugues (brazil), mantendo english como
+%        idioma secundario para termos/refs em ingles;
+%  (ii)  pacotes matematicos adicionais usados pelo conteudo (amssymb,
+%        mathtools, dsfont) e operadores argmin/argmax;
+%  (iii) macros \falta e \faltanum para marcar, em VERMELHO, o que ainda
+%        precisa ser escrito/preenchido (workflow "arruma secao por secao").
+% =====================================================================
+
+% Language setting
+\usepackage[english,brazilian]{babel}
+
+% Set page size and margins
+\usepackage[a4paper,top=2cm,bottom=2cm,left=2.5cm,right=2.5cm,marginparwidth=1.75cm]{geometry}
+
+%----------- APA style references & citations (starting) ---
+\usepackage[style=apa, backend=biber, uniquename=false]{biblatex} % APA 7th edition style citations using biblatex
+% guarded so the template still compiles for a paper that brings its own .bib
+\IfFileExists{references.bib}{\addbibresource{references.bib}}{}
+
+\DeclareLanguageMapping{british}{british-apa} % Set language mapping
+\DeclareFieldFormat[article]{volume}{\apanum{#1}} % Format volume number
+
+% Modify 'and' to '&' in the bibliography
+\renewcommand*{\finalnamedelim}{%
+  \ifnumgreater{\value{liststop}}{2}{\finalandcomma}{}%
+  \addspace\&\space}
+%----------- APA style references & citations (ending) ---
+
+\usepackage{amsmath}
+\usepackage{amssymb}      % \mathbb, simbolos matematicos
+\usepackage{amsfonts}
+\usepackage{mathtools}    % \DeclarePairedDelimiter etc.
+\usepackage{dsfont}
+\usepackage{graphicx}
+\usepackage[colorlinks=true, allcolors=blue]{hyperref}
+\usepackage{xcolor}       % macros \falta em vermelho
+\usepackage{orcidlink}
+\usepackage[title]{appendix}
+\usepackage{mathrsfs}
+\usepackage{booktabs}       % For \toprule, \midrule, \botrule
+\usepackage{threeparttable} % For table footnotes
+\usepackage{algorithm}
+\usepackage{algorithmicx}
+\usepackage{algpseudocode}
+\usepackage{listings}
+\usepackage{enumitem}
+\IfFileExists{chngcntr.sty}{\usepackage{chngcntr}}{}
+\usepackage{lipsum}
+\usepackage{subcaption}
+\IfFileExists{authblk.sty}{\usepackage{authblk}}{}
+\usepackage[T1]{fontenc}    % Font encoding
+\usepackage[utf8]{inputenc} % permite acentuacao direta no fonte
+\usepackage{csquotes}       % Include csquotes
+\IfFileExists{diagbox.sty}{\usepackage{diagbox}}{}
+\IfFileExists{comment.sty}{\usepackage{comment}}{}
+\usepackage{url}
+
+% Operadores matematicos usados no texto
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{arg\,min}
+
+% ---------------------------------------------------------------------
+% Macros de marcacao (workflow de escrita). Remover antes da submissao.
+%   \falta{...}  -> nota em vermelho do que precisa ser escrito/decidido
+%   \faltanum    -> marcador curto para um numero ainda nao calculado
+% ---------------------------------------------------------------------
+\newcommand{\falta}[1]{\textcolor{red}{\textbf{[FALTA: #1]}}}
+\newcommand{\faltanum}{\textcolor{red}{\textbf{[$\bullet$]}}}
+
+\IfFileExists{helvet.sty}{\usepackage{helvet}}{}  % Load Helvetica (Arial-like)
+\IfFileExists{lmodern.sty}{\usepackage{lmodern}}{}  % Ensures default LaTeX font is available
+
+% label format: capital, centering, and parens
+\renewcommand{\thesubfigure}{\Alph{subfigure}}
+
+% Customize line spacing
+\IfFileExists{setspace.sty}{%
+  \usepackage{setspace}
+  \onehalfspacing % 1.5 line spacing
+}{%
+  \linespread{1.25} % Fallback close to 1.5 line spacing
+}
+
+% Redefine section and subsection numbering format
+\IfFileExists{titlesec.sty}{%
+  \usepackage{titlesec}
+  \titleformat{\section} % Redefine section numbering format
+    {\normalfont\Large\bfseries}{\thesection.}{1em}{}
+}{}
+
+% Define a new command for the fourth-level title.
+\newcommand{\subsubsubsection}[1]{%
+  \vspace{\baselineskip}% Add some space
+  \noindent\textbf{#1\\}\quad% Adjust formatting as needed
+}
+% Change the position of the table caption above the table
+\usepackage{float}   % for customizing caption position
+\usepackage{caption}
+\captionsetup[table]{position=top} % caption position for tables
+\captionsetup[table]{labelfont=bf} % caption label
+\captionsetup[figure]{labelfont=bf} % caption label
+\captionsetup{skip=6pt} % compact spacing between captions and floats
+
+% Compact float spacing to make better use of the page.
+\setlength{\textfloatsep}{10pt plus 2pt minus 2pt}
+\setlength{\floatsep}{8pt plus 2pt minus 2pt}
+\setlength{\intextsep}{8pt plus 2pt minus 2pt}
+
+% Compact spacing before and after section headings.
+\IfFileExists{titlesec.sty}{%
+  \titlespacing*{\section}{0pt}{2.0ex plus 0.5ex minus 0.2ex}{1.2ex plus 0.2ex}
+  \titlespacing*{\subsection}{0pt}{1.6ex plus 0.4ex minus 0.2ex}{0.8ex plus 0.2ex}
+  \titlespacing*{\subsubsection}{0pt}{1.4ex plus 0.4ex minus 0.2ex}{0.6ex plus 0.2ex}
+}{}
+
+% Slightly reduce table row height and list spacing.
+\renewcommand{\arraystretch}{0.9}
+\setlist{noitemsep, topsep=4pt}
+
+% Define the unnumbered list
+\makeatletter
+\newenvironment{unlist}{%
+  \begin{list}{}{%
+    \setlength{\labelwidth}{0pt}%
+    \setlength{\labelsep}{0pt}%
+    \setlength{\leftmargin}{2em}%
+    \setlength{\itemindent}{-2em}%
+    \setlength{\topsep}{\medskipamount}%
+    \setlength{\itemsep}{3pt}%
+  }%
+}{%
+  \end{list}%
+}
+\makeatother
+
+% Suppress the warning about \@parboxrestore
+\pdfsuppresswarningpagegroup=1
+
+\date{}  % Remove date
+
+% Keep the template compilable when example image files are not uploaded yet.
+\makeatletter
+\let\template@orig@includegraphics\includegraphics
+\renewcommand{\includegraphics}[2][]{%
+  \IfFileExists{#2}{%
+    \template@orig@includegraphics[#1]{#2}%
+  }{%
+    \fbox{\parbox[c][0.22\textheight][c]{0.75\linewidth}{%
+      \centering\small Figura ausente: \texttt{\detokenize{#2}}%
+    }}%
+  }%
+}
+\makeatother

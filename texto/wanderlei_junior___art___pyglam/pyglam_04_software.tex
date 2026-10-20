@@ -1,0 +1,93 @@
+\section{Software}\label{sec:software}
+
+\texttt{pyGLAM} is a pure Python package built on NumPy
+\parencite{HarrisEtAl2020} and SciPy \parencite{VirtanenEtAl2020}, released
+under the MIT licence and installable from PyPI with \texttt{pip install
+pyglam}. It has three parts: the distribution classes, the estimator, and the
+goodness-of-fit module.
+
+\subsection{Distribution classes}
+
+\texttt{GlamFKML} and \texttt{GlamRS} implement Equations~\eqref{eq:qfkml} and
+\eqref{eq:qrs} behind one interface: \texttt{moments}, \texttt{fit\_lambdas},
+\texttt{rvs}, \texttt{ppf}, \texttt{cdf} and \texttt{pdf}. Quantile evaluation and
+sampling are vectorised over NumPy arrays. Sampling is inverse transform, with an
+explicit \texttt{random\_state} accepting either a seed or a generator, so a
+sequence of calls on one generator gives independent samples and an integer seed
+reproduces a sample exactly. By default the full distribution is sampled; an
+optional \texttt{quantile\_trim} removes a given probability from each tail when
+extreme draws must be avoided.
+
+The \texttt{cdf} and \texttt{pdf} methods invert $Q$ numerically, elementwise,
+and use Equation~\eqref{eq:density} for the density. They preserve the shape of
+their input, return $0$ or $1$ outside a bounded support, and propagate missing
+values. For the RS form, the admissible region of the parameter vector is
+identified whenever the model is evaluated and determines the support, so parameters outside
+every region of Section~\ref{subsec:validity} raise an error instead of
+producing a function that is not a distribution.
+
+\subsection{Estimation by multi-start moment matching}
+
+\texttt{fit\_lambdas} matches the first four theoretical moments to their sample
+counterparts, minimizing the scaled residuals with the trust-region reflective
+least-squares solver of \texttt{scipy.optimize}. Four-moment matching is not
+injective, and the system has several roots; a single starting point converges
+to whichever one it begins next to. The estimator therefore runs from
+\texttt{n\_starts} starting points, taken in order from a fixed grid of
+$29$ shape pairs and extended by log-uniform draws in $\lambda + 1/4$ when more
+starts are requested. The grid covers positive shapes (bounded supports), shapes
+near zero (near-exponential tails), negative shapes (heavy tails), unequal
+shapes (asymmetry) and the two mixed-sign RS regions, and its order matters: the
+first fifteen entries visit every one of these regimes before any is visited
+twice. For the RS form this is not a refinement but a requirement. Its regions
+are separated by the sign of $\lambda_2$, the solver cannot cross from one to
+another, and a multi-start that begins on one side only is blind to the roots on
+the other. Each shape pair is completed into a starting point by solving for
+$\lambda_1$ and $\lambda_2$ in closed form, so every start already reproduces the
+sample mean and variance.
+
+Validity enters the estimator in two places. For the RS form, the residual
+function returns a constant penalty outside the admissible regions of
+Section~\ref{subsec:validity}, so the solver cannot settle on a root that is not
+a distribution. For both forms, candidates are then screened: the quantile
+function is evaluated on a probability grid and required to be finite and
+non-decreasing. Candidates that pass, and whose shapes lie in the moment domain,
+form the pool; within it the residual selects the best, and because different
+parameter vectors reproduce the same four moments, every candidate numerically
+tied with the best is a contender, with the tie broken by the $L_1$ distance
+between the fitted and the empirical quantiles. The screens are applied as an
+ordered sequence of fallbacks, so a hard case still returns a fit rather than
+raising.
+
+The result carries the per-candidate diagnostics (residuals, validity flags,
+quantile distances and the winning start) alongside the usual SciPy fields, so
+an alternative selection rule can be applied post hoc without refitting.
+
+\subsection{Goodness of fit}
+
+Because the GLD approximates rather than reproduces a target, a fit is only
+meaningful next to a measure of how good it is. The \texttt{Performance} class
+scores a predicted sample against a reference one and reports the
+Kullback-Leibler divergence between Gaussian kernel density estimates of the
+two samples, the two-sample Kolmogorov-Smirnov statistic and its $p$-value, the
+Wasserstein distance, the coefficient of determination between the estimated
+densities, and relative errors at $P_5$, $P_{50}$ and $P_{95}$. Metrics that
+cannot be computed are returned as \texttt{NaN} rather than raising, so a batch
+of fits does not abort on one degenerate case.
+
+\subsection{Availability and reproducibility}
+
+The source code, version 1.1.0, is available at
+\url{https://github.com/Pesquisa-UFCAT/pyGLAM}, and the documentation, with
+executable examples, at \url{https://pesquisa-ufcat.github.io/pyGLAM/}. The
+package is tested with a unit suite covering, for both parameterizations,
+sampling, the identity $F(Q(u)) = u$, monotonicity of the CDF, non-negativity
+and unit integral of the density, and behaviour outside bounded supports; for
+the RS form it also checks the closed-form moments against numerical
+integration of $Q^k$ in every sign configuration of $\lambda_2$. The
+documentation examples are executed as doctests in continuous integration. The
+study of Section~\ref{sec:study} is distributed with the repository as two
+notebooks, one for the Monte Carlo study and one for the comparison with the R
+packages, which regenerate every number, table and figure of that section from
+fixed seeds; their Python dependencies are declared as an optional group of the
+package.

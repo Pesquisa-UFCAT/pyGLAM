@@ -1,0 +1,60 @@
+\section{Concluding remarks}\label{sec:conclusions}
+
+This paper introduced \texttt{pyGLAM}, a Python package implementing the FKML and
+Ramberg-Schmeiser parameterizations of the generalized lambda distribution behind
+one interface, fitting them by multi-start moment matching and scoring the result
+with an integrated goodness-of-fit module. A cross-validation against the R
+packages and a factorial Monte Carlo study over two parameterizations, six
+targets, four sample sizes and one hundred replicates per cell established four
+things.
+
+First, the implementation agrees with \texttt{gld} and \texttt{GLDEX}: the
+quantile functions, distribution functions, densities and moments coincide to
+numerical precision, and on the same samples the fits of \texttt{pyGLAM} are
+valid, reproduce the sample moments, and take a fraction of the time. Where the
+two packages reach different fits, the difference comes from how they solve the
+moment equations and which root they reach, not from the functions they
+evaluate.
+
+Second, moment matching recovers all six targets to a practically useful
+accuracy: at $N = 5{,}000$ the median error at $P_{50}$ is below $0.5\%$ of the
+spread between $P_5$ and $P_{95}$ in ten of the twelve cases, at a mean cost of
+well under a second per fit.
+
+Third, the error separates into a sampling component and a structural one, and
+the slope of the Kolmogorov-Smirnov distance against sample size tells them
+apart. The normal and the uniform show no structural component under either
+parameterization, the Gumbel and the Beta a small one, and the Gamma a floor
+under both. On the Gamma the two parameterizations match the same moments with
+distributions that fail in different places, so which one is better depends on
+the metric that scores them; on the Gumbel the RS fits approach the exponential
+tail through a degenerate limit of their parameters that the FKML form contains
+as a regular case. On the Student-$t$ with four degrees of freedom both forms
+slow down because the kurtosis of the target is infinite, which makes the
+decomposition a diagnostic of the estimator as well. Since the Python
+implementations we are aware of commit to a single parameterization, a
+practitioner using them accepts whatever structural component that form carries
+on their target, without being told. This is the argument for carrying more than
+one form, and a diagnostic, in the same package.
+
+Fourth, four-moment matching admits roots that reproduce the four sample moments,
+are reported as converged by the optimizer, and are not distributions. Imposing
+the admissible regions inside the RS objective, starting the multi-start on both
+sides of those regions, and screening the candidates of both forms for a
+non-decreasing quantile function kept every one of the $4{,}800$ selected fits
+valid.
+
+Several limitations point to the next steps. The package currently offers one
+estimator, and moment matching is known to be the weakest of the GLD estimators;
+the Student-$t$ case shows its limits directly. L-moments
+\parencite{KarvanenNuutinen2008}, which exist whenever the mean does, percentile
+matching \parencite{KarianDudewicz1999} and discretised maximum likelihood
+\parencite{Su2007CSDA} are the natural additions, and the regime decomposition
+used here transfers directly to comparing them. The comparison with
+\texttt{GLDEX} shows that a denser search of starting points can reach better
+roots of the RS moment equations on some targets, at a much higher cost; an
+adaptive search that spends more starts only where the candidates disagree would
+combine the two. The study covers six targets, chosen for geometric contrast;
+multimodal targets, which a single GLD cannot represent, call for mixtures. The
+\texttt{cdf} and \texttt{pdf} methods invert the quantile function elementwise
+and would benefit from a vectorised inversion.
